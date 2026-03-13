@@ -2,6 +2,7 @@
 
 package org.xrpl.sdk.client.util
 
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -131,9 +132,7 @@ public fun parseBalanceChanges(metadata: JsonObject): Map<Address, List<BalanceC
                 val previousBalanceStr = previousFields["Balance"]?.jsonPrimitive?.content ?: continue
                 val finalBalanceStr = finalFields["Balance"]?.jsonPrimitive?.content ?: continue
 
-                val prevValue = previousBalanceStr.toDoubleOrNull() ?: continue
-                val finalValue = finalBalanceStr.toDoubleOrNull() ?: continue
-                val delta = finalValue - prevValue
+                val delta = subtractDecimalStrings(finalBalanceStr, previousBalanceStr) ?: continue
 
                 // Extract currency from LowLimit (issuer is in the limit objects)
                 val lowLimit = finalFields["LowLimit"]?.jsonObject ?: continue
@@ -151,7 +150,7 @@ public fun parseBalanceChanges(metadata: JsonObject): Map<Address, List<BalanceC
                     lowAddress,
                     BalanceChange(
                         currency = currency,
-                        value = delta.toString(),
+                        value = delta,
                         counterparty = highAddress,
                     ),
                 )
@@ -159,7 +158,7 @@ public fun parseBalanceChanges(metadata: JsonObject): Map<Address, List<BalanceC
                     highAddress,
                     BalanceChange(
                         currency = currency,
-                        value = (-delta).toString(),
+                        value = negateDecimalString(delta),
                         counterparty = lowAddress,
                     ),
                 )
@@ -261,10 +260,10 @@ public fun verifyTransaction(
     provider: CryptoProvider,
 ): Boolean {
     val decodedJson = BinaryCodec.decode(txBlob)
+    val jsonObj = Json.parseToJsonElement(decodedJson).jsonObject
 
-    // Parse fields from the decoded JSON string manually
-    val signingPubKeyHex = extractJsonField(decodedJson, "SigningPubKey") ?: return false
-    val txnSignatureHex = extractJsonField(decodedJson, "TxnSignature") ?: return false
+    val signingPubKeyHex = jsonObj["SigningPubKey"]?.jsonPrimitive?.content ?: return false
+    val txnSignatureHex = jsonObj["TxnSignature"]?.jsonPrimitive?.content ?: return false
 
     if (signingPubKeyHex.isEmpty() || txnSignatureHex.isEmpty()) return false
 
@@ -285,42 +284,49 @@ public fun verifyTransaction(
 }
 
 /**
- * Extracts a string field value from a JSON string using simple text search.
+ * Subtracts decimal string [b] from [a], returning the result as a decimal string.
+ * Avoids floating-point to preserve full precision for XRPL IOU amounts (up to 16 significant digits).
  *
- * This avoids a full JSON parse dependency in commonMain for a simple key lookup.
+ * @return The difference as a decimal string, or `null` if either input cannot be parsed.
  */
-private fun extractJsonField(
-    json: String,
-    fieldName: String,
+private fun subtractDecimalStrings(
+    a: String,
+    b: String,
 ): String? {
-    val key = "\"$fieldName\""
-    val keyIndex = json.indexOf(key)
-    if (keyIndex < 0) return null
+    val aParts = a.split('.')
+    val bParts = b.split('.')
+    val aFrac = aParts.getOrElse(1) { "" }
+    val bFrac = bParts.getOrElse(1) { "" }
+    val maxFrac = maxOf(aFrac.length, bFrac.length)
 
-    val colonIndex = json.indexOf(':', keyIndex + key.length)
-    if (colonIndex < 0) return null
+    val aScaled = (aParts[0] + aFrac.padEnd(maxFrac, '0')).toLongOrNull() ?: return null
+    val bScaled = (bParts[0] + bFrac.padEnd(maxFrac, '0')).toLongOrNull() ?: return null
+    val diff = aScaled - bScaled
 
-    val valueStart =
-        json.indexOfFirst { false }.let {
-            var i = colonIndex + 1
-            while (i < json.length && json[i].isWhitespace()) i++
-            i
-        }
-    if (valueStart >= json.length) return null
+    if (maxFrac == 0) return diff.toString()
 
-    return when (json[valueStart]) {
-        '"' -> {
-            val end = json.indexOf('"', valueStart + 1)
-            if (end < 0) null else json.substring(valueStart + 1, end)
-        }
-        else -> {
-            val end =
-                json.indexOfFirst { false }.let {
-                    var i = valueStart
-                    while (i < json.length && json[i] != ',' && json[i] != '}') i++
-                    i
-                }
-            json.substring(valueStart, end).trim()
-        }
+    val sign = if (diff < 0) "-" else ""
+    val abs = if (diff < 0) -diff else diff
+    val scale = pow10(maxFrac)
+    val intPart = abs / scale
+    val fracPart = abs % scale
+
+    return if (fracPart == 0L) {
+        "$sign$intPart"
+    } else {
+        "$sign$intPart.${fracPart.toString().padStart(maxFrac, '0').trimEnd('0')}"
     }
+}
+
+private fun negateDecimalString(s: String): String =
+    when {
+        s.startsWith('-') -> s.substring(1)
+        s == "0" -> s
+        else -> "-$s"
+    }
+
+private fun pow10(n: Int): Long {
+    var result = 1L
+    repeat(n) { result *= 10 }
+    return result
 }
