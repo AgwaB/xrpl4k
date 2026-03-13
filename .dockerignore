@@ -15,8 +15,5 @@ build/
 xrpl.js/
 xrpl4j/
 
-# OMC state
-.omc/
-
 # OS files
 .DS_Store
