@@ -11,7 +11,7 @@ apiValidation {
 
 allprojects {
     group = "io.github.agwab"
-    version = "1.0.0-SNAPSHOT"
+    version = "0.2.0-SNAPSHOT"
 }
 
 plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
