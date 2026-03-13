@@ -9,9 +9,11 @@ apiValidation {
     ignoredProjects += listOf("xrpl-test-fixtures", "xrpl-bom")
 }
 
+val releaseVersion: String? by project
+
 allprojects {
     group = "io.github.agwab"
-    version = "0.2.0-SNAPSHOT"
+    version = releaseVersion ?: "0.2.0-SNAPSHOT"
 }
 
 plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {

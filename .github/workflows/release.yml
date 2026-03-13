@@ -34,7 +34,7 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - name: Publish to Maven Central
-        run: ./gradlew publishAllPublicationsToMavenCentralRepository -Pversion=${GITHUB_REF_NAME#v}
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository -PreleaseVersion=${GITHUB_REF_NAME#v}
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
