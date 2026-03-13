@@ -1,0 +1,52 @@
+# Multi-stage Dockerfile for XRPL Kotlin SDK cross-platform testing
+# Stages: jvm, js, linux (each includes what it needs)
+# JDK matrix: use --build-arg JDK_VERSION=<tag> to override
+
+ARG JDK_VERSION=21-jdk
+
+# ── Base: JDK + Gradle ──────────────────────────────────────────
+FROM eclipse-temurin:${JDK_VERSION} AS base
+WORKDIR /sdk
+
+# Gradle wrapper + build config (cached layer)
+COPY gradlew gradlew.bat settings.gradle.kts build.gradle.kts gradle.properties ./
+COPY gradle/ gradle/
+COPY build-logic/ build-logic/
+
+# Module build files (cached layer)
+COPY xrpl-core/build.gradle.kts xrpl-core/
+COPY xrpl-binary-codec/build.gradle.kts xrpl-binary-codec/
+COPY xrpl-crypto/build.gradle.kts xrpl-crypto/
+COPY xrpl-client/build.gradle.kts xrpl-client/
+COPY xrpl-test-fixtures/build.gradle.kts xrpl-test-fixtures/
+COPY xrpl-bom/build.gradle.kts xrpl-bom/
+
+# Download dependencies (cached unless build files change)
+RUN ./gradlew dependencies --no-daemon || true
+
+# Source code (changes frequently)
+COPY xrpl-core/ xrpl-core/
+COPY xrpl-binary-codec/ xrpl-binary-codec/
+COPY xrpl-crypto/ xrpl-crypto/
+COPY xrpl-client/ xrpl-client/
+COPY xrpl-test-fixtures/ xrpl-test-fixtures/
+COPY xrpl-bom/ xrpl-bom/
+
+# ── JVM target ───────────────────────────────────────────────────
+FROM base AS jvm
+CMD ["./gradlew", "jvmTest", "ktlintCheck", "--no-daemon"]
+
+# ── JS target (needs Node.js + Yarn) ────────────────────────────
+FROM base AS js
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nodejs npm \
+    && npm install -g yarn \
+    && rm -rf /var/lib/apt/lists/*
+CMD ["./gradlew", "jsTest", "--no-daemon"]
+
+# ── Linux Native target ─────────────────────────────────────────
+FROM base AS linux
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+CMD ["./gradlew", "linuxX64Test", "--no-daemon"]

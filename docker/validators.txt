@@ -1,0 +1,1 @@
+# Empty validators file for standalone mode (no peering)

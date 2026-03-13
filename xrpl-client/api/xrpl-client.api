@@ -1,0 +1,916 @@
+public final class org/xrpl/sdk/client/RetryConfig {
+	public fun <init> ()V
+	public final fun getInitialDelay-UwyO8pc ()J
+	public final fun getMaxAttempts ()I
+	public final fun getMaxDelay-UwyO8pc ()J
+	public final fun setInitialDelay-LRDsOJo (J)V
+	public final fun setMaxAttempts (I)V
+	public final fun setMaxDelay-LRDsOJo (J)V
+}
+
+public final class org/xrpl/sdk/client/WebSocketConfig {
+	public fun <init> ()V
+	public final fun getHeartbeatInterval-UwyO8pc ()J
+	public final fun setHeartbeatInterval-LRDsOJo (J)V
+}
+
+public final class org/xrpl/sdk/client/XrplClient : java/lang/AutoCloseable {
+	public fun close ()V
+}
+
+public final class org/xrpl/sdk/client/XrplClientConfig {
+	public fun <init> ()V
+	public final fun getEngine ()Lio/ktor/client/engine/HttpClientEngine;
+	public final fun getFeeCushion ()D
+	public final fun getIoDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getMaxFeeXrp ()D
+	public final fun getNetwork ()Lorg/xrpl/sdk/core/Network;
+	public final fun getTimeout-UwyO8pc ()J
+	public final fun retry (Lkotlin/jvm/functions/Function1;)V
+	public final fun setEngine (Lio/ktor/client/engine/HttpClientEngine;)V
+	public final fun setFeeCushion (D)V
+	public final fun setIoDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setMaxFeeXrp (D)V
+	public final fun setNetwork (Lorg/xrpl/sdk/core/Network;)V
+	public final fun setTimeout-LRDsOJo (J)V
+	public final fun webSocket (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class org/xrpl/sdk/client/XrplClientKt {
+	public static final fun XrplClient (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/client/XrplClient;
+	public static synthetic fun XrplClient$default (Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/client/XrplClient;
+}
+
+public final class org/xrpl/sdk/client/java/XrplClientJava : java/lang/AutoCloseable {
+	public static final field Companion Lorg/xrpl/sdk/client/java/XrplClientJava$Companion;
+	public fun <init> (Lorg/xrpl/sdk/client/XrplClient;)V
+	public final fun accountInfo-AjRbYKE (Ljava/lang/String;)Ljava/util/concurrent/CompletableFuture;
+	public final fun accountLines-AjRbYKE (Ljava/lang/String;)Ljava/util/concurrent/CompletableFuture;
+	public fun close ()V
+	public static final fun create (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/client/java/XrplClientJava;
+	public final fun fee ()Ljava/util/concurrent/CompletableFuture;
+	public final fun getXrpBalance-AjRbYKE (Ljava/lang/String;)Ljava/util/concurrent/CompletableFuture;
+	public final fun serverInfo ()Ljava/util/concurrent/CompletableFuture;
+	public final fun submit (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;)Ljava/util/concurrent/CompletableFuture;
+	public final fun submitAndWait (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;Lorg/xrpl/sdk/crypto/Wallet;)Ljava/util/concurrent/CompletableFuture;
+	public final fun tx-_OpIR18 (Ljava/lang/String;)Ljava/util/concurrent/CompletableFuture;
+}
+
+public final class org/xrpl/sdk/client/java/XrplClientJava$Companion {
+	public final fun create (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/client/java/XrplClientJava;
+}
+
+public final class org/xrpl/sdk/client/model/AccountChannelsResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getChannels ()Ljava/util/List;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountCurrenciesResult {
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getReceiveCurrencies ()Ljava/util/List;
+	public final fun getSendCurrencies ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountEvent {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lorg/xrpl/sdk/core/type/LedgerIndex;ZLkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()Ljava/lang/Integer;
+	public final fun getHash-ILx3IU0 ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTransaction ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getValidated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountInfo {
+	public synthetic fun <init> (Ljava/lang/String;JIIILjava/lang/String;Lkotlin/UInt;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getBalance-lkzeRtM ()J
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getOwnerCount-pVg5ArA ()I
+	public final fun getPreviousAffectingTransactionId-ILx3IU0 ()Ljava/lang/String;
+	public final fun getPreviousAffectingTransactionLedgerSequence-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountLinesResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getLines ()Ljava/util/List;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountNftsResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAccountNfts ()Ljava/util/List;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountObjectsResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAccountObjects ()Ljava/util/List;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountOffer {
+	public synthetic fun <init> (IILkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getSeq-pVg5ArA ()I
+	public final fun getTakerGets ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTakerPays ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountOffersResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getOffers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountTxEntry {
+	public fun <init> (Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTx ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getValidated ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AccountTxResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLedgerIndexMax-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getLedgerIndexMin-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTransactions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/AmmInfo {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Long;Lkotlinx/serialization/json/JsonElement;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getAmount2 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getLpToken ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTradingFee ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/BookChange {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClose ()Ljava/lang/String;
+	public final fun getCurrencyA ()Ljava/lang/String;
+	public final fun getCurrencyB ()Ljava/lang/String;
+	public final fun getHigh ()Ljava/lang/String;
+	public final fun getLow ()Ljava/lang/String;
+	public final fun getOpen ()Ljava/lang/String;
+	public final fun getVolumeA ()Ljava/lang/String;
+	public final fun getVolumeB ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/BookChangesResult {
+	public synthetic fun <init> (Ljava/util/List;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChanges ()Ljava/util/List;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/BookOffer {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;ILjava/lang/Long;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getOwnerFunds ()Ljava/lang/String;
+	public final fun getQuality ()Ljava/lang/String;
+	public final fun getSequence ()Ljava/lang/Long;
+	public final fun getTakerGets ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTakerPays ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/BookOffersResult {
+	public synthetic fun <init> (Ljava/util/List;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getOffers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/FeatureEntry {
+	public fun <init> (ZLjava/lang/String;ZLjava/lang/Boolean;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnabled ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSupported ()Z
+	public final fun getVetoed ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/FeatureResult {
+	public fun <init> (Ljava/util/Map;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeatures ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/FeeDrops {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/type/XrpDrops;Lorg/xrpl/sdk/core/type/XrpDrops;Lorg/xrpl/sdk/core/type/XrpDrops;Lorg/xrpl/sdk/core/type/XrpDrops;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseFee-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public final fun getMedianFee-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public final fun getMinimumFee-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public final fun getOpenLedgerFee-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/FeeResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/FeeDrops;Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrentLedgerSize ()Ljava/lang/String;
+	public final fun getCurrentQueueSize ()Ljava/lang/String;
+	public final fun getDrops ()Lorg/xrpl/sdk/client/model/FeeDrops;
+	public final fun getExpectedLedgerSize ()Ljava/lang/String;
+	public final fun getLedgerCurrentIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMaxQueueSize ()Ljava/lang/String;
+	public final fun getOpenLedgerFee-lkzeRtM ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/GatewayBalancesResult {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAssets ()Ljava/util/Map;
+	public final fun getBalances ()Ljava/util/Map;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getObligations ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/IssuedCurrencyBalance {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LastCloseInfo {
+	public fun <init> (Ljava/lang/Double;Ljava/lang/Integer;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConvergeTime ()Ljava/lang/Double;
+	public final fun getProposers ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerClosedResult {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerHash-kMbT32Q ()Ljava/lang/String;
+	public final fun getLedgerIndex-vxtDpZk ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerCurrentResult {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerCurrentIndex-vxtDpZk ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerDataResult {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerHash-jmos6CQ ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getState ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerEntryResult {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()Ljava/lang/String;
+	public final fun getLedgerHash-jmos6CQ ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getNode ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getNodeBinary ()Ljava/lang/String;
+	public final fun getValidated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerEvent {
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCloseTime ()Ljava/lang/Long;
+	public final fun getLedgerHash-kMbT32Q ()Ljava/lang/String;
+	public final fun getLedgerIndex-vxtDpZk ()I
+	public final fun getTxnCount ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerInfo {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Lorg/xrpl/sdk/core/type/XrpDrops;ZLjava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountHash ()Ljava/lang/String;
+	public final fun getCloseTime ()Ljava/lang/Long;
+	public final fun getCloseTimeHuman ()Ljava/lang/String;
+	public final fun getClosed ()Z
+	public final fun getLedgerHash-jmos6CQ ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getParentHash ()Ljava/lang/String;
+	public final fun getTotalCoins-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public final fun getTransactionHash ()Ljava/lang/String;
+	public final fun getTransactions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerResult {
+	public synthetic fun <init> (Lorg/xrpl/sdk/client/model/LedgerInfo;Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedger ()Lorg/xrpl/sdk/client/model/LedgerInfo;
+	public final fun getLedgerHash-jmos6CQ ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getValidated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/xrpl/sdk/client/model/LedgerSpecifier {
+}
+
+public final class org/xrpl/sdk/client/model/LedgerSpecifier$Closed : org/xrpl/sdk/client/model/LedgerSpecifier {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/model/LedgerSpecifier$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerSpecifier$Current : org/xrpl/sdk/client/model/LedgerSpecifier {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/model/LedgerSpecifier$Current;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerSpecifier$Hash : org/xrpl/sdk/client/model/LedgerSpecifier {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHash-kMbT32Q ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerSpecifier$Index : org/xrpl/sdk/client/model/LedgerSpecifier {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerSpecifier$Validated : org/xrpl/sdk/client/model/LedgerSpecifier {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/model/LedgerSpecifier$Validated;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/LedgerStateObject {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/String;
+	public final fun getIndex ()Ljava/lang/String;
+	public final fun getLedgerEntryType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/ManifestResult {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getManifest ()Ljava/lang/String;
+	public final fun getRequested ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/Nft {
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;JLkotlin/ULong;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getIssuer-Qvly9Vo ()Ljava/lang/String;
+	public final fun getNftSerial-6VbMDqA ()Lkotlin/ULong;
+	public final fun getNftokenId ()Ljava/lang/String;
+	public final fun getNftokenTaxon-s-VKNKU ()J
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NftHistoryEntry {
+	public fun <init> (Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTx ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getValidated ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NftHistoryResult {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getNftId ()Ljava/lang/String;
+	public final fun getTransactions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NftInfo {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;ZLjava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/Long;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getNftId ()Ljava/lang/String;
+	public final fun getNftSerial ()Ljava/lang/Long;
+	public final fun getNftTaxon ()Ljava/lang/Long;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public final fun getTransferFee ()Ljava/lang/Long;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isBurned ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NftOffer {
+	public synthetic fun <init> (Lkotlinx/serialization/json/JsonElement;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getExpiration ()Ljava/lang/Long;
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getNftOfferIndex ()Ljava/lang/String;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NftOffersResult {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMarker ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getNftId ()Ljava/lang/String;
+	public final fun getOffers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/NorippleCheckResult {
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getProblems ()Ljava/util/List;
+	public final fun getTransactions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/OrderBookEvent {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTransaction ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/PathAlternative {
+	public fun <init> (Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinationAmount ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getPathsComputed ()Ljava/util/List;
+	public final fun getSourceAmount ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/PathFindResult {
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlternatives ()Ljava/util/List;
+	public final fun getDestinationAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationAmount ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getSourceAccount-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/PaymentChannel {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JJILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAmount-lkzeRtM ()J
+	public final fun getBalance-lkzeRtM ()J
+	public final fun getChannelId ()Ljava/lang/String;
+	public final fun getDestinationAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSettleDelay-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/ServerInfo {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lorg/xrpl/sdk/client/model/LastCloseInfo;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lorg/xrpl/sdk/client/model/ValidatedLedgerInfo;Ljava/lang/Integer;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuildVersion ()Ljava/lang/String;
+	public final fun getCompleteLedgers ()Ljava/lang/String;
+	public final fun getHostId ()Ljava/lang/String;
+	public final fun getIoLatencyMs ()Ljava/lang/Long;
+	public final fun getLastClose ()Lorg/xrpl/sdk/client/model/LastCloseInfo;
+	public final fun getLoadFactor ()Ljava/lang/Double;
+	public final fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPeers ()Ljava/lang/Integer;
+	public final fun getPubkeyNode ()Ljava/lang/String;
+	public final fun getServerState ()Ljava/lang/String;
+	public final fun getUptime ()Ljava/lang/Long;
+	public final fun getValidatedLedger ()Lorg/xrpl/sdk/client/model/ValidatedLedgerInfo;
+	public final fun getValidationQuorum ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/SimulateResult {
+	public fun <init> (Ljava/lang/String;ILjava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()I
+	public final fun getEngineResultMessage ()Ljava/lang/String;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTxJson ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/SubmitResult {
+	public synthetic fun <init> (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;ZZZZZLorg/xrpl/sdk/core/type/XrpDrops;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccepted ()Z
+	public final fun getApplied ()Z
+	public final fun getBroadcast ()Z
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()I
+	public final fun getEngineResultMessage ()Ljava/lang/String;
+	public final fun getKept ()Z
+	public final fun getOpenLedgerCost-ctPVOOM ()Lorg/xrpl/sdk/core/type/XrpDrops;
+	public final fun getQueued ()Z
+	public final fun getTxHash-ILx3IU0 ()Ljava/lang/String;
+	public final fun getValidatedLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/TransactionEvent {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lorg/xrpl/sdk/core/type/LedgerIndex;ZLkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()Ljava/lang/Integer;
+	public final fun getHash-ILx3IU0 ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTransaction ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getValidated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/TransactionResult {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlinx/serialization/json/JsonElement;ZLkotlinx/serialization/json/JsonElement;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlinx/serialization/json/JsonElement;ZLkotlinx/serialization/json/JsonElement;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCloseTimeIso ()Ljava/lang/String;
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()Ljava/lang/Integer;
+	public final fun getHash-ILx3IU0 ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTxJson ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getValidated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/TrustLine {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getBalance ()Ljava/lang/String;
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getLimit ()Ljava/lang/String;
+	public final fun getLimitPeer ()Ljava/lang/String;
+	public final fun getNoRipple ()Ljava/lang/Boolean;
+	public final fun getNoRipplePeer ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/ValidatedLedgerInfo {
+	public synthetic fun <init> (Ljava/lang/Long;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/Double;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAge ()Ljava/lang/Long;
+	public final fun getBaseFeeXrp ()Ljava/lang/Double;
+	public final fun getHash ()Ljava/lang/String;
+	public final fun getReserveBaseXrp ()Ljava/lang/Double;
+	public final fun getReserveIncXrp ()Ljava/lang/Double;
+	public final fun getSeq-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/ValidatedTransaction {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEngineResult ()Ljava/lang/String;
+	public final fun getEngineResultCode ()Ljava/lang/Integer;
+	public final fun getHash-ILx3IU0 ()Ljava/lang/String;
+	public final fun getLedgerHash-jmos6CQ ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getMeta ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getMetadata ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTxJson ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/rpc/AccountMethodsKt {
+	public static final fun accountChannels-Vnq4vBc (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountChannels-Vnq4vBc$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountCurrencies-DbgGrbA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountCurrencies-DbgGrbA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountInfo-DbgGrbA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountInfo-DbgGrbA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountLines-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountLines-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountNfts-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountNfts-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountObjects-FpEjSDU (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountObjects-FpEjSDU$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountOffers-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountOffers-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun accountTx-PTQaJc4 (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun accountTx-PTQaJc4$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun gatewayBalances-QpdslXA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/util/List;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun gatewayBalances-QpdslXA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/util/List;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun norippleCheck-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;ZLorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun norippleCheck-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;ZLorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/AmmMethodsKt {
+	public static final fun ammInfo (Lorg/xrpl/sdk/client/XrplClient;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun ammInfo$default (Lorg/xrpl/sdk/client/XrplClient;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/LedgerMethodsKt {
+	public static final fun ledger (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZZZZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun ledger$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZZZZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun ledgerClosed (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun ledgerCurrent (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun ledgerData (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun ledgerData$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun ledgerEntry (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun ledgerEntry$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/NftMethodsKt {
+	public static final fun nftBuyOffers (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun nftBuyOffers$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun nftHistory (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun nftHistory$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun nftInfo (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun nftSellOffers (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun nftSellOffers$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/Integer;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/OrderBookMethodsKt {
+	public static final fun bookChanges (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bookChanges$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun bookOffers--ZiPf0M (Lorg/xrpl/sdk/client/XrplClient;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bookOffers--ZiPf0M$default (Lorg/xrpl/sdk/client/XrplClient;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/PaginatedMethodsKt {
+	public static final fun accountTransactions-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLjava/lang/Integer;Ljava/lang/Boolean;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun accountTransactions-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLjava/lang/Integer;Ljava/lang/Boolean;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allAccountLines-DbgGrbA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allAccountLines-DbgGrbA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class org/xrpl/sdk/client/rpc/PathMethodsKt {
+	public static final fun pathFind-Ng1hAEk (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun ripplePathFind--ene3UA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun ripplePathFind--ene3UA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/ServerMethodsKt {
+	public static final fun feature (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun feature$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun fee (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun manifest (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun serverDefinitions (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun serverInfo (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun serverState (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun version (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/TransactionMethodsKt {
+	public static final fun simulate (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun simulate$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun submit (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun submitMultisigned (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun transactionEntry-wHgPR2Y (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun transactionEntry-wHgPR2Y$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun tx-FhUJsSw (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;ZLorg/xrpl/sdk/core/type/LedgerIndex;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun tx-FhUJsSw$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;ZLorg/xrpl/sdk/core/type/LedgerIndex;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/UtilityMethodsKt {
+	public static final fun ping (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun random (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/signing/InMemorySigner : org/xrpl/sdk/crypto/signing/TransactionSigner {
+	public fun <init> ()V
+	public fun <init> (Lorg/xrpl/sdk/crypto/CryptoProvider;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/crypto/CryptoProvider;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun multiSign-dWLzdvI (Lorg/xrpl/sdk/crypto/signing/PrivateKey;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/lang/String;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public synthetic fun multiSign-dWLzdvI (Lorg/xrpl/sdk/crypto/signing/PrivateKeyable;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/lang/String;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public fun sign (Lorg/xrpl/sdk/crypto/signing/PrivateKey;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+	public synthetic fun sign (Lorg/xrpl/sdk/crypto/signing/PrivateKeyable;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+}
+
+public final class org/xrpl/sdk/client/signing/MultiSignUtilsKt {
+	public static final fun combineSignatures (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/util/List;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+	public static synthetic fun combineSignatures$default (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/util/List;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+}
+
+public final class org/xrpl/sdk/client/signing/PaymentChannelUtilsKt {
+	public static final fun signPaymentChannelClaim (Lorg/xrpl/sdk/crypto/Wallet;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun signPaymentChannelClaim$default (Lorg/xrpl/sdk/crypto/Wallet;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/signing/WalletSigningExtensionsKt {
+	public static final fun multiSignTransaction (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public static synthetic fun multiSignTransaction$default (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public static final fun signTransaction (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+	public static synthetic fun signTransaction$default (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+}
+
+public final class org/xrpl/sdk/client/subscription/SubscriptionsKt {
+	public static final fun subscribeToAccount-Byc2tv8 (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToLedger (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToOrderBook (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToTransactions (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class org/xrpl/sdk/client/sugar/AutofillKt {
+	public static final fun autofill (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/sugar/Balance {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/sugar/ConvenienceKt {
+	public static final fun getBalances-YHOYffQ (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun getLedgerIndex (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun getXrpBalance-YHOYffQ (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/sugar/SubmitAndWaitKt {
+	public static final fun submitAndWait (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;Lorg/xrpl/sdk/crypto/Wallet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class org/xrpl/sdk/client/transport/ConnectionState {
+}
+
+public final class org/xrpl/sdk/client/transport/ConnectionState$Connected : org/xrpl/sdk/client/transport/ConnectionState {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/transport/ConnectionState$Connected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/transport/ConnectionState$Connecting : org/xrpl/sdk/client/transport/ConnectionState {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/transport/ConnectionState$Connecting;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/transport/ConnectionState$Disconnected : org/xrpl/sdk/client/transport/ConnectionState {
+	public static final field INSTANCE Lorg/xrpl/sdk/client/transport/ConnectionState$Disconnected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/transport/ConnectionState$Failed : org/xrpl/sdk/client/transport/ConnectionState {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/util/BalanceChange {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCounterparty-Tzvw56w ()Ljava/lang/String;
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/util/TransactionUtilsKt {
+	public static final fun getNFTokenID (Lkotlinx/serialization/json/JsonObject;)Ljava/lang/String;
+	public static final fun hashSignedTx (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun parseBalanceChanges (Lkotlinx/serialization/json/JsonObject;)Ljava/util/Map;
+	public static final fun verifyTransaction (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Z
+}
+

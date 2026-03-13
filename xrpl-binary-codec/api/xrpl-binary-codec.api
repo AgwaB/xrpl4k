@@ -1,0 +1,12 @@
+public final class org/xrpl/sdk/codec/BinaryCodec {
+	public static final field INSTANCE Lorg/xrpl/sdk/codec/BinaryCodec;
+	public final fun decode (Ljava/lang/String;)Ljava/lang/String;
+	public final fun decodeLedgerData (Ljava/lang/String;)Ljava/lang/String;
+	public final fun decodeQuality (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encode (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encodeForMultiSigning (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun encodeForSigning (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encodeForSigningClaim (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encodeQuality (Ljava/lang/String;)Ljava/lang/String;
+}
+

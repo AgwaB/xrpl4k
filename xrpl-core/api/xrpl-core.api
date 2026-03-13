@@ -1,0 +1,3078 @@
+public abstract interface annotation class org/xrpl/sdk/core/ExperimentalXrplApi : java/lang/annotation/Annotation {
+}
+
+public abstract class org/xrpl/sdk/core/Network {
+	public abstract fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public abstract fun getRpcUrl ()Ljava/lang/String;
+	public abstract fun getWsUrl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/Network$Custom : org/xrpl/sdk/core/Network {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public fun getRpcUrl ()Ljava/lang/String;
+	public fun getWsUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/Network$Devnet : org/xrpl/sdk/core/Network {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/Network$Devnet;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public fun getRpcUrl ()Ljava/lang/String;
+	public fun getWsUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/Network$Mainnet : org/xrpl/sdk/core/Network {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/Network$Mainnet;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public fun getRpcUrl ()Ljava/lang/String;
+	public fun getWsUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/Network$Testnet : org/xrpl/sdk/core/Network {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/Network$Testnet;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public fun getRpcUrl ()Ljava/lang/String;
+	public fun getWsUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface annotation class org/xrpl/sdk/core/XrplDsl : java/lang/annotation/Annotation {
+}
+
+public final class org/xrpl/sdk/core/XrplSdk {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/XrplSdk;
+	public static final field VERSION Ljava/lang/String;
+}
+
+public abstract interface class org/xrpl/sdk/core/model/amount/CurrencyAmount {
+}
+
+public final class org/xrpl/sdk/core/model/amount/IssuedAmount : org/xrpl/sdk/core/model/amount/CurrencyAmount {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrency-kGSVaKU ()Ljava/lang/String;
+	public final fun getIssuer-Qvly9Vo ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/amount/LiteralsKt {
+	public static final fun getDrops (J)Lorg/xrpl/sdk/core/model/amount/XrpAmount;
+	public static final fun getXrp (I)Lorg/xrpl/sdk/core/model/amount/XrpAmount;
+}
+
+public final class org/xrpl/sdk/core/model/amount/MptAmount : org/xrpl/sdk/core/model/amount/CurrencyAmount {
+	public fun <init> (Ljava/lang/String;J)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public final fun getValue ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/amount/XrpAmount : org/xrpl/sdk/core/model/amount/CurrencyAmount {
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun compareTo (Lorg/xrpl/sdk/core/model/amount/XrpAmount;)I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDrops-lkzeRtM ()J
+	public fun hashCode ()I
+	public final fun minus (Lorg/xrpl/sdk/core/model/amount/XrpAmount;)Lorg/xrpl/sdk/core/model/amount/XrpAmount;
+	public final fun plus (Lorg/xrpl/sdk/core/model/amount/XrpAmount;)Lorg/xrpl/sdk/core/model/amount/XrpAmount;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/AccountRoot : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;JIILjava/lang/String;IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;JIILjava/lang/String;IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAccountTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getAmmID-jmos6CQ ()Ljava/lang/String;
+	public final fun getBalance-lkzeRtM ()J
+	public final fun getBurnedNFTokens-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getEmailHash ()Ljava/lang/String;
+	public final fun getFirstNFTokenSequence-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getMessageKey ()Ljava/lang/String;
+	public final fun getMintedNFTokens-0hXNFcg ()Lkotlin/UInt;
+	public final fun getNfTokenMinter-Tzvw56w ()Ljava/lang/String;
+	public final fun getOwnerCount-pVg5ArA ()I
+	public final fun getPreviousTxnID-kMbT32Q ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-pVg5ArA ()I
+	public final fun getRegularKey-Tzvw56w ()Ljava/lang/String;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getTickSize-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTicketCount-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTransferRate-0hXNFcg ()Lkotlin/UInt;
+	public final fun getWalletLocator-jmos6CQ ()Ljava/lang/String;
+	public final fun getWalletSize-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/AmendmentMajority {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmendment-kMbT32Q ()Ljava/lang/String;
+	public final fun getCloseTime-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Amendments : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmendments ()Ljava/util/List;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getMajorities ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Amm : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILjava/util/List;Lorg/xrpl/sdk/core/model/ledger/AmmAuctionSlot;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILjava/util/List;Lorg/xrpl/sdk/core/model/ledger/AmmAuctionSlot;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmmAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAsset ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAuctionSlot ()Lorg/xrpl/sdk/core/model/ledger/AmmAuctionSlot;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getLpTokenBalance ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getTradingFee-pVg5ArA ()I
+	public final fun getVoteSlots ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/AmmAuctionSlot {
+	public synthetic fun <init> (Ljava/lang/String;IILorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;IILorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAuthAccounts ()Ljava/util/List;
+	public final fun getDiscountedFee-pVg5ArA ()I
+	public final fun getExpiration-pVg5ArA ()I
+	public final fun getPrice ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/AmmVoteEntry {
+	public synthetic fun <init> (Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getTradingFee-pVg5ArA ()I
+	public final fun getVoteWeight-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Bridge : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getMinAccountCreateAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getXchainAccountClaimCount-0hXNFcg ()Lkotlin/UInt;
+	public final fun getXchainBridge ()Lorg/xrpl/sdk/core/model/ledger/XChainBridge;
+	public final fun getXchainClaimID-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Check : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationNode ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getInvoiceID-jmos6CQ ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSendMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Credential : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getIssuer-Qvly9Vo ()Ljava/lang/String;
+	public final fun getIssuerNode ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSubject-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSubjectNode ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Delegate : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAuthorize-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/DepositPreauth : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAuthorize-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Did : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getData ()Ljava/lang/String;
+	public final fun getDidDocument ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/DirectoryNode : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getIndexNext ()Ljava/lang/String;
+	public final fun getIndexPrevious ()Ljava/lang/String;
+	public final fun getIndexes ()Ljava/util/List;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getNfTokenID-jmos6CQ ()Ljava/lang/String;
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun getRootIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getTakerGetsCurrency ()Ljava/lang/String;
+	public final fun getTakerGetsIssuer ()Ljava/lang/String;
+	public final fun getTakerPaysCurrency ()Ljava/lang/String;
+	public final fun getTakerPaysIssuer ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/DisabledValidator {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirstLedgerSequence-pVg5ArA ()I
+	public final fun getPublicKey ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Escrow : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAmount-lkzeRtM ()J
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getCondition ()Ljava/lang/String;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationNode ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFinishAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/FeeSettings : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseFee ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getReferenceFeeUnits-0hXNFcg ()Lkotlin/UInt;
+	public final fun getReserveBase-0hXNFcg ()Lkotlin/UInt;
+	public final fun getReserveIncrement-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/LedgerHashes : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getHashes ()Ljava/util/List;
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getLastLedgerSequence-0hXNFcg ()Lkotlin/UInt;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public abstract fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public abstract fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/LedgerObjectType {
+	public static final field Companion Lorg/xrpl/sdk/core/model/ledger/LedgerObjectType$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/model/ledger/LedgerObjectType;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/LedgerObjectType$Companion {
+	public final fun getAMM-BlnZgWw ()Ljava/lang/String;
+	public final fun getAccountRoot-BlnZgWw ()Ljava/lang/String;
+	public final fun getAmendments-BlnZgWw ()Ljava/lang/String;
+	public final fun getBridge-BlnZgWw ()Ljava/lang/String;
+	public final fun getCheck-BlnZgWw ()Ljava/lang/String;
+	public final fun getCredential-BlnZgWw ()Ljava/lang/String;
+	public final fun getDID-BlnZgWw ()Ljava/lang/String;
+	public final fun getDelegate-BlnZgWw ()Ljava/lang/String;
+	public final fun getDepositPreauth-BlnZgWw ()Ljava/lang/String;
+	public final fun getDirectoryNode-BlnZgWw ()Ljava/lang/String;
+	public final fun getEscrow-BlnZgWw ()Ljava/lang/String;
+	public final fun getFeeSettings-BlnZgWw ()Ljava/lang/String;
+	public final fun getLedgerHashes-BlnZgWw ()Ljava/lang/String;
+	public final fun getLoan-BlnZgWw ()Ljava/lang/String;
+	public final fun getLoanBroker-BlnZgWw ()Ljava/lang/String;
+	public final fun getMPToken-BlnZgWw ()Ljava/lang/String;
+	public final fun getMPTokenIssuance-BlnZgWw ()Ljava/lang/String;
+	public final fun getNFTokenOffer-BlnZgWw ()Ljava/lang/String;
+	public final fun getNFTokenPage-BlnZgWw ()Ljava/lang/String;
+	public final fun getNegativeUNL-BlnZgWw ()Ljava/lang/String;
+	public final fun getOffer-BlnZgWw ()Ljava/lang/String;
+	public final fun getOracle-BlnZgWw ()Ljava/lang/String;
+	public final fun getPayChannel-BlnZgWw ()Ljava/lang/String;
+	public final fun getPermissionedDomain-BlnZgWw ()Ljava/lang/String;
+	public final fun getRippleState-BlnZgWw ()Ljava/lang/String;
+	public final fun getSignerList-BlnZgWw ()Ljava/lang/String;
+	public final fun getTicket-BlnZgWw ()Ljava/lang/String;
+	public final fun getVault-BlnZgWw ()Ljava/lang/String;
+	public final fun getXChainOwnedClaimID-BlnZgWw ()Ljava/lang/String;
+	public final fun getXChainOwnedCreateAccountClaimID-BlnZgWw ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Loan : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/LoanBroker : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/MpToken : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getLockedAmount ()Ljava/lang/Long;
+	public final fun getMptAmount ()J
+	public final fun getMptIssuanceID ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/MpTokenIssuance : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Long;JLkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Long;JLkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetScale-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getIssuer-Qvly9Vo ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getMaxAmount ()Ljava/lang/Long;
+	public final fun getMetadata ()Ljava/lang/String;
+	public final fun getOutstandingAmount ()J
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getTransferFee-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/NFToken {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNfTokenID-kMbT32Q ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/NFTokenOffer : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getNfTokenID-kMbT32Q ()Ljava/lang/String;
+	public final fun getNfTokenOfferNode ()Ljava/lang/String;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/NFTokenPage : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getNextPageMin-jmos6CQ ()Ljava/lang/String;
+	public final fun getNfTokens ()Ljava/util/List;
+	public final fun getPreviousPageMin-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/NegativeUnl : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDisabledValidators ()Ljava/util/List;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getValidatorToDisable ()Ljava/lang/String;
+	public final fun getValidatorToReEnable ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Offer : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getBookDirectory-jmos6CQ ()Ljava/lang/String;
+	public final fun getBookNode ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getTakerGets ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getTakerPays ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Oracle : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetClass ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public final fun getLastUpdateTime-pVg5ArA ()I
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPriceDataSeries ()Ljava/util/List;
+	public final fun getProvider ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/PayChannel : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JJLjava/lang/String;ILkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JJLjava/lang/String;ILkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAmount-lkzeRtM ()J
+	public final fun getBalance-lkzeRtM ()J
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSettleDelay-pVg5ArA ()I
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/PermissionedDomain : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAcceptedCredentials ()Ljava/util/List;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/PriceData {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetPrice ()Ljava/lang/Long;
+	public final fun getBaseAsset ()Ljava/lang/String;
+	public final fun getQuoteAsset ()Ljava/lang/String;
+	public final fun getScale-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/RippleState : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lorg/xrpl/sdk/core/model/amount/IssuedAmount;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBalance ()Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getHighLimit ()Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getHighNode ()Ljava/lang/String;
+	public final fun getHighQualityIn-0hXNFcg ()Lkotlin/UInt;
+	public final fun getHighQualityOut-0hXNFcg ()Lkotlin/UInt;
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getLowLimit ()Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getLowNode ()Ljava/lang/String;
+	public final fun getLowQualityIn-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLowQualityOut-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/SignerEntry {
+	public synthetic fun <init> (Ljava/lang/String;ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;ILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSignerWeight-pVg5ArA ()I
+	public final fun getWalletLocator-jmos6CQ ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/SignerList : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;ILjava/util/List;ILjava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;ILjava/util/List;ILjava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSignerEntries ()Ljava/util/List;
+	public final fun getSignerListID-pVg5ArA ()I
+	public final fun getSignerQuorum-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Ticket : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTicketSequence-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/UnknownLedgerObject : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFields ()Ljava/util/Map;
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/Vault : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsset ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/XChainBridge {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIssuingChainDoor-Qvly9Vo ()Ljava/lang/String;
+	public final fun getIssuingChainIssue ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getLockingChainDoor-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLockingChainIssue ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/XChainOwnedClaimId : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;ILjava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;ILjava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOtherChainSource-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getXchainBridge ()Lorg/xrpl/sdk/core/model/ledger/XChainBridge;
+	public final fun getXchainClaimID-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/ledger/XChainOwnedCreateAccountClaimId : org/xrpl/sdk/core/model/ledger/LedgerObject {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/ledger/XChainBridge;ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-pVg5ArA ()I
+	public fun getIndex-kMbT32Q ()Ljava/lang/String;
+	public fun getLedgerObjectType-BlnZgWw ()Ljava/lang/String;
+	public final fun getOwnerNode ()Ljava/lang/String;
+	public final fun getPreviousTxnID-jmos6CQ ()Ljava/lang/String;
+	public final fun getPreviousTxnLgrSeq-0hXNFcg ()Lkotlin/UInt;
+	public final fun getXchainAccountClaimCount-pVg5ArA ()I
+	public final fun getXchainBridge ()Lorg/xrpl/sdk/core/model/ledger/XChainBridge;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMBidBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getAuthAccounts ()Ljava/util/List;
+	public final fun getBidMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBidMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setAsset2 (Ljava/lang/String;)V
+	public final fun setAuthAccounts (Ljava/util/List;)V
+	public final fun setBidMax (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setBidMin (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMBidFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getAuthAccounts ()Ljava/util/List;
+	public final fun getBidMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBidMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMClawbackBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMClawbackFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getHolder-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMCreateBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field amount2 Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTradingFee-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAmount2 (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setTradingFee-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getTradingFee-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMDeleteBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setAsset2 (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMDepositBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getEPrice ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLpTokenOut ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAmount2 (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setAsset2 (Ljava/lang/String;)V
+	public final fun setEPrice (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setLpTokenOut (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMDepositFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getEPrice ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLpTokenOut ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMVoteBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTradingFee-pVg5ArA ()I
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setAsset2 (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setTradingFee-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMVoteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getTradingFee-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMWithdrawBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getEPrice ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLpTokenIn ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAmount2 (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setAsset2 (Ljava/lang/String;)V
+	public final fun setEPrice (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setLpTokenIn (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AMMWithdrawFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount2 ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getAsset2 ()Ljava/lang/String;
+	public final fun getEPrice ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLpTokenIn ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AccountDeleteBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestinationTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AccountDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AccountSetBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getClearFlag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getEmailHash ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getNftTokenMinter-Tzvw56w ()Ljava/lang/String;
+	public final fun getSetFlag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTickSize-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTransferRate-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setClearFlag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setDomain (Ljava/lang/String;)V
+	public final fun setEmailHash (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setNftTokenMinter-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSetFlag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setTickSize-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setTransferRate-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/AccountSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClearFlag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getEmailHash ()Ljava/lang/String;
+	public final fun getNftTokenMinter-Tzvw56w ()Ljava/lang/String;
+	public final fun getSetFlag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTickSize-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTransferRate-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/BatchBuilder {
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getRawTransactions ()Ljava/util/List;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setRawTransactions (Ljava/util/List;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/BatchFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/util/List;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/util/List;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getRawTransactions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCancelBuilder {
+	public field checkId Ljava/lang/String;
+	public final fun getCheckId ()Ljava/lang/String;
+	public final fun setCheckId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCancelFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCheckId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCashBuilder {
+	public field checkId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCheckId ()Ljava/lang/String;
+	public final fun getDeliverMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setCheckId (Ljava/lang/String;)V
+	public final fun setDeliverMin (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCashFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCheckId ()Ljava/lang/String;
+	public final fun getDeliverMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCreateBuilder {
+	public field sendMax Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getInvoiceId ()Ljava/lang/String;
+	public final fun getSendMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestinationTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setExpiration-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setInvoiceId (Ljava/lang/String;)V
+	public final fun setSendMax (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CheckCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getInvoiceId ()Ljava/lang/String;
+	public final fun getSendMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/ClawbackBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/ClawbackFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CommonTransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;JIILjava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;JIILjava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAccountTxnId-ILx3IU0 ()Ljava/lang/String;
+	public final fun getFee-lkzeRtM ()J
+	public final fun getLastLedgerSequence-pVg5ArA ()I
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getSigners ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTicketSequence-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialAcceptBuilder {
+	public field credentialType Ljava/lang/String;
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getSubject-Tzvw56w ()Ljava/lang/String;
+	public final fun setCredentialType (Ljava/lang/String;)V
+	public final fun setIssuer-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSubject-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialAcceptFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getIssuer-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSubject-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialCreateBuilder {
+	public field credentialType Ljava/lang/String;
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getSubject-Tzvw56w ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public final fun setCredentialType (Ljava/lang/String;)V
+	public final fun setExpiration-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setIssuer-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSubject-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setUri (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getSubject-Qvly9Vo ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialDeleteBuilder {
+	public field credentialType Ljava/lang/String;
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getSubject-Tzvw56w ()Ljava/lang/String;
+	public final fun setCredentialType (Ljava/lang/String;)V
+	public final fun setIssuer-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSubject-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/CredentialDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCredentialType ()Ljava/lang/String;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getSubject-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DIDDeleteBuilder {
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DIDDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DIDSetBuilder {
+	public final fun getData ()Ljava/lang/String;
+	public final fun getDidDocument ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public final fun setData (Ljava/lang/String;)V
+	public final fun setDidDocument (Ljava/lang/String;)V
+	public final fun setUri (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DIDSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/String;
+	public final fun getDidDocument ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DelegateSetBuilder {
+	public final fun getAuthorize-Tzvw56w ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPermissions ()Ljava/util/List;
+	public final fun setAuthorize-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setPermissions (Ljava/util/List;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DelegateSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthorize-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPermissions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DepositPreauthBuilder {
+	public final fun getAuthorize-Tzvw56w ()Ljava/lang/String;
+	public final fun getUnauthorize-Tzvw56w ()Ljava/lang/String;
+	public final fun setAuthorize-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setUnauthorize-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/DepositPreauthFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthorize-Tzvw56w ()Ljava/lang/String;
+	public final fun getUnauthorize-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowCancelBuilder {
+	public final fun getOfferSequence-pVg5ArA ()I
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun setOfferSequence-WZ4Q5Ns (I)V
+	public final fun setOwner-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowCancelFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOfferSequence-pVg5ArA ()I
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowCreateBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getCondition ()Ljava/lang/String;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFinishAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setCancelAfter-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setCondition (Ljava/lang/String;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestinationTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setFinishAfter-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getCondition ()Ljava/lang/String;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFinishAfter-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowFinishBuilder {
+	public final fun getCondition ()Ljava/lang/String;
+	public final fun getFulfillment ()Ljava/lang/String;
+	public final fun getOfferSequence-pVg5ArA ()I
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun setCondition (Ljava/lang/String;)V
+	public final fun setFulfillment (Ljava/lang/String;)V
+	public final fun setOfferSequence-WZ4Q5Ns (I)V
+	public final fun setOwner-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/EscrowFinishFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCondition ()Ljava/lang/String;
+	public final fun getFulfillment ()Ljava/lang/String;
+	public final fun getOfferSequence-pVg5ArA ()I
+	public final fun getOwner-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverClawbackBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverClawbackFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverDepositBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverDepositFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverWithdrawBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerCoverWithdrawFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerDeleteBuilder {
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerSetBuilder {
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanBrokerSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanDeleteBuilder {
+	public field loanId Ljava/lang/String;
+	public final fun getLoanId ()Ljava/lang/String;
+	public final fun setLoanId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLoanId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanManageBuilder {
+	public field loanId Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLoanId ()Ljava/lang/String;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setLoanId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanManageFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLoanId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanPayBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field loanId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getLoanId ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setLoanId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanPayFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getLoanId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanSetBuilder {
+	public field collateralAsset Ljava/lang/String;
+	public field loanAsset Ljava/lang/String;
+	public final fun getCollateralAsset ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLoanAsset ()Ljava/lang/String;
+	public final fun setCollateralAsset (Ljava/lang/String;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setLoanAsset (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/LoanSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCollateralAsset ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getLoanAsset ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenAuthorizeBuilder {
+	public field mptIssuanceId Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMptIssuanceId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenAuthorizeFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceCreateBuilder {
+	public final fun getAssetScale-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMaxAmount ()Ljava/lang/String;
+	public final fun getMetadata ()Ljava/lang/String;
+	public final fun getTransferFee-0hXNFcg ()Lkotlin/UInt;
+	public final fun setAssetScale-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setMaxAmount (Ljava/lang/String;)V
+	public final fun setMetadata (Ljava/lang/String;)V
+	public final fun setTransferFee-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/UInt;Lkotlin/UInt;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetScale-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMaxAmount ()Ljava/lang/String;
+	public final fun getMetadata ()Ljava/lang/String;
+	public final fun getTransferFee-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceDestroyBuilder {
+	public field mptIssuanceId Ljava/lang/String;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public final fun setMptIssuanceId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceDestroyFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceSetBuilder {
+	public field mptIssuanceId Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMptIssuanceId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MPTokenIssuanceSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/Memo {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMemoData ()Ljava/lang/String;
+	public final fun getMemoFormat ()Ljava/lang/String;
+	public final fun getMemoType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MemoBuilder {
+	public final fun getMemoData ()Ljava/lang/String;
+	public final fun getMemoFormat ()Ljava/lang/String;
+	public final fun getMemoType ()Ljava/lang/String;
+	public final fun setMemoData (Ljava/lang/String;)V
+	public final fun setMemoFormat (Ljava/lang/String;)V
+	public final fun setMemoType (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/MemoKt {
+	public static final fun memo (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/Memo;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenAcceptOfferBuilder {
+	public final fun getNfTokenBrokerFee ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getNfTokenBuyOffer ()Ljava/lang/String;
+	public final fun getNfTokenSellOffer ()Ljava/lang/String;
+	public final fun setNfTokenBrokerFee (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setNfTokenBuyOffer (Ljava/lang/String;)V
+	public final fun setNfTokenSellOffer (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenAcceptOfferFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNfTokenBrokerFee ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getNfTokenBuyOffer ()Ljava/lang/String;
+	public final fun getNfTokenSellOffer ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenBurnBuilder {
+	public field nfTokenId Ljava/lang/String;
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun setNfTokenId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenBurnFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenCancelOfferBuilder {
+	public final fun getNfTokenOffers ()Ljava/util/List;
+	public final fun setNfTokenOffers (Ljava/util/List;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenCancelOfferFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNfTokenOffers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenCreateOfferBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field nfTokenId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setExpiration-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setNfTokenId (Ljava/lang/String;)V
+	public final fun setOwner-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenCreateOfferFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenMintBuilder {
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getNfTokenTaxon-pVg5ArA ()I
+	public final fun getTransferFee-0hXNFcg ()Lkotlin/UInt;
+	public final fun getUri ()Ljava/lang/String;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setIssuer-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setNfTokenTaxon-WZ4Q5Ns (I)V
+	public final fun setTransferFee-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setUri (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenMintFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILjava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ILjava/lang/String;Lkotlin/UInt;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public final fun getNfTokenTaxon-pVg5ArA ()I
+	public final fun getTransferFee-0hXNFcg ()Lkotlin/UInt;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenModifyBuilder {
+	public field nfTokenId Ljava/lang/String;
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public final fun setNfTokenId (Ljava/lang/String;)V
+	public final fun setOwner-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setUri (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/NFTokenModifyFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun getOwner-Tzvw56w ()Ljava/lang/String;
+	public final fun getUri ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OfferCancelBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getOfferSequence-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setOfferSequence-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OfferCancelFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOfferSequence-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OfferCreateBuilder {
+	public field takerGets Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field takerPays Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getOfferSequence-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTakerGets ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getTakerPays ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setExpiration-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setOfferSequence-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setTakerGets (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setTakerPays (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OfferCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun getOfferSequence-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTakerGets ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getTakerPays ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OracleDeleteBuilder {
+	public final fun getOracleDocumentId-pVg5ArA ()I
+	public final fun setOracleDocumentId-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OracleDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOracleDocumentId-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OracleSetBuilder {
+	public final fun getAssetClass ()Ljava/lang/String;
+	public final fun getLastUpdateTime-0hXNFcg ()Lkotlin/UInt;
+	public final fun getOracleDocumentId-pVg5ArA ()I
+	public final fun getPriceDataSeries ()Ljava/util/List;
+	public final fun getProvider ()Ljava/lang/String;
+	public final fun setAssetClass (Ljava/lang/String;)V
+	public final fun setLastUpdateTime-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setOracleDocumentId-WZ4Q5Ns (I)V
+	public final fun setPriceDataSeries (Ljava/util/List;)V
+	public final fun setProvider (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/OracleSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Lkotlin/UInt;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetClass ()Ljava/lang/String;
+	public final fun getLastUpdateTime-0hXNFcg ()Lkotlin/UInt;
+	public final fun getOracleDocumentId-pVg5ArA ()I
+	public final fun getPriceDataSeries ()Ljava/util/List;
+	public final fun getProvider ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PathStep {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getIssuer-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDeliverMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getInvoiceId ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getPaths ()Ljava/util/List;
+	public final fun getSendMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setDeliverMin (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestinationTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setInvoiceId (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setPaths (Ljava/util/List;)V
+	public final fun setSendMax (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelClaimBuilder {
+	public field channel Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBalance ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getChannel ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setBalance (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setChannel (Ljava/lang/String;)V
+	public final fun setPublicKey (Ljava/lang/String;)V
+	public final fun setSignature (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelClaimFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBalance ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getChannel ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelCreateBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field publicKey Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSettleDelay-pVg5ArA ()I
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setCancelAfter-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setDestinationTag-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setPublicKey (Ljava/lang/String;)V
+	public final fun setSettleDelay-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILjava/lang/String;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILjava/lang/String;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getCancelAfter-0hXNFcg ()Lkotlin/UInt;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSettleDelay-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelFundBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field channel Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getChannel ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setChannel (Ljava/lang/String;)V
+	public final fun setExpiration-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentChannelFundFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getChannel ()Ljava/lang/String;
+	public final fun getExpiration-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PaymentFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/UInt;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDeliverMin ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getDestinationTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getInvoiceId ()Ljava/lang/String;
+	public final fun getPaths ()Ljava/util/List;
+	public final fun getSendMax ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PermissionedDomainDeleteBuilder {
+	public field domainId Ljava/lang/String;
+	public final fun getDomainId ()Ljava/lang/String;
+	public final fun setDomainId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PermissionedDomainDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDomainId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PermissionedDomainSetBuilder {
+	public final fun getAcceptedCredentials ()Ljava/util/List;
+	public final fun getDomainId ()Ljava/lang/String;
+	public final fun setAcceptedCredentials (Ljava/util/List;)V
+	public final fun setDomainId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PermissionedDomainSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAcceptedCredentials ()Ljava/util/List;
+	public final fun getDomainId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/PriceData {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetPrice ()Ljava/lang/Long;
+	public final fun getBaseAsset ()Ljava/lang/String;
+	public final fun getQuoteAsset ()Ljava/lang/String;
+	public final fun getScale-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/SetRegularKeyBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getRegularKey-Tzvw56w ()Ljava/lang/String;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setRegularKey-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/SetRegularKeyFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRegularKey-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/Signer {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSigningPubKey ()Ljava/lang/String;
+	public final fun getTxnSignature ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/SignerEntry {
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSignerWeight-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/SignerListSetBuilder {
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSignerEntries ()Ljava/util/List;
+	public final fun getSignerQuorum-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setSignerEntries (Ljava/util/List;)V
+	public final fun setSignerQuorum-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/SignerListSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILjava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSignerEntries ()Ljava/util/List;
+	public final fun getSignerQuorum-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TicketCreateBuilder {
+	public final fun getTicketCount-pVg5ArA ()I
+	public final fun setTicketCount-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TicketCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTicketCount-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TransactionBuilders2Kt {
+	public static final fun checkCancel-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun checkCash-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun checkCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun clawback-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun depositPreauth-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun escrowCancel-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun escrowCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun escrowFinish-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenAcceptOffer-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenBurn-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenCancelOffer-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenCreateOffer-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenMint-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun nfTokenModify-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun paymentChannelClaim-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun paymentChannelCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun paymentChannelFund-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TransactionBuilders3Kt {
+	public static final fun batch-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun credentialAccept-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun credentialCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun credentialDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun delegateSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun didDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static synthetic fun didDelete-m62GqJM$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun didSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanBrokerCoverClawback-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanBrokerCoverDeposit-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanBrokerCoverWithdraw-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanBrokerDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static synthetic fun loanBrokerDelete-m62GqJM$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanBrokerSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static synthetic fun loanBrokerSet-m62GqJM$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanManage-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanPay-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun loanSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun mpTokenAuthorize-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun mpTokenIssuanceCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static synthetic fun mpTokenIssuanceCreate-m62GqJM$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun mpTokenIssuanceDestroy-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun mpTokenIssuanceSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun oracleDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun oracleSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun permissionedDomainDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun permissionedDomainSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static synthetic fun permissionedDomainSet-m62GqJM$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun ticketCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultClawback-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultCreate-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultDelete-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultDeposit-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultSet-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun vaultWithdraw-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainAccountCreateCommit-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainAddAccountCreateAttestation-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainAddClaimAttestation-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainClaim-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainCommit-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainCreateBridge-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainCreateClaimID-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun xChainModifyBridge-m62GqJM (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TransactionBuildersKt {
+	public static final fun accountDelete (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun accountSet (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun offerCancel (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun offerCreate (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun payment (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun setRegularKey (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun signerListSet (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+	public static final fun trustSet (Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;
+}
+
+public abstract interface class org/xrpl/sdk/core/model/transaction/TransactionFields {
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TransactionType {
+	public static final field Companion Lorg/xrpl/sdk/core/model/transaction/TransactionType$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/model/transaction/TransactionType;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TransactionType$Companion {
+	public final fun getAMMBid-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMClawback-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMDeposit-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMVote-2tepqLU ()Ljava/lang/String;
+	public final fun getAMMWithdraw-2tepqLU ()Ljava/lang/String;
+	public final fun getAccountDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getAccountSet-2tepqLU ()Ljava/lang/String;
+	public final fun getBatch-2tepqLU ()Ljava/lang/String;
+	public final fun getCheckCancel-2tepqLU ()Ljava/lang/String;
+	public final fun getCheckCash-2tepqLU ()Ljava/lang/String;
+	public final fun getCheckCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getClawback-2tepqLU ()Ljava/lang/String;
+	public final fun getCredentialAccept-2tepqLU ()Ljava/lang/String;
+	public final fun getCredentialCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getCredentialDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getDIDDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getDIDSet-2tepqLU ()Ljava/lang/String;
+	public final fun getDelegateSet-2tepqLU ()Ljava/lang/String;
+	public final fun getDepositPreauth-2tepqLU ()Ljava/lang/String;
+	public final fun getEnableAmendment-2tepqLU ()Ljava/lang/String;
+	public final fun getEscrowCancel-2tepqLU ()Ljava/lang/String;
+	public final fun getEscrowCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getEscrowFinish-2tepqLU ()Ljava/lang/String;
+	public final fun getInvalid-2tepqLU ()Ljava/lang/String;
+	public final fun getLedgerStateFix-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanBrokerCoverClawback-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanBrokerCoverDeposit-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanBrokerCoverWithdraw-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanBrokerDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanBrokerSet-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanManage-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanPay-2tepqLU ()Ljava/lang/String;
+	public final fun getLoanSet-2tepqLU ()Ljava/lang/String;
+	public final fun getMPTokenAuthorize-2tepqLU ()Ljava/lang/String;
+	public final fun getMPTokenIssuanceCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getMPTokenIssuanceDestroy-2tepqLU ()Ljava/lang/String;
+	public final fun getMPTokenIssuanceSet-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenAcceptOffer-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenBurn-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenCancelOffer-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenCreateOffer-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenMint-2tepqLU ()Ljava/lang/String;
+	public final fun getNFTokenModify-2tepqLU ()Ljava/lang/String;
+	public final fun getOfferCancel-2tepqLU ()Ljava/lang/String;
+	public final fun getOfferCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getOracleDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getOracleSet-2tepqLU ()Ljava/lang/String;
+	public final fun getPayment-2tepqLU ()Ljava/lang/String;
+	public final fun getPaymentChannelClaim-2tepqLU ()Ljava/lang/String;
+	public final fun getPaymentChannelCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getPaymentChannelFund-2tepqLU ()Ljava/lang/String;
+	public final fun getPermissionedDomainDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getPermissionedDomainSet-2tepqLU ()Ljava/lang/String;
+	public final fun getSetFee-2tepqLU ()Ljava/lang/String;
+	public final fun getSetRegularKey-2tepqLU ()Ljava/lang/String;
+	public final fun getSignerListSet-2tepqLU ()Ljava/lang/String;
+	public final fun getTicketCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getTrustSet-2tepqLU ()Ljava/lang/String;
+	public final fun getUNLModify-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultClawback-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultCreate-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultDelete-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultDeposit-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultSet-2tepqLU ()Ljava/lang/String;
+	public final fun getVaultWithdraw-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainAccountCreateCommit-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainAddAccountCreateAttestation-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainAddClaimAttestation-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainClaim-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainCommit-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainCreateBridge-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainCreateClaimID-2tepqLU ()Ljava/lang/String;
+	public final fun getXChainModifyBridge-2tepqLU ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TrustSetBuilder {
+	public field limitAmount Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getLimitAmount ()Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getQualityIn-0hXNFcg ()Lkotlin/UInt;
+	public final fun getQualityOut-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun memo (Lkotlin/jvm/functions/Function1;)V
+	public final fun setAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setLimitAmount (Lorg/xrpl/sdk/core/model/amount/IssuedAmount;)V
+	public final fun setMemos (Ljava/util/List;)V
+	public final fun setQualityIn-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setQualityOut-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setSourceTag-ExVfyTY (Lkotlin/UInt;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/TrustSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/amount/IssuedAmount;Lkotlin/UInt;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLimitAmount ()Lorg/xrpl/sdk/core/model/amount/IssuedAmount;
+	public final fun getQualityIn-0hXNFcg ()Lkotlin/UInt;
+	public final fun getQualityOut-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/UnknownTransactionFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/util/Map;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFields ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultClawbackBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field vaultId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getVaultId ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setHolder-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setVaultId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultClawbackFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getHolder-Tzvw56w ()Ljava/lang/String;
+	public final fun getVaultId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultCreateBuilder {
+	public field asset Ljava/lang/String;
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public final fun setAsset (Ljava/lang/String;)V
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setMptIssuanceId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultCreateFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsset ()Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getMptIssuanceId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultDeleteBuilder {
+	public field vaultId Ljava/lang/String;
+	public final fun getVaultId ()Ljava/lang/String;
+	public final fun setVaultId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultDeleteFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getVaultId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultDepositBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field vaultId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getVaultId ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setVaultId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultDepositFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getVaultId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultSetBuilder {
+	public field vaultId Ljava/lang/String;
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getVaultId ()Ljava/lang/String;
+	public final fun setFlags-ExVfyTY (Lkotlin/UInt;)V
+	public final fun setVaultId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultSetFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-0hXNFcg ()Lkotlin/UInt;
+	public final fun getVaultId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultWithdrawBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field vaultId Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getVaultId ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setVaultId (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/VaultWithdrawFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getVaultId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAccountCreateCommitBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field signatureReward Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSignatureReward (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAccountCreateCommitFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAddAccountCreateAttestationBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field publicKey Ljava/lang/String;
+	public field signature Ljava/lang/String;
+	public field signatureReward Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAttestationRewardAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAttestationSignerAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getOtherChainSource-Tzvw56w ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getWasLockingChainSend ()Z
+	public final fun getXChainAccountCreateCount-pVg5ArA ()I
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAttestationRewardAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAttestationSignerAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setOtherChainSource-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setPublicKey (Ljava/lang/String;)V
+	public final fun setSignature (Ljava/lang/String;)V
+	public final fun setSignatureReward (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setWasLockingChainSend (Z)V
+	public final fun setXChainAccountCreateCount-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAddAccountCreateAttestationFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAttestationRewardAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAttestationSignerAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public final fun getOtherChainSource-Qvly9Vo ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getWasLockingChainSend ()Z
+	public final fun getXChainAccountCreateCount-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAddClaimAttestationBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public field publicKey Ljava/lang/String;
+	public field signature Ljava/lang/String;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAttestationRewardAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getAttestationSignerAccount-Tzvw56w ()Ljava/lang/String;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getOtherChainSource-Tzvw56w ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getWasLockingChainSend ()Z
+	public final fun getXChainClaimId-pVg5ArA ()I
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setAttestationRewardAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setAttestationSignerAccount-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setOtherChainSource-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setPublicKey (Ljava/lang/String;)V
+	public final fun setSignature (Ljava/lang/String;)V
+	public final fun setWasLockingChainSend (Z)V
+	public final fun setXChainClaimId-WZ4Q5Ns (I)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainAddClaimAttestationFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAttestationRewardAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAttestationSignerAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun getOtherChainSource-Qvly9Vo ()Ljava/lang/String;
+	public final fun getPublicKey ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getWasLockingChainSend ()Z
+	public final fun getXChainClaimId-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainBridgeSpec {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIssuingChainDoor-Qvly9Vo ()Ljava/lang/String;
+	public final fun getIssuingChainIssue ()Ljava/lang/String;
+	public final fun getLockingChainDoor-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLockingChainIssue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainClaimBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getClaimId-pVg5ArA ()I
+	public final fun getDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setClaimId-WZ4Q5Ns (I)V
+	public final fun setDestination-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainClaimFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;ILjava/lang/String;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getClaimId-pVg5ArA ()I
+	public final fun getDestination-Qvly9Vo ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCommitBuilder {
+	public field amount Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getClaimId-pVg5ArA ()I
+	public final fun getOtherChainDestination-Tzvw56w ()Ljava/lang/String;
+	public final fun setAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setClaimId-WZ4Q5Ns (I)V
+	public final fun setOtherChainDestination-CR_ZE9Q (Ljava/lang/String;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCommitFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;ILorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;ILorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getClaimId-pVg5ArA ()I
+	public final fun getOtherChainDestination-Tzvw56w ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCreateBridgeBuilder {
+	public field signatureReward Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getMinAccountCreateAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setMinAccountCreateAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setSignatureReward (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCreateBridgeFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getMinAccountCreateAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCreateClaimIDBuilder {
+	public field signatureReward Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getOtherChainSource-Tzvw56w ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setOtherChainSource-CR_ZE9Q (Ljava/lang/String;)V
+	public final fun setSignatureReward (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainCreateClaimIDFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getOtherChainSource-Qvly9Vo ()Ljava/lang/String;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainModifyBridgeBuilder {
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getMinAccountCreateAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun setBridge (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;)V
+	public final fun setMinAccountCreateAmount (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public final fun setSignatureReward (Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XChainModifyBridgeFields : org/xrpl/sdk/core/model/transaction/TransactionFields {
+	public fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;)V
+	public synthetic fun <init> (Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBridge ()Lorg/xrpl/sdk/core/model/transaction/XChainBridgeSpec;
+	public final fun getMinAccountCreateAmount ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public final fun getSignatureReward ()Lorg/xrpl/sdk/core/model/amount/CurrencyAmount;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/xrpl/sdk/core/model/transaction/XrplTransaction {
+	public abstract fun getTransactionType-2tepqLU ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XrplTransaction$Filled : org/xrpl/sdk/core/model/transaction/XrplTransaction {
+	public static final field Companion Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/transaction/TransactionFields;Ljava/util/List;Lkotlin/UInt;JIILjava/lang/String;Ljava/util/List;Lkotlin/UInt;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAccountTxnId-ILx3IU0 ()Ljava/lang/String;
+	public final fun getFee-lkzeRtM ()J
+	public final fun getFields ()Lorg/xrpl/sdk/core/model/transaction/TransactionFields;
+	public final fun getLastLedgerSequence-pVg5ArA ()I
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getNetworkId-0hXNFcg ()Lkotlin/UInt;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getSigners ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public final fun getTicketSequence-0hXNFcg ()Lkotlin/UInt;
+	public fun getTransactionType-2tepqLU ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XrplTransaction$Filled$Companion {
+	public final fun create-1oQa5FY (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/transaction/TransactionFields;Ljava/util/List;Lkotlin/UInt;JIILjava/lang/String;Ljava/util/List;Lkotlin/UInt;Lkotlin/UInt;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;
+	public static synthetic fun create-1oQa5FY$default (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled$Companion;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/transaction/TransactionFields;Ljava/util/List;Lkotlin/UInt;JIILjava/lang/String;Ljava/util/List;Lkotlin/UInt;Lkotlin/UInt;ILjava/lang/Object;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XrplTransaction$Signed : org/xrpl/sdk/core/model/transaction/XrplTransaction {
+	public static final field Companion Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHash-7aI_m7I ()Ljava/lang/String;
+	public fun getTransactionType-2tepqLU ()Ljava/lang/String;
+	public final fun getTxBlob ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XrplTransaction$Signed$Companion {
+	public final fun create-1usrPr4 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+}
+
+public final class org/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned : org/xrpl/sdk/core/model/transaction/XrplTransaction {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/transaction/TransactionFields;Ljava/util/List;Lkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/model/transaction/TransactionFields;Ljava/util/List;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getFields ()Lorg/xrpl/sdk/core/model/transaction/TransactionFields;
+	public final fun getMemos ()Ljava/util/List;
+	public final fun getSourceTag-0hXNFcg ()Lkotlin/UInt;
+	public fun getTransactionType-2tepqLU ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplException : java/lang/RuntimeException {
+	public fun <init> (Lorg/xrpl/sdk/core/result/XrplFailure;)V
+	public final fun getFailure ()Lorg/xrpl/sdk/core/result/XrplFailure;
+}
+
+public abstract class org/xrpl/sdk/core/result/XrplFailure {
+}
+
+public final class org/xrpl/sdk/core/result/XrplFailure$NetworkError : org/xrpl/sdk/core/result/XrplFailure {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Throwable;)Lorg/xrpl/sdk/core/result/XrplFailure$NetworkError;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplFailure$NetworkError;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplFailure$NetworkError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplFailure$NotFound : org/xrpl/sdk/core/result/XrplFailure {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/result/XrplFailure$NotFound;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplFailure$RpcError : org/xrpl/sdk/core/result/XrplFailure {
+	public fun <init> (ILjava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lorg/xrpl/sdk/core/result/XrplFailure$RpcError;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplFailure$RpcError;ILjava/lang/String;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplFailure$RpcError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorCode ()I
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplFailure$TecError : org/xrpl/sdk/core/result/XrplFailure {
+	public fun <init> (ILjava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lorg/xrpl/sdk/core/result/XrplFailure$TecError;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplFailure$TecError;ILjava/lang/String;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplFailure$TecError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()I
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplFailure$ValidationError : org/xrpl/sdk/core/result/XrplFailure {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lorg/xrpl/sdk/core/result/XrplFailure$ValidationError;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplFailure$ValidationError;Ljava/lang/String;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplFailure$ValidationError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/xrpl/sdk/core/result/XrplResult {
+}
+
+public final class org/xrpl/sdk/core/result/XrplResult$Failure : org/xrpl/sdk/core/result/XrplResult {
+	public fun <init> (Lorg/xrpl/sdk/core/result/XrplFailure;)V
+	public final fun component1 ()Lorg/xrpl/sdk/core/result/XrplFailure;
+	public final fun copy (Lorg/xrpl/sdk/core/result/XrplFailure;)Lorg/xrpl/sdk/core/result/XrplResult$Failure;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplResult$Failure;Lorg/xrpl/sdk/core/result/XrplFailure;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplResult$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Lorg/xrpl/sdk/core/result/XrplFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplResult$Success : org/xrpl/sdk/core/result/XrplResult {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplResult$Success;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/core/result/XrplResult$Success;Ljava/lang/Object;ILjava/lang/Object;)Lorg/xrpl/sdk/core/result/XrplResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/result/XrplResultKt {
+	public static final fun flatMap (Lorg/xrpl/sdk/core/result/XrplResult;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/result/XrplResult;
+	public static final fun fold (Lorg/xrpl/sdk/core/result/XrplResult;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun getOrNull (Lorg/xrpl/sdk/core/result/XrplResult;)Ljava/lang/Object;
+	public static final fun getOrThrow (Lorg/xrpl/sdk/core/result/XrplResult;)Ljava/lang/Object;
+	public static final fun map (Lorg/xrpl/sdk/core/result/XrplResult;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/result/XrplResult;
+	public static final fun onFailure (Lorg/xrpl/sdk/core/result/XrplResult;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/result/XrplResult;
+	public static final fun onSuccess (Lorg/xrpl/sdk/core/result/XrplResult;Lkotlin/jvm/functions/Function1;)Lorg/xrpl/sdk/core/result/XrplResult;
+}
+
+public final class org/xrpl/sdk/core/type/AccountId {
+	public static final field Companion Lorg/xrpl/sdk/core/type/AccountId$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/AccountId;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getHex ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public static final fun toByteArray-impl (Ljava/lang/String;)[B
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/AccountId$Companion {
+	public final fun fromBytes-_-4-JKc ([B)Ljava/lang/String;
+	public final fun invoke-_-4-JKc (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Address {
+	public static final field Companion Lorg/xrpl/sdk/core/type/Address$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/Address;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Address$Companion {
+}
+
+public final class org/xrpl/sdk/core/type/CurrencyCode {
+	public static final field HEX_LENGTH I
+	public static final field STANDARD_LENGTH I
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/CurrencyCode;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Hash256 {
+	public static final field Companion Lorg/xrpl/sdk/core/type/Hash256$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/Hash256;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Hash256$Companion {
+	public final fun invoke-1CNFveY (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public abstract interface class org/xrpl/sdk/core/type/KeyAlgorithm {
+	public abstract fun getName ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/KeyAlgorithm$Ed25519 : org/xrpl/sdk/core/type/KeyAlgorithm {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/type/KeyAlgorithm$Ed25519;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/KeyAlgorithm$Secp256k1 : org/xrpl/sdk/core/type/KeyAlgorithm {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/type/KeyAlgorithm$Secp256k1;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/LedgerIndex {
+	public static final synthetic fun box-impl (I)Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public static fun constructor-impl (I)I
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (ILjava/lang/Object;)Z
+	public static final fun equals-impl0 (II)Z
+	public final fun getValue-pVg5ArA ()I
+	public fun hashCode ()I
+	public static fun hashCode-impl (I)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (I)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()I
+}
+
+public final class org/xrpl/sdk/core/type/PublicKey {
+	public static final field Companion Lorg/xrpl/sdk/core/type/PublicKey$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/PublicKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/PublicKey$Companion {
+	public final fun invoke-v5CYaZA (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Seed {
+	public static final field Companion Lorg/xrpl/sdk/core/type/Seed$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/Seed;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/Seed$Companion {
+	public final fun invoke-BSuWYhc (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/StringExtensionsKt {
+	public static final fun toAddress (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun toHash256 (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun toTxHash (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun toXrpString-0TmcKUs (J)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/TxHash {
+	public static final field Companion Lorg/xrpl/sdk/core/type/TxHash$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/TxHash;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/TxHash$Companion {
+	public final fun invoke-9FmgM0Q (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/XAddress {
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/xrpl/sdk/core/type/XAddress;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public static final fun getTag-0hXNFcg (Ljava/lang/String;)Lkotlin/UInt;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public static final fun toClassicAddress-Qvly9Vo (Ljava/lang/String;)Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/type/XrpDrops : java/lang/Comparable {
+	public static final field Companion Lorg/xrpl/sdk/core/type/XrpDrops$Companion;
+	public static final field MAX_DROPS J
+	public static final synthetic fun box-impl (J)Lorg/xrpl/sdk/core/type/XrpDrops;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-0TmcKUs (J)I
+	public static fun compareTo-0TmcKUs (JJ)I
+	public static fun constructor-impl (J)J
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (JLjava/lang/Object;)Z
+	public static final fun equals-impl0 (JJ)Z
+	public final fun getValue ()J
+	public fun hashCode ()I
+	public static fun hashCode-impl (J)I
+	public static final fun minus-XfMb_a4 (JJ)J
+	public static final fun plus-XfMb_a4 (JJ)J
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (J)Ljava/lang/String;
+	public static final fun toXrp-impl (J)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()J
+}
+
+public final class org/xrpl/sdk/core/type/XrpDrops$Companion {
+}
+
+public final class org/xrpl/sdk/core/util/HexUtilsKt {
+	public static final fun hexToByteArray (Ljava/lang/String;)[B
+	public static final fun isHex (Ljava/lang/String;)Z
+	public static final fun toHexString ([B)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/validation/TransactionValidator {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/validation/TransactionValidator;
+	public final fun getMAX_FEE_DROPS-lkzeRtM ()J
+	public final fun validate (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;)Lorg/xrpl/sdk/core/validation/ValidationResult;
+	public final fun validate-4hxl0zs (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;J)Lorg/xrpl/sdk/core/validation/ValidationResult;
+	public static synthetic fun validate-4hxl0zs$default (Lorg/xrpl/sdk/core/validation/TransactionValidator;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;JILjava/lang/Object;)Lorg/xrpl/sdk/core/validation/ValidationResult;
+}
+
+public final class org/xrpl/sdk/core/validation/TransactionValidatorKt {
+	public static final fun validate (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;)Lorg/xrpl/sdk/core/validation/ValidationResult;
+	public static final fun validate-4hxl0zs (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;J)Lorg/xrpl/sdk/core/validation/ValidationResult;
+	public static synthetic fun validate-4hxl0zs$default (Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;JILjava/lang/Object;)Lorg/xrpl/sdk/core/validation/ValidationResult;
+}
+
+public abstract interface class org/xrpl/sdk/core/validation/ValidationResult {
+}
+
+public final class org/xrpl/sdk/core/validation/ValidationResult$Invalid : org/xrpl/sdk/core/validation/ValidationResult {
+	public fun <init> (Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrors ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/validation/ValidationResult$Valid : org/xrpl/sdk/core/validation/ValidationResult {
+	public static final field INSTANCE Lorg/xrpl/sdk/core/validation/ValidationResult$Valid;
+}
+

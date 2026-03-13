@@ -1,0 +1,132 @@
+# Docker Compose for XRPL Kotlin SDK cross-platform testing
+# Usage:
+#   docker compose up -d rippled          # start rippled standalone
+#   docker compose run --rm test-jvm      # JVM tests (JDK 21, default)
+#   docker compose run --rm test-jvm-17   # JVM tests on JDK 17
+#   docker compose run --rm test-jvm-11   # JVM tests on JDK 11
+#   docker compose run --rm test-js       # JS tests (browser + Node.js)
+#   docker compose run --rm test-linux    # Linux Native tests
+#   docker compose down                   # cleanup
+#
+# Note: Docker Desktop needs 4GB+ RAM for parallel runs.
+#       With 2GB, run tests sequentially (one at a time).
+
+x-gradle-env: &gradle-env
+  GRADLE_OPTS: "-Xmx1g -XX:+UseParallelGC"
+
+services:
+  rippled:
+    image: rippleci/rippled:develop
+    ports:
+      - "5005:5005"
+      - "6006:6006"
+    volumes:
+      - ./docker:/etc/opt/ripple:ro
+    entrypoint: bash
+    command: -c "mkdir -p /var/lib/rippled/db/ && rippled -a --start"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5005 -H 'Content-Type: application/json' -d '{\"method\":\"server_info\",\"params\":[{}]}' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+      start_period: 10s
+
+  # ── JVM (JDK 21 — default) ────────────────────────────────────
+  test-jvm:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      target: jvm
+      args:
+        JDK_VERSION: 21-jdk
+    depends_on:
+      rippled:
+        condition: service_healthy
+    environment:
+      <<: *gradle-env
+      XRPL_RPC_URL: http://rippled:5005
+      XRPL_WS_URL: ws://rippled:6006
+    volumes:
+      - gradle-cache-21:/root/.gradle
+    command: ./gradlew jvmTest ktlintCheck -Pintegration --no-daemon --no-configuration-cache -Dorg.gradle.jvmargs="-Xmx1g"
+
+  # ── JVM (JDK 17) ──────────────────────────────────────────────
+  test-jvm-17:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      target: jvm
+      args:
+        JDK_VERSION: 17-jdk
+    depends_on:
+      rippled:
+        condition: service_healthy
+    environment:
+      <<: *gradle-env
+      XRPL_RPC_URL: http://rippled:5005
+      XRPL_WS_URL: ws://rippled:6006
+    volumes:
+      - gradle-cache-17:/root/.gradle
+    command: ./gradlew jvmTest -Pintegration --no-daemon --no-configuration-cache -Dorg.gradle.jvmargs="-Xmx1g"
+
+  # ── JVM (JDK 11) ──────────────────────────────────────────────
+  test-jvm-11:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      target: jvm
+      args:
+        JDK_VERSION: 11-jdk
+    depends_on:
+      rippled:
+        condition: service_healthy
+    environment:
+      <<: *gradle-env
+      XRPL_RPC_URL: http://rippled:5005
+      XRPL_WS_URL: ws://rippled:6006
+    volumes:
+      - gradle-cache-11:/root/.gradle
+    command: ./gradlew jvmTest -Pintegration --no-daemon --no-configuration-cache -Dorg.gradle.jvmargs="-Xmx1g"
+
+  # ── JS (browser + Node.js) ────────────────────────────────────
+  test-js:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      target: js
+    depends_on:
+      rippled:
+        condition: service_healthy
+    environment:
+      <<: *gradle-env
+      XRPL_RPC_URL: http://rippled:5005
+      XRPL_WS_URL: ws://rippled:6006
+    volumes:
+      - gradle-cache-js:/root/.gradle
+    command: ./gradlew jsNodeTest --no-daemon --no-configuration-cache -Dorg.gradle.jvmargs="-Xmx1g"
+
+  # ── Linux Native (linuxX64) ───────────────────────────────────
+  # Requires linux/amd64 — Kotlin Native has no linux-aarch64 prebuilt
+  test-linux:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      target: linux
+    depends_on:
+      rippled:
+        condition: service_healthy
+    environment:
+      <<: *gradle-env
+      XRPL_RPC_URL: http://rippled:5005
+      XRPL_WS_URL: ws://rippled:6006
+    volumes:
+      - gradle-cache-linux:/root/.gradle
+    command: ./gradlew linuxX64Test --no-daemon --no-configuration-cache -Dorg.gradle.jvmargs="-Xmx1g"
+
+volumes:
+  gradle-cache-21:
+  gradle-cache-17:
+  gradle-cache-11:
+  gradle-cache-js:
+  gradle-cache-linux:

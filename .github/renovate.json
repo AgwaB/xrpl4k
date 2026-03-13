@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "packageRules": [
+    {
+      "groupName": "Kotlin & KotlinX",
+      "matchPackagePrefixes": [
+        "org.jetbrains.kotlin",
+        "org.jetbrains.kotlinx"
+      ]
+    },
+    {
+      "groupName": "Ktor",
+      "matchPackagePrefixes": ["io.ktor"]
+    },
+    {
+      "groupName": "Kotest",
+      "matchPackagePrefixes": ["io.kotest"]
+    }
+  ],
+  "gradle-wrapper": {
+    "enabled": true
+  }
+}

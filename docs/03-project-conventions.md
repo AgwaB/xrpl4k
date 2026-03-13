@@ -89,7 +89,7 @@ xrpl-kotlin/
 | Rule | Description |
 |------|-------------|
 | **One package = one concern** | Don't merge `transaction/`, `ledger/`, `amount/` into a single `model/` (co-locating in files is fine). |
-| **No circular dependencies** | Only allow `xrpl-core` ← `xrpl-crypto` ← `xrpl-client` direction. If reverse reference is needed, lift the interface to `core`. |
+| **No circular dependencies** | Dependencies flow toward `xrpl-core`. `xrpl-binary-codec` and `xrpl-crypto` are siblings (both depend on `xrpl-core`, NOT on each other). `xrpl-client` depends on `core`, `binary-codec`, and `crypto`. If a reverse reference is needed, lift the interface to `core`. |
 | **Internal packages** | Module-internal code goes under `internal/` sub-package. `@PublishedApi internal` is forbidden. |
 
 ---
@@ -303,8 +303,8 @@ Wrap all domain identifiers and units in value classes.
 @JvmInline
 value class Address(val value: String) {
     init {
-        require(value.startsWith("r") || value.startsWith("X")) {
-            "Address must start with 'r' (classic) or 'X' (X-address): $value"
+        require(value.startsWith("r")) {
+            "Address must start with 'r' (classic address). For X-addresses, use XAddress type: $value"
         }
     }
 }
@@ -324,7 +324,13 @@ value class XrpDrops(val value: Long) {
     operator fun plus(other: XrpDrops) = XrpDrops(this.value + other.value)
     operator fun minus(other: XrpDrops) = XrpDrops(this.value - other.value)
     operator fun compareTo(other: XrpDrops) = this.value.compareTo(other.value)
-    fun toXrp(): String = BigDecimal(value).movePointLeft(6).toPlainString()
+    fun toXrp(): String {
+        // Manual decimal placement — BigDecimal is JVM-only, not KMP-compatible
+        val whole = value / 1_000_000
+        val frac = value % 1_000_000
+        if (frac == 0L) return whole.toString()
+        return "$whole.${frac.toString().padStart(6, '0').trimEnd('0')}"
+    }
 }
 
 @JvmInline
@@ -348,15 +354,16 @@ sealed interface XrplTransaction {
     val account: Address
     val transactionType: TransactionType
 
-    // Before autofill
-    data class Unsigned(
+    // Before autofill — public constructor (user entry point)
+    class Unsigned(
         override val account: Address,
         override val transactionType: TransactionType,
         val fields: TransactionFields,
     ) : XrplTransaction
+    // Regular class, NOT data class — copy() would bypass lifecycle transitions
 
-    // After autofill, before signing
-    data class Filled(
+    // After autofill, before signing — internal constructor (only SDK autofill() creates)
+    class Filled internal constructor(
         override val account: Address,
         override val transactionType: TransactionType,
         val fields: TransactionFields,
@@ -365,8 +372,8 @@ sealed interface XrplTransaction {
         val lastLedgerSequence: UInt,
     ) : XrplTransaction
 
-    // After signing
-    data class Signed(
+    // After signing — internal constructor (only SDK sign() creates)
+    class Signed internal constructor(
         override val account: Address,
         override val transactionType: TransactionType,
         val txBlob: String,
@@ -376,8 +383,8 @@ sealed interface XrplTransaction {
 ```
 
 **Rules:**
-- Sealed class members that **only hold data** → `data class`; those with **behavior** → regular class.
-- `data class` is allowed inside sealed hierarchies (adding members has limited blast radius within the sealed type).
+- Sealed class members that **only hold data** → `data class` allowed inside sealed hierarchies (limited blast radius).
+- **Lifecycle types** → regular class (NOT data class) — `copy()` would allow bypassing state transitions (e.g., copying `Signed` with different fields but same hash). Use `internal` constructors on states that should only be created by SDK functions.
 - Prefer `sealed interface` for top-level sealed types (allows multiple inheritance).
 - Use `object` for stateless variants (`data object` preferred — guarantees `toString()`).
 
@@ -779,7 +786,7 @@ fun Int.toLedgerIndex()    // ✗ Not every Int is a ledger index
 // Literals.kt — all literal extensions in a single file
 public val Long.drops: XrpAmount get() = XrpAmount.ofDrops(this)
 public val Int.xrp: XrpAmount get() = XrpAmount.ofXrp(this.toLong())
-public val Double.xrp: XrpAmount get() = XrpAmount.ofXrp(this)
+// NO Double.xrp — floating-point money literals introduce silent rounding errors
 
 // Usage
 val fee = 12L.drops

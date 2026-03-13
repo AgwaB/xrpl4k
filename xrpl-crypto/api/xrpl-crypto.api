@@ -1,0 +1,154 @@
+public abstract interface class org/xrpl/sdk/crypto/CryptoProvider {
+	public abstract fun ed25519PublicKey ([B)[B
+	public abstract fun ed25519Sign ([B[B)[B
+	public abstract fun ed25519Verify ([B[B[B)Z
+	public abstract fun ripemd160 ([B)[B
+	public abstract fun secp256k1AddPrivateKeys ([B[B)[B
+	public abstract fun secp256k1AddPublicKeys ([B[B)[B
+	public abstract fun secp256k1PublicKey ([B)[B
+	public abstract fun secp256k1Sign ([B[B)[B
+	public abstract fun secp256k1Verify ([B[B[B)Z
+	public abstract fun secureRandom (I)[B
+	public abstract fun sha256 ([B)[B
+	public abstract fun sha512 ([B)[B
+	public abstract fun sha512Half ([B)[B
+}
+
+public final class org/xrpl/sdk/crypto/GeneratedWallet {
+	public fun <init> (Lorg/xrpl/sdk/crypto/Wallet;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSeedString ()Ljava/lang/String;
+	public final fun getWallet ()Lorg/xrpl/sdk/crypto/Wallet;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/JvmCryptoProviderKt {
+	public static final fun platformCryptoProvider ()Lorg/xrpl/sdk/crypto/CryptoProvider;
+}
+
+public final class org/xrpl/sdk/crypto/Wallet : java/lang/AutoCloseable {
+	public static final field Companion Lorg/xrpl/sdk/crypto/Wallet$Companion;
+	public fun close ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddress-Qvly9Vo ()Ljava/lang/String;
+	public final fun getAlgorithm ()Lorg/xrpl/sdk/core/type/KeyAlgorithm;
+	public final fun getPublicKey--KILZx4 ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun multiSignWith-dWLzdvI (Lorg/xrpl/sdk/crypto/signing/TransactionSigner;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/lang/String;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public final fun sign ([B)[B
+	public final fun signWith (Lorg/xrpl/sdk/crypto/signing/TransactionSigner;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+	public fun toString ()Ljava/lang/String;
+	public final fun verify ([B[B)Z
+}
+
+public final class org/xrpl/sdk/crypto/Wallet$Companion {
+	public final fun fromEntropy ([BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun fromEntropy$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;[BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun fromSeed (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun fromSeed$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun generate (Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/GeneratedWallet;
+	public static synthetic fun generate$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/GeneratedWallet;
+}
+
+public final class org/xrpl/sdk/crypto/codec/AddressCodec {
+	public static final field INSTANCE Lorg/xrpl/sdk/crypto/codec/AddressCodec;
+	public final fun accountIdFromPublicKey-E5_oIJ0 (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun accountIdFromPublicKey-E5_oIJ0$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun decodeAccountPublicKey (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)[B
+	public static synthetic fun decodeAccountPublicKey$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)[B
+	public final fun decodeAddress-jDuigWA (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun decodeAddress-jDuigWA$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun decodeSeed (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lkotlin/Pair;
+	public static synthetic fun decodeSeed$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lkotlin/Pair;
+	public final fun encodeAccountPublicKey ([BLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encodeAccountPublicKey$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;[BLorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun encodeAddress-vTWNurM (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encodeAddress-vTWNurM$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun encodeSeed ([BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encodeSeed$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;[BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/codec/Base58Check {
+	public static final field INSTANCE Lorg/xrpl/sdk/crypto/codec/Base58Check;
+	public final fun decodeChecked (Ljava/lang/String;Ljava/util/List;ILorg/xrpl/sdk/crypto/CryptoProvider;)Lkotlin/Pair;
+	public static synthetic fun decodeChecked$default (Lorg/xrpl/sdk/crypto/codec/Base58Check;Ljava/lang/String;Ljava/util/List;ILorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lkotlin/Pair;
+	public final fun decodeRaw (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)[B
+	public static synthetic fun decodeRaw$default (Lorg/xrpl/sdk/crypto/codec/Base58Check;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)[B
+	public final fun encode ([B[BLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encode$default (Lorg/xrpl/sdk/crypto/codec/Base58Check;[B[BLorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/codec/XAddressCodec {
+	public static final field INSTANCE Lorg/xrpl/sdk/crypto/codec/XAddressCodec;
+	public final fun decode-JJ0VQHY (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/codec/XAddressComponents;
+	public static synthetic fun decode-JJ0VQHY$default (Lorg/xrpl/sdk/crypto/codec/XAddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/codec/XAddressComponents;
+	public final fun encode-fMF2-20 (Ljava/lang/String;Lkotlin/UInt;ZLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encode-fMF2-20$default (Lorg/xrpl/sdk/crypto/codec/XAddressCodec;Ljava/lang/String;Lkotlin/UInt;ZLorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/codec/XAddressComponents {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassicAddress-Qvly9Vo ()Ljava/lang/String;
+	public final fun getTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public final fun isTest ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/codec/XAddressExtensionsKt {
+	public static final fun classicAddress-JJ0VQHY (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun classicAddress-JJ0VQHY$default (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun destinationTag-JJ0VQHY (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lkotlin/UInt;
+	public static synthetic fun destinationTag-JJ0VQHY$default (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lkotlin/UInt;
+	public static final fun isTest-JJ0VQHY (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Z
+	public static synthetic fun isTest-JJ0VQHY$default (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Z
+}
+
+public final class org/xrpl/sdk/crypto/keys/KeyDerivation {
+	public static final field INSTANCE Lorg/xrpl/sdk/crypto/keys/KeyDerivation;
+	public final fun deriveKeyPair ([BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/keys/KeyPair;
+	public static synthetic fun deriveKeyPair$default (Lorg/xrpl/sdk/crypto/keys/KeyDerivation;[BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/keys/KeyPair;
+	public final fun generateSeed (Lorg/xrpl/sdk/crypto/CryptoProvider;)[B
+	public static synthetic fun generateSeed$default (Lorg/xrpl/sdk/crypto/keys/KeyDerivation;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)[B
+}
+
+public final class org/xrpl/sdk/crypto/keys/KeyPair : java/lang/AutoCloseable {
+	public fun close ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlgorithm ()Lorg/xrpl/sdk/core/type/KeyAlgorithm;
+	public final fun getPublicKey--KILZx4 ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/crypto/signing/PrivateKey : java/lang/AutoCloseable, org/xrpl/sdk/crypto/signing/PrivateKeyable {
+	public fun <init> ([BLorg/xrpl/sdk/core/type/KeyAlgorithm;)V
+	public fun close ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlgorithm ()Lorg/xrpl/sdk/core/type/KeyAlgorithm;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public final fun useBytes (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public abstract interface class org/xrpl/sdk/crypto/signing/PrivateKeyReference : org/xrpl/sdk/crypto/signing/PrivateKeyable {
+}
+
+public abstract interface class org/xrpl/sdk/crypto/signing/PrivateKeyable {
+}
+
+public final class org/xrpl/sdk/crypto/signing/SingleSignature {
+	public fun <init> (Lorg/xrpl/sdk/core/model/transaction/Signer;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSigner ()Lorg/xrpl/sdk/core/model/transaction/Signer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/xrpl/sdk/crypto/signing/TransactionSigner {
+	public abstract fun multiSign-dWLzdvI (Lorg/xrpl/sdk/crypto/signing/PrivateKeyable;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/lang/String;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public abstract fun sign (Lorg/xrpl/sdk/crypto/signing/PrivateKeyable;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;)Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Signed;
+}
+

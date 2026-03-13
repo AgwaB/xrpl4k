@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+
+# Build outputs
+build/
+**/build/
+.gradle/
+
+# IDE
+.idea/
+*.iml
+
+# Reference repos
+xrpl.js/
+xrpl4j/
+
+# OMC state
+.omc/
+
+# OS files
+.DS_Store
