@@ -10,6 +10,12 @@ credentials before running.
 
 ## Getting Started
 
+### Wallet & Keys
+
+| Sample | What it demonstrates |
+|--------|---------------------|
+| [WalletSample.kt](WalletSample.kt) | `Wallet.generate()` for new wallets, `Wallet.fromSeed()` for restoration, `Wallet.fromEntropy()` for raw key material, Ed25519 vs secp256k1 algorithm selection, and `AutoCloseable` lifecycle for zeroing private keys |
+
 ### Client Setup
 
 | Sample | What it demonstrates |
@@ -26,8 +32,11 @@ credentials before running.
 
 | Sample | What it demonstrates |
 |--------|---------------------|
+| [SendXrpSample.kt](SendXrpSample.kt) | Simplest possible XRP transfer: check balance, build payment, `submitAndWait`, verify — the "hello world" of XRPL |
 | [SubmitPaymentSample.kt](SubmitPaymentSample.kt) | Payment DSL builder, `autofill()` for fee/sequence/lastLedger, `signTransaction()`, `submit()` for fire-and-forget, and `submitAndWait()` for validated confirmation |
+| [TrustLineAndIouSample.kt](TrustLineAndIouSample.kt) | `trustSet` to create trust lines, `IssuedAmount` for IOU payments (USD, EUR), issuer → holder → holder flow, and `accountLines` verification |
 | [MultisignSample.kt](MultisignSample.kt) | M-of-N multi-signature workflow: `multiSignTransaction()` per signer, `combineSignatures()` to merge (auto-sorts by account ID), and `submitMultisigned()` |
+| [EscrowSample.kt](EscrowSample.kt) | Time-based escrow: `escrowCreate` with finishAfter/cancelAfter, `escrowFinish` to release funds, `escrowCancel` to reclaim after timeout |
 | [ValidationSample.kt](ValidationSample.kt) | `TransactionValidator` for client-side validation — catches self-payments, zero amounts, excessive fees, and type-specific rules before any network call |
 
 ### Subscriptions & Streaming
@@ -41,6 +50,7 @@ credentials before running.
 
 | Sample | What it demonstrates |
 |--------|---------------------|
+| [DexTradingSample.kt](DexTradingSample.kt) | `offerCreate` to place limit orders (sell XRP for USD, buy XRP with USD), `offerCancel` to remove orders, `accountOffers` to view open orders, and DEX flag options (passive, IOC, FOK, sell) |
 | [OrderBookSample.kt](OrderBookSample.kt) | `bookOffers` for current open orders on a currency pair (both sides), `bookChanges` for OHLCV-style data showing all order book movements in a single ledger |
 | [AmmSample.kt](AmmSample.kt) | `ammInfo` to query Automated Market Maker pool state — reserves, LP token supply, trading fee. Shows how to build currency specifiers with `buildJsonObject` |
 | [PathFindSample.kt](PathFindSample.kt) | `ripplePathFind` for cross-currency payment path discovery — XRP delivery, IOU delivery, and source currency restrictions |

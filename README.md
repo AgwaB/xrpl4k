@@ -161,6 +161,11 @@ The [`samples/`](samples/) directory contains runnable examples covering every m
 
 | Sample | Description |
 |--------|-------------|
+| [Wallet](samples/WalletSample.kt) | Generate, restore from seed, derive from entropy, Ed25519 vs secp256k1 |
+| [Send XRP](samples/SendXrpSample.kt) | Simplest possible XRP transfer — check balance, send, confirm |
+| [Trust Lines & IOU](samples/TrustLineAndIouSample.kt) | `trustSet` + issued currency payments (USD, EUR, etc.) |
+| [DEX Trading](samples/DexTradingSample.kt) | `offerCreate`, `offerCancel` — place and cancel DEX orders |
+| [Escrow](samples/EscrowSample.kt) | Time-based escrow: `escrowCreate`, `escrowFinish`, `escrowCancel` |
 | [Client Setup](samples/ClientSetupSample.kt) | Network configuration, retry policies, WebSocket setup, timeouts |
 | [Query Account](samples/QueryAccountSample.kt) | `accountInfo`, `accountLines`, `getXrpBalance`, `getBalances` |
 | [Submit Payment](samples/SubmitPaymentSample.kt) | Payment DSL, `autofill`, `sign`, `submit`, `submitAndWait` |
