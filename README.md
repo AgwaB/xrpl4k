@@ -3,7 +3,7 @@
 A Kotlin Multiplatform SDK for the [XRP Ledger](https://xrpl.org/).
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 [![API Docs](https://img.shields.io/badge/API_Docs-coming_soon-lightgrey)]()
 
 > **Status**: Under active development — not yet published to Maven Central.
@@ -248,4 +248,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE) for details.
+MIT License — see [LICENSE](LICENSE) for details.
