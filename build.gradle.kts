@@ -10,7 +10,7 @@ apiValidation {
 }
 
 allprojects {
-    group = "org.xrpl"
+    group = "io.github.agwab"
     version = "1.0.0-SNAPSHOT"
 }
 

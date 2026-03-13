@@ -31,11 +31,11 @@ A Kotlin Multiplatform SDK for the [XRP Ledger](https://xrpl.org/).
 // build.gradle.kts
 dependencies {
     // BOM for consistent version alignment
-    implementation(platform("org.xrpl:xrpl-bom:1.0.0-SNAPSHOT"))
+    implementation(platform("io.github.agwab:xrpl-bom:1.0.0-SNAPSHOT"))
 
     // Pick the modules you need
-    implementation("org.xrpl:xrpl-client")  // HTTP + WebSocket client
-    implementation("org.xrpl:xrpl-crypto")  // Key generation & signing
+    implementation("io.github.agwab:xrpl-client")  // HTTP + WebSocket client
+    implementation("io.github.agwab:xrpl-crypto")  // Key generation & signing
 }
 ```
 
@@ -44,9 +44,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation platform('org.xrpl:xrpl-bom:1.0.0-SNAPSHOT')
-    implementation 'org.xrpl:xrpl-client'
-    implementation 'org.xrpl:xrpl-crypto'
+    implementation platform('io.github.agwab:xrpl-bom:1.0.0-SNAPSHOT')
+    implementation 'io.github.agwab:xrpl-client'
+    implementation 'io.github.agwab:xrpl-crypto'
 }
 ```
 </details>
