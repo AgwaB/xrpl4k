@@ -15,6 +15,9 @@ public class AccountInfo(
     public val previousAffectingTransactionId: TxHash?,
     public val previousAffectingTransactionLedgerSequence: UInt?,
     public val ledgerIndex: LedgerIndex?,
+    public val domain: String? = null,
+    public val regularKey: Address? = null,
+    public val signerLists: JsonElement? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -26,7 +29,10 @@ public class AccountInfo(
             flags == other.flags &&
             previousAffectingTransactionId == other.previousAffectingTransactionId &&
             previousAffectingTransactionLedgerSequence == other.previousAffectingTransactionLedgerSequence &&
-            ledgerIndex == other.ledgerIndex
+            ledgerIndex == other.ledgerIndex &&
+            domain == other.domain &&
+            regularKey == other.regularKey &&
+            signerLists == other.signerLists
     }
 
     override fun hashCode(): Int {
@@ -38,6 +44,9 @@ public class AccountInfo(
         result = 31 * result + (previousAffectingTransactionId?.hashCode() ?: 0)
         result = 31 * result + (previousAffectingTransactionLedgerSequence?.hashCode() ?: 0)
         result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
+        result = 31 * result + (domain?.hashCode() ?: 0)
+        result = 31 * result + (regularKey?.hashCode() ?: 0)
+        result = 31 * result + (signerLists?.hashCode() ?: 0)
         return result
     }
 
@@ -50,7 +59,10 @@ public class AccountInfo(
             "flags=$flags, " +
             "previousAffectingTransactionId=$previousAffectingTransactionId, " +
             "previousAffectingTransactionLedgerSequence=$previousAffectingTransactionLedgerSequence, " +
-            "ledgerIndex=$ledgerIndex" +
+            "ledgerIndex=$ledgerIndex, " +
+            "domain=$domain, " +
+            "regularKey=$regularKey, " +
+            "signerLists=$signerLists" +
             ")"
 }
 

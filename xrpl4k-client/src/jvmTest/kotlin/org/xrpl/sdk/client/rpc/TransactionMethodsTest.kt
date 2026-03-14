@@ -199,7 +199,9 @@ class TransactionMethodsTest : FunSpec({
             val client =
                 clientWithMockEngine(
                     successResponse(
-                        """"tx_json":{"TransactionType":"Payment","Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh"},""" +
+                        """"tx_json":{"TransactionType":"Payment",""" +
+                            """"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"hash":"${SAMPLE_TX_HASH.value}"},""" +
                             """"metadata":{"TransactionResult":"tesSUCCESS"},""" +
                             """"ledger_index":87000000,""" +
                             """"ledger_hash":"$SAMPLE_LEDGER_HASH"""",
@@ -214,6 +216,10 @@ class TransactionMethodsTest : FunSpec({
                 vtx.ledgerHash!!.value shouldBe SAMPLE_LEDGER_HASH
                 vtx.txJson shouldNotBe null
                 vtx.metadata shouldNotBe null
+                vtx.hash shouldNotBe null
+                vtx.hash!!.value shouldBe SAMPLE_TX_HASH.value
+                vtx.engineResult shouldBe "tesSUCCESS"
+                vtx.meta shouldNotBe null
             }
         }
     }

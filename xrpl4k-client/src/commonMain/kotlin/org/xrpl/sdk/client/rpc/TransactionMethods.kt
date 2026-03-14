@@ -170,15 +170,24 @@ public suspend fun XrplClient.transactionEntry(
         requestSerializer = TransactionEntryRequest.serializer(),
         responseDeserializer = TransactionEntryResponseDto.serializer(),
     ) { dto ->
+        // Extract hash from tx_json.hash (rippled includes it there)
+        val txHash = dto.txJson?.let { extractHashFromTxJson(it) }
+
+        // Extract engine result from metadata.TransactionResult
+        val metaObj = dto.metadata as? JsonObject
+        val engineResult =
+            (metaObj?.get("TransactionResult") as? JsonPrimitive)?.takeIf { it.isString }?.content
+
         ValidatedTransaction(
             txJson = dto.txJson,
             metadata = dto.metadata,
             ledgerIndex = dto.ledgerIndex?.let { LedgerIndex(it) },
             ledgerHash = dto.ledgerHash?.takeIf { it.length == 64 }?.let { Hash256(it) },
-            hash = null,
-            engineResult = null,
+            hash = txHash,
+            engineResult = engineResult,
+            // transaction_entry does not return a numeric engine result code
             engineResultCode = null,
-            meta = null,
+            meta = dto.metadata,
         )
     }
 }

@@ -74,6 +74,9 @@ public suspend fun XrplClient.accountInfo(
             previousAffectingTransactionId = data.previousTxnId?.let { TxHash(it) },
             previousAffectingTransactionLedgerSequence = data.previousTxnLgrSeq?.toUInt(),
             ledgerIndex = resp.ledgerIndex?.let { LedgerIndex(it.toUInt()) },
+            domain = data.domain,
+            regularKey = data.regularKey?.let { Address(it) },
+            signerLists = data.signerLists,
         )
     }
 }
@@ -126,6 +129,48 @@ public suspend fun XrplClient.accountLines(
         )
     }
 }
+
+/**
+ * Valid object types for the `account_objects` RPC method's `type` filter parameter.
+ *
+ * Using this enum instead of raw strings prevents silent failures from typos.
+ */
+public enum class AccountObjectType(public val value: String) {
+    Check("check"),
+    DepositPreauth("deposit_preauth"),
+    Escrow("escrow"),
+    NftOffer("nft_offer"),
+    Offer("offer"),
+    PaymentChannel("payment_channel"),
+    SignerList("signer_list"),
+    State("state"),
+    Ticket("ticket"),
+}
+
+/**
+ * Retrieves ledger objects owned by an account.
+ *
+ * @param account The account address to query.
+ * @param ledgerSpecifier Which ledger version to use. Defaults to [LedgerSpecifier.Validated].
+ * @param type Optional filter for object type using [AccountObjectType] for type-safety.
+ * @param marker Pagination marker from a previous response.
+ * @param limit Maximum number of results to return.
+ * @return [XrplResult] containing [AccountObjectsResult] on success.
+ */
+public suspend fun XrplClient.accountObjects(
+    account: Address,
+    ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
+    type: AccountObjectType?,
+    marker: JsonElement? = null,
+    limit: Int? = null,
+): XrplResult<AccountObjectsResult> =
+    accountObjects(
+        account = account,
+        ledgerSpecifier = ledgerSpecifier,
+        type = type?.value,
+        marker = marker,
+        limit = limit,
+    )
 
 /**
  * Retrieves ledger objects owned by an account.

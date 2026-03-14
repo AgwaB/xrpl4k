@@ -28,6 +28,9 @@ internal data class AccountData(
     @SerialName("Flags") val flags: Long = 0,
     @SerialName("PreviousTxnID") val previousTxnId: String? = null,
     @SerialName("PreviousTxnLgrSeq") val previousTxnLgrSeq: Long? = null,
+    val domain: String? = null,
+    @SerialName("RegularKey") val regularKey: String? = null,
+    @SerialName("signer_lists") val signerLists: JsonElement? = null,
 )
 
 // AccountLines

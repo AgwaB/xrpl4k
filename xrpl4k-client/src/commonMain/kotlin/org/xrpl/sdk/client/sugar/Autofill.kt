@@ -19,6 +19,14 @@ import kotlin.math.roundToLong
  *
  * Fetches fee, account info, and current ledger index in parallel for performance.
  *
+ * **Multi-sig fee**: When [multisigSigners] is greater than 0, the fee is multiplied by
+ * `(1 + multisigSigners)` as required by the XRPL protocol. Each additional signer adds
+ * one base fee to the total cost.
+ *
+ * **Ticket sequence**: When [ticketSequence] is provided, the filled transaction will use
+ * `sequence = 0` and the given ticket sequence number. The account sequence fetch is skipped
+ * in this case since it is not needed.
+ *
  * **Sequence number race**: When multiple clients (or concurrent coroutines) share the same
  * XRPL account, the sequence number fetched by `autofill()` may become stale between the
  * `accountInfo` call and `submit()`, resulting in a `tefPAST_SEQ` error. This is inherent to
@@ -27,16 +35,24 @@ import kotlin.math.roundToLong
  * seeded from `accountInfo` once, then incremented locally per submission).
  *
  * @param tx the unsigned transaction to fill.
+ * @param multisigSigners the number of signers for multi-sig fee calculation. When greater
+ *   than 0, the fee is multiplied by `(1 + multisigSigners)`. Defaults to 0 (no multi-sig).
+ * @param ticketSequence optional ticket sequence number. When provided, the transaction uses
+ *   `sequence = 0` and this ticket sequence instead of the account's current sequence.
  * @return a [XrplResult] containing the filled transaction or a failure.
  */
-public suspend fun XrplClient.autofill(tx: XrplTransaction.Unsigned): XrplResult<XrplTransaction.Filled> =
+public suspend fun XrplClient.autofill(
+    tx: XrplTransaction.Unsigned,
+    multisigSigners: Int = 0,
+    ticketSequence: UInt? = null,
+): XrplResult<XrplTransaction.Filled> =
     coroutineScope {
         val feeDeferred = async { fee() }
-        val accountInfoDeferred = async { accountInfo(tx.account) }
+        val accountInfoDeferred = if (ticketSequence == null) async { accountInfo(tx.account) } else null
         val ledgerDeferred = async { ledgerCurrent() }
 
         val feeResult = feeDeferred.await()
-        val accountInfoResult = accountInfoDeferred.await()
+        val accountInfoResult = accountInfoDeferred?.await()
         val ledgerResult = ledgerDeferred.await()
 
         val feeInfo =
@@ -45,11 +61,17 @@ public suspend fun XrplClient.autofill(tx: XrplTransaction.Unsigned): XrplResult
                     (feeResult as XrplResult.Failure).error,
                 )
 
-        val accountInfo =
-            accountInfoResult.getOrNull()
-                ?: return@coroutineScope XrplResult.Failure(
-                    (accountInfoResult as XrplResult.Failure).error,
-                )
+        val sequence: UInt =
+            if (ticketSequence != null) {
+                0u
+            } else {
+                val accountInfo =
+                    accountInfoResult!!.getOrNull()
+                        ?: return@coroutineScope XrplResult.Failure(
+                            (accountInfoResult as XrplResult.Failure).error,
+                        )
+                accountInfo.sequence
+            }
 
         val currentLedger =
             ledgerResult.getOrNull()
@@ -60,19 +82,27 @@ public suspend fun XrplClient.autofill(tx: XrplTransaction.Unsigned): XrplResult
         // Calculate fee with cushion, capped at maxFeeXrp
         val baseFeeDrops = feeInfo.openLedgerFee.value
         val cushionedFee = (baseFeeDrops * config.feeCushion).roundToLong()
+
+        // For multi-sig, multiply by (1 + number of signers)
+        val totalFee =
+            if (multisigSigners > 0) {
+                cushionedFee * (1 + multisigSigners)
+            } else {
+                cushionedFee
+            }
+
         val maxFeeDrops = (config.maxFeeXrp * 1_000_000).toLong()
 
-        if (cushionedFee > maxFeeDrops) {
+        if (totalFee > maxFeeDrops) {
             return@coroutineScope XrplResult.Failure(
                 XrplFailure.ValidationError(
-                    "Calculated fee ($cushionedFee drops) exceeds " +
+                    "Calculated fee ($totalFee drops) exceeds " +
                         "maxFeeXrp (${config.maxFeeXrp} XRP = $maxFeeDrops drops)",
                 ),
             )
         }
 
-        val fee = XrpDrops(cushionedFee)
-        val sequence = accountInfo.sequence
+        val fee = XrpDrops(totalFee)
         val lastLedgerSequence = currentLedger.value.toUInt() + 20u
         val networkId = config.network.networkId
 
@@ -86,6 +116,7 @@ public suspend fun XrplClient.autofill(tx: XrplTransaction.Unsigned): XrplResult
                 fee = fee,
                 sequence = sequence,
                 lastLedgerSequence = lastLedgerSequence,
+                ticketSequence = ticketSequence,
                 networkId = networkId,
                 flags = tx.flags,
             )

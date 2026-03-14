@@ -188,6 +188,15 @@ public class FeeResult(
     public val ledgerCurrentIndex: LedgerIndex?,
     public val maxQueueSize: String?,
 ) {
+    /** Convenience accessor for the base fee. */
+    public val baseFee: XrpDrops? get() = drops.baseFee
+
+    /** Convenience accessor for the median fee. */
+    public val medianFee: XrpDrops? get() = drops.medianFee
+
+    /** Convenience accessor for the minimum fee. */
+    public val minimumFee: XrpDrops? get() = drops.minimumFee
+
     /** Convenience accessor for the open-ledger fee; defaults to [XrpDrops] of 0 if unavailable. */
     public val openLedgerFee: XrpDrops
         get() = drops.openLedgerFee ?: XrpDrops(0L)

@@ -2,6 +2,7 @@
 
 package org.xrpl.sdk.core.util
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 /**
@@ -19,6 +20,18 @@ public const val RIPPLE_EPOCH_DIFF: Long = 946_684_800L
  * @return milliseconds since Unix epoch.
  */
 public fun rippleTimeToUnixTime(rippleTime: Long): Long = (rippleTime + RIPPLE_EPOCH_DIFF) * 1000
+
+/**
+ * Converts a Ripple epoch timestamp (seconds since 2000-01-01T00:00:00Z) to a
+ * Unix epoch timestamp in **milliseconds**.
+ *
+ * This overload accepts [UInt], which matches the type used by escrow and check
+ * fields such as `CancelAfter` and `FinishAfter`.
+ *
+ * @param rippleTime seconds since Ripple epoch.
+ * @return milliseconds since Unix epoch.
+ */
+public fun rippleTimeToUnixTime(rippleTime: UInt): Long = rippleTimeToUnixTime(rippleTime.toLong())
 
 /**
  * Converts a Unix epoch timestamp in **milliseconds** to a Ripple epoch timestamp
@@ -65,3 +78,11 @@ public fun rippleTimeToISOTime(rippleTime: Long): String = rippleTimeToInstant(r
  * @return seconds since Ripple epoch.
  */
 public fun isoTimeToRippleTime(iso8601: String): Long = instantToRippleTime(Instant.parse(iso8601))
+
+/**
+ * Returns the current time as Ripple epoch seconds.
+ *
+ * The result is returned as [UInt] to match the type used by on-ledger time
+ * fields such as `CancelAfter` and `FinishAfter`.
+ */
+public fun currentRippleTime(): UInt = instantToRippleTime(Clock.System.now()).toUInt()

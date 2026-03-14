@@ -73,7 +73,15 @@ public suspend fun XrplClient.submitAndWait(
             val engineResult = txInfo.engineResult ?: "tesSUCCESS"
             return if (engineResult.startsWith("tec")) {
                 val code = txInfo.engineResultCode ?: -1
-                XrplResult.Failure(XrplFailure.TecError(code = code, message = engineResult))
+                XrplResult.Failure(
+                    XrplFailure.TecError(
+                        code = code,
+                        message = engineResult,
+                        hash = txHash,
+                        ledgerIndex = txInfo.ledgerIndex,
+                        meta = txInfo.meta,
+                    ),
+                )
             } else {
                 XrplResult.Success(
                     ValidatedTransaction(

@@ -1,5 +1,9 @@
 package org.xrpl.sdk.core.result
 
+import kotlinx.serialization.json.JsonElement
+import org.xrpl.sdk.core.type.LedgerIndex
+import org.xrpl.sdk.core.type.TxHash
+
 /**
  * Represents the result of an XRPL operation.
  *
@@ -34,10 +38,19 @@ public sealed class XrplFailure {
         public val message: String,
     ) : XrplFailure()
 
-    /** A transaction engine code error (tec class). */
+    /**
+     * A transaction engine code error (tec class).
+     *
+     * `tec` errors mean the transaction was included in a validated ledger but failed.
+     * The [hash], [ledgerIndex], and [meta] fields are populated when the error
+     * originates from a validated transaction (e.g., via `submitAndWait`).
+     */
     public data class TecError(
         public val code: Int,
         public val message: String,
+        public val hash: TxHash? = null,
+        public val ledgerIndex: LedgerIndex? = null,
+        public val meta: JsonElement? = null,
     ) : XrplFailure()
 
     /** The requested resource was not found. */
