@@ -74,12 +74,13 @@ class StObjectSerializerTest : FunSpec({
     }
 
     test("multiple field types serialize and roundtrip") {
-        val obj = mapOf<String, Any?>(
-            "TransactionType" to 0,  // UInt16
-            "Flags" to 0L,           // UInt32
-            "Sequence" to 1L,        // UInt32
-            "Fee" to "12",           // Amount
-        )
+        val obj =
+            mapOf<String, Any?>(
+                "TransactionType" to 0,
+                "Flags" to 0L,
+                "Sequence" to 1L,
+                "Fee" to "12",
+            )
         val writer = BinaryWriter()
         StObjectSerializer.write(writer, obj)
         val bytes = writer.toByteArray()
@@ -89,16 +90,17 @@ class StObjectSerializerTest : FunSpec({
 
         // Verify canonical ordering: TransactionType(1,2) < Flags(2,2) < Sequence(2,4) < Fee(6,8)
         val hex = bytes.toHexString()
-        val txTypePos = hex.indexOf("1200")   // TransactionType header + 0x0000
-        val flagsPos = hex.indexOf("2200")    // Flags header + 0x00000000
+        val txTypePos = hex.indexOf("1200") // TransactionType header + 0x0000
+        val flagsPos = hex.indexOf("2200") // Flags header + 0x00000000
         (txTypePos < flagsPos) shouldBe true
     }
 
     test("null values in map are skipped") {
-        val obj = mapOf<String, Any?>(
-            "TransactionType" to 0,
-            "Flags" to null,
-        )
+        val obj =
+            mapOf<String, Any?>(
+                "TransactionType" to 0,
+                "Flags" to null,
+            )
         val writer = BinaryWriter()
         StObjectSerializer.write(writer, obj)
         val bytes = writer.toByteArray()
@@ -109,10 +111,11 @@ class StObjectSerializerTest : FunSpec({
 
     test("nested STObject inside parent") {
         // Memo is a nested STObject inside MemoData
-        val obj = mapOf<String, Any?>(
-            "TransactionType" to 0,
-            "Flags" to 0L,
-        )
+        val obj =
+            mapOf<String, Any?>(
+                "TransactionType" to 0,
+                "Flags" to 0L,
+            )
         val writer = BinaryWriter()
         StObjectSerializer.write(writer, obj)
 

@@ -18,7 +18,7 @@ class ShaMapTest : FunSpec({
 
     test("adding a single item produces a non-zero hash") {
         val map = ShaMap(provider)
-        val tag = "A" .repeat(64)
+        val tag = "A".repeat(64)
         val data = "DEADBEEF"
         map.addItem(tag, data, ShaMapNodeType.ACCOUNT_STATE)
         map.hash shouldNotBe zeroHash

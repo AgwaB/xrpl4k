@@ -14,53 +14,58 @@ class LedgerHashingTest : FunSpec({
 
     context("hashLedgerHeader") {
         test("produces a 64-character lowercase hex string") {
-            val hash = hashLedgerHeader(
-                ledgerSequence = 1,
-                totalCoins = 100_000_000_000_000_000L,
-                parentHash = zeroHash,
-                transactionHash = zeroHash,
-                stateHash = zeroHash,
-                parentCloseTime = 0,
-                closeTime = 0,
-                closeTimeResolution = 10,
-                closeFlags = 0,
-                provider = provider,
-            )
+            val hash =
+                hashLedgerHeader(
+                    ledgerSequence = 1,
+                    totalCoins = 100_000_000_000_000_000L,
+                    parentHash = zeroHash,
+                    transactionHash = zeroHash,
+                    stateHash = zeroHash,
+                    parentCloseTime = 0,
+                    closeTime = 0,
+                    closeTimeResolution = 10,
+                    closeFlags = 0,
+                    provider = provider,
+                )
             hash.length shouldBe 64
             hash.all { it in '0'..'9' || it in 'a'..'f' } shouldBe true
         }
 
         test("is deterministic for same inputs") {
-            val hash1 = hashLedgerHeader(1, 100_000_000_000_000_000L, zeroHash, zeroHash, zeroHash, 0, 0, 10, 0, provider)
-            val hash2 = hashLedgerHeader(1, 100_000_000_000_000_000L, zeroHash, zeroHash, zeroHash, 0, 0, 10, 0, provider)
+            val hash1 =
+                hashLedgerHeader(1, 100_000_000_000_000_000L, zeroHash, zeroHash, zeroHash, 0, 0, 10, 0, provider)
+            val hash2 =
+                hashLedgerHeader(1, 100_000_000_000_000_000L, zeroHash, zeroHash, zeroHash, 0, 0, 10, 0, provider)
             hash1 shouldBe hash2
         }
 
         test("different ledger sequence produces different hash") {
-            val hash1 = hashLedgerHeader(
-                ledgerSequence = 1,
-                totalCoins = 100_000_000_000_000_000L,
-                parentHash = zeroHash,
-                transactionHash = zeroHash,
-                stateHash = zeroHash,
-                parentCloseTime = 0,
-                closeTime = 0,
-                closeTimeResolution = 10,
-                closeFlags = 0,
-                provider = provider,
-            )
-            val hash2 = hashLedgerHeader(
-                ledgerSequence = 2,
-                totalCoins = 100_000_000_000_000_000L,
-                parentHash = zeroHash,
-                transactionHash = zeroHash,
-                stateHash = zeroHash,
-                parentCloseTime = 0,
-                closeTime = 0,
-                closeTimeResolution = 10,
-                closeFlags = 0,
-                provider = provider,
-            )
+            val hash1 =
+                hashLedgerHeader(
+                    ledgerSequence = 1,
+                    totalCoins = 100_000_000_000_000_000L,
+                    parentHash = zeroHash,
+                    transactionHash = zeroHash,
+                    stateHash = zeroHash,
+                    parentCloseTime = 0,
+                    closeTime = 0,
+                    closeTimeResolution = 10,
+                    closeFlags = 0,
+                    provider = provider,
+                )
+            val hash2 =
+                hashLedgerHeader(
+                    ledgerSequence = 2,
+                    totalCoins = 100_000_000_000_000_000L,
+                    parentHash = zeroHash,
+                    transactionHash = zeroHash,
+                    stateHash = zeroHash,
+                    parentCloseTime = 0,
+                    closeTime = 0,
+                    closeTimeResolution = 10,
+                    closeFlags = 0,
+                    provider = provider,
+                )
             hash1 shouldNotBe hash2
         }
 

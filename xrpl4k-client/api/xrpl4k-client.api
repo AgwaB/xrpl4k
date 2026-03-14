@@ -824,6 +824,8 @@ public final class org/xrpl/sdk/client/signing/MultiSignUtilsKt {
 public final class org/xrpl/sdk/client/signing/PaymentChannelUtilsKt {
 	public static final fun signPaymentChannelClaim (Lorg/xrpl/sdk/crypto/Wallet;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static synthetic fun signPaymentChannelClaim$default (Lorg/xrpl/sdk/crypto/Wallet;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun verifyPaymentChannelClaim (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Z
+	public static synthetic fun verifyPaymentChannelClaim$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Z
 }
 
 public final class org/xrpl/sdk/client/signing/WalletSigningExtensionsKt {
@@ -858,6 +860,43 @@ public final class org/xrpl/sdk/client/sugar/ConvenienceKt {
 	public static final fun getBalances-YHOYffQ (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun getLedgerIndex (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun getXrpBalance-YHOYffQ (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/sugar/FundWalletKt {
+	public static final fun fundWallet (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/client/sugar/FundWalletOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun fundWallet$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/client/sugar/FundWalletOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/sugar/FundWalletOptions {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xrpl/sdk/client/sugar/FundWalletOptions;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/client/sugar/FundWalletOptions;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/xrpl/sdk/client/sugar/FundWalletOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()Ljava/lang/String;
+	public final fun getFaucetHost ()Ljava/lang/String;
+	public final fun getFaucetPath ()Ljava/lang/String;
+	public final fun getUsageContext ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/sugar/FundWalletResult {
+	public fun <init> (Lorg/xrpl/sdk/crypto/Wallet;J)V
+	public final fun component1 ()Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun component2 ()J
+	public final fun copy (Lorg/xrpl/sdk/crypto/Wallet;J)Lorg/xrpl/sdk/client/sugar/FundWalletResult;
+	public static synthetic fun copy$default (Lorg/xrpl/sdk/client/sugar/FundWalletResult;Lorg/xrpl/sdk/crypto/Wallet;JILjava/lang/Object;)Lorg/xrpl/sdk/client/sugar/FundWalletResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBalance ()J
+	public final fun getWallet ()Lorg/xrpl/sdk/crypto/Wallet;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class org/xrpl/sdk/client/sugar/SubmitAndWaitKt {
@@ -905,6 +944,10 @@ public final class org/xrpl/sdk/client/util/BalanceChange {
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/util/MetadataUtilsKt {
+	public static final fun getXChainClaimId (Lkotlinx/serialization/json/JsonObject;)Ljava/lang/String;
 }
 
 public final class org/xrpl/sdk/client/util/TransactionUtilsKt {

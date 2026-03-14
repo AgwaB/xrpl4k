@@ -10,3 +10,39 @@ public final class org/xrpl/sdk/codec/BinaryCodec {
 	public final fun encodeQuality (Ljava/lang/String;)Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/codec/hashing/HashPrefix : java/lang/Enum {
+	public static final field INNER_NODE Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field LEAF_NODE Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field LEDGER Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field TRANSACTION_ID Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field TRANSACTION_MULTISIGN Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field TRANSACTION_NODE Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field TRANSACTION_SIGN Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static final field TRANSACTION_SIGN_TESTNET Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public final fun getBytes ()[B
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+	public static fun values ()[Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+}
+
+public final class org/xrpl/sdk/codec/hashing/LedgerHashingKt {
+	public static final fun hashLedgerHeader (JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JJIILorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashStateTree (Ljava/util/List;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashTxTree (Ljava/util/List;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/codec/hashing/ShaMap {
+	public fun <init> (Lorg/xrpl/sdk/crypto/CryptoProvider;)V
+	public final fun addItem (Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;)V
+	public final fun getHash ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/codec/hashing/ShaMapNodeType : java/lang/Enum {
+	public static final field ACCOUNT_STATE Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;
+	public static final field TRANSACTION_METADATA Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;
+	public static final field TRANSACTION_NO_META Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;
+	public static fun values ()[Lorg/xrpl/sdk/codec/hashing/ShaMapNodeType;
+}
+

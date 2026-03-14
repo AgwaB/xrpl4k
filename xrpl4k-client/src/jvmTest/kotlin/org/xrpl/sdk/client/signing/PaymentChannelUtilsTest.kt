@@ -102,7 +102,6 @@ class PaymentChannelUtilsTest : FunSpec({
                 publicKey = generated2.wallet.publicKey.value,
             ) shouldBe false
         }
-
     }
 
     context("signPaymentChannelClaim") {

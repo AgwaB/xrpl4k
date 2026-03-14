@@ -73,11 +73,12 @@ class WalletMnemonicTest : FunSpec({
 
     test("fromMnemonic with custom derivation path produces different wallet") {
         val walletDefault = Wallet.fromMnemonic(testMnemonic12, provider = provider)
-        val walletCustom = Wallet.fromMnemonic(
-            testMnemonic12,
-            derivationPath = "m/44'/144'/1'/0/0",
-            provider = provider,
-        )
+        val walletCustom =
+            Wallet.fromMnemonic(
+                testMnemonic12,
+                derivationPath = "m/44'/144'/1'/0/0",
+                provider = provider,
+            )
         walletDefault.use { w1 ->
             walletCustom.use { w2 ->
                 w1.address shouldNotBe w2.address
@@ -87,11 +88,12 @@ class WalletMnemonicTest : FunSpec({
 
     test("fromMnemonic with passphrase changes the derived address") {
         val walletNoPass = Wallet.fromMnemonic(testMnemonic12, provider = provider)
-        val walletWithPass = Wallet.fromMnemonic(
-            testMnemonic12,
-            passphrase = "my secret passphrase",
-            provider = provider,
-        )
+        val walletWithPass =
+            Wallet.fromMnemonic(
+                testMnemonic12,
+                passphrase = "my secret passphrase",
+                provider = provider,
+            )
         walletNoPass.use { w1 ->
             walletWithPass.use { w2 ->
                 w1.address shouldNotBe w2.address
@@ -124,6 +126,7 @@ class WalletMnemonicTest : FunSpec({
     }
 
     test("fromMnemonic normalizes extra whitespace") {
+        @Suppress("ktlint:standard:max-line-length")
         val messy = "  abandon  abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon  about  "
         val wallet1 = Wallet.fromMnemonic(testMnemonic12, provider = provider)
         val wallet2 = Wallet.fromMnemonic(messy, provider = provider)
@@ -154,12 +157,16 @@ class WalletMnemonicTest : FunSpec({
     }
 
     test("validateMnemonic returns false for 13 words") {
-        val mnemonic13 = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        val mnemonic13 =
+            "abandon abandon abandon abandon abandon abandon abandon abandon " +
+                "abandon abandon abandon abandon about"
         org.xrpl.sdk.crypto.internal.validateMnemonic(mnemonic13) shouldBe false
     }
 
     test("validateMnemonic returns true for 15-word mnemonic") {
-        val mnemonic15 = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        val mnemonic15 =
+            "abandon abandon abandon abandon abandon abandon abandon abandon " +
+                "abandon abandon abandon abandon abandon abandon about"
         org.xrpl.sdk.crypto.internal.validateMnemonic(mnemonic15) shouldBe true
     }
 
@@ -172,7 +179,12 @@ class WalletMnemonicTest : FunSpec({
 
     test("mnemonicToSeed with passphrase produces different seed") {
         val seed1 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, provider = provider)
-        val seed2 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, passphrase = "secret", provider = provider)
+        val seed2 =
+            org.xrpl.sdk.crypto.internal.mnemonicToSeed(
+                testMnemonic12,
+                passphrase = "secret",
+                provider = provider,
+            )
         (seed1.contentEquals(seed2)) shouldBe false
     }
 

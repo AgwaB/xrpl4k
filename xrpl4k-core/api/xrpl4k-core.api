@@ -3047,6 +3047,31 @@ public final class org/xrpl/sdk/core/util/HexUtilsKt {
 	public static final fun toHexString ([B)Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/core/util/QualityConversionKt {
+	public static final field ONE_BILLION J
+	public static final fun decimalToQuality (Ljava/lang/String;)J
+	public static final fun decimalToTransferRate (Ljava/lang/String;)J
+	public static final fun percentToQuality (Ljava/lang/String;)J
+	public static final fun percentToTransferRate (Ljava/lang/String;)J
+	public static final fun qualityToDecimal (J)Ljava/lang/String;
+	public static final fun transferRateToDecimal (J)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/util/RippleTimeKt {
+	public static final field RIPPLE_EPOCH_DIFF J
+	public static final fun instantToRippleTime (Lkotlinx/datetime/Instant;)J
+	public static final fun isoTimeToRippleTime (Ljava/lang/String;)J
+	public static final fun rippleTimeToISOTime (J)Ljava/lang/String;
+	public static final fun rippleTimeToInstant (J)Lkotlinx/datetime/Instant;
+	public static final fun rippleTimeToUnixTime (J)J
+	public static final fun unixTimeToRippleTime (J)J
+}
+
+public final class org/xrpl/sdk/core/util/StringHexKt {
+	public static final fun convertHexToString (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun convertStringToHex (Ljava/lang/String;)Ljava/lang/String;
+}
+
 public final class org/xrpl/sdk/core/validation/TransactionValidator {
 	public static final field INSTANCE Lorg/xrpl/sdk/core/validation/TransactionValidator;
 	public final fun getMAX_FEE_DROPS-lkzeRtM ()J

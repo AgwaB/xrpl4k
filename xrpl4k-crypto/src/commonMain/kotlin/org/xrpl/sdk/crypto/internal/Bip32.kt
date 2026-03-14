@@ -1,4 +1,4 @@
-@file:Suppress("MagicNumber")
+@file:Suppress("MagicNumber", "ktlint:standard:filename")
 
 package org.xrpl.sdk.crypto.internal
 
@@ -18,7 +18,10 @@ internal class Bip32Key(
  * HMAC-SHA512(key="Bitcoin seed", data=seed)
  * Left 32 bytes = master private key, right 32 bytes = chain code.
  */
-internal fun deriveFromSeed(seed: ByteArray, provider: CryptoProvider): Bip32Key {
+internal fun deriveFromSeed(
+    seed: ByteArray,
+    provider: CryptoProvider,
+): Bip32Key {
     val result = provider.hmacSha512("Bitcoin seed".encodeToByteArray(), seed)
     return Bip32Key(result.copyOfRange(0, 32), result.copyOfRange(32, 64))
 }
@@ -28,7 +31,11 @@ internal fun deriveFromSeed(seed: ByteArray, provider: CryptoProvider): Bip32Key
  *
  * Hardened indices have bit 0x80000000 set.
  */
-internal fun deriveChild(parent: Bip32Key, index: Long, provider: CryptoProvider): Bip32Key {
+internal fun deriveChild(
+    parent: Bip32Key,
+    index: Long,
+    provider: CryptoProvider,
+): Bip32Key {
     val isHardened = index >= 0x80000000L
     val data: ByteArray
 
@@ -61,7 +68,11 @@ internal fun deriveChild(parent: Bip32Key, index: Long, provider: CryptoProvider
  *
  * Apostrophe (') denotes hardened derivation (index + 0x80000000).
  */
-internal fun derivePath(masterKey: Bip32Key, path: String, provider: CryptoProvider): Bip32Key {
+internal fun derivePath(
+    masterKey: Bip32Key,
+    path: String,
+    provider: CryptoProvider,
+): Bip32Key {
     val components = path.trim().split("/")
     require(components.isNotEmpty() && components[0] == "m") {
         "Derivation path must start with 'm'"
@@ -78,7 +89,11 @@ internal fun derivePath(masterKey: Bip32Key, path: String, provider: CryptoProvi
     return current
 }
 
-private fun writeUInt32BE(dest: ByteArray, offset: Int, value: Long) {
+private fun writeUInt32BE(
+    dest: ByteArray,
+    offset: Int,
+    value: Long,
+) {
     dest[offset] = (value ushr 24).toByte()
     dest[offset + 1] = (value ushr 16).toByte()
     dest[offset + 2] = (value ushr 8).toByte()

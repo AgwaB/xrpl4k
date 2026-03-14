@@ -233,6 +233,7 @@ class AmountSerializerTest : FunSpec({
         val bytes = writer.toByteArray()
 
         val reader = BinaryReader(bytes)
+
         @Suppress("UNCHECKED_CAST")
         val result = AmountSerializer.read(reader) as Map<String, String>
         result["value"]!!.toDouble() shouldBe -1.0

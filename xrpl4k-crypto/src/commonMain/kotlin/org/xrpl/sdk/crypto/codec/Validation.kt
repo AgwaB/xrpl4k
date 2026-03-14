@@ -5,12 +5,9 @@ import org.xrpl.sdk.core.type.XAddress
 import org.xrpl.sdk.crypto.CryptoProvider
 import org.xrpl.sdk.crypto.platformCryptoProvider
 
-/**
- * XRPL address and secret validation utilities.
- *
- * KMP 멀티플랫폼 지원을 위해 CryptoProvider 파라미터가 추가되었으나,
- * 기본값이 제공되므로 대부분의 경우 생략 가능.
- */
+// XRPL address and secret validation utilities.
+// KMP 멀티플랫폼 지원을 위해 CryptoProvider 파라미터가 추가되었으나,
+// 기본값이 제공되므로 대부분의 경우 생략 가능.
 
 /**
  * Returns `true` if [address] is a valid XRPL classic address (starts with `'r'`).
