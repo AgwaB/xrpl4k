@@ -1,7 +1,7 @@
 plugins {
-    id("xrpl.kmp-library")
-    id("xrpl.lint")
-    id("xrpl.publishing")
+    id("xrpl4k.kmp-library")
+    id("xrpl4k.lint")
+    id("xrpl4k.publishing")
 }
 
 kotlin {
@@ -15,6 +15,6 @@ kotlin {
 val catalog = extensions.getByType<org.gradle.api.artifacts.VersionCatalogsExtension>().named("libs")
 
 dependencies {
-    "commonMainApi"(project(":xrpl-core"))
+    "commonMainApi"(project(":xrpl4k-core"))
     "jvmTestImplementation"(catalog.findLibrary("kotest-property").get())
 }

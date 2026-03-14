@@ -1,7 +1,7 @@
 plugins {
-    id("xrpl.kmp-library")
-    id("xrpl.lint")
-    id("xrpl.publishing")
+    id("xrpl4k.kmp-library")
+    id("xrpl4k.lint")
+    id("xrpl4k.publishing")
 }
 
 dependencies {

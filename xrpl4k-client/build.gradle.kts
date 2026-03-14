@@ -1,15 +1,15 @@
 plugins {
-    id("xrpl.kmp-library")
-    id("xrpl.lint")
-    id("xrpl.publishing")
+    id("xrpl4k.kmp-library")
+    id("xrpl4k.lint")
+    id("xrpl4k.publishing")
 }
 
 val catalog = extensions.getByType<org.gradle.api.artifacts.VersionCatalogsExtension>().named("libs")
 
 dependencies {
-    "commonMainApi"(project(":xrpl-core"))
-    "commonMainApi"(project(":xrpl-binary-codec"))
-    "commonMainApi"(project(":xrpl-crypto"))
+    "commonMainApi"(project(":xrpl4k-core"))
+    "commonMainApi"(project(":xrpl4k-binary-codec"))
+    "commonMainApi"(project(":xrpl4k-crypto"))
     "commonMainImplementation"(libs.ktor.client.core)
     "commonMainImplementation"(libs.ktor.client.content.negotiation)
     "commonMainImplementation"(libs.ktor.client.websockets)

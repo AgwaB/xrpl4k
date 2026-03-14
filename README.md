@@ -3,7 +3,7 @@
 A Kotlin Multiplatform SDK for the [XRP Ledger](https://xrpl.org/).
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.agwab/xrpl-core)](https://central.sonatype.com/namespace/io.github.agwab)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.agwab/xrpl4k-core)](https://central.sonatype.com/namespace/io.github.agwab)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
 ## Requirements
@@ -21,10 +21,10 @@ Other supported platforms: JS/Node.js, iOS, macOS, Linux (see [Supported Platfor
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation(platform("io.github.agwab:xrpl-bom:0.1.0"))
+    implementation(platform("io.github.agwab:xrpl4k-bom:0.1.0"))
 
-    implementation("io.github.agwab:xrpl-client")  // HTTP + WebSocket client
-    implementation("io.github.agwab:xrpl-crypto")  // Key generation & signing
+    implementation("io.github.agwab:xrpl4k-client")  // HTTP + WebSocket client
+    implementation("io.github.agwab:xrpl4k-crypto")  // Key generation & signing
 }
 ```
 
@@ -33,9 +33,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation platform('io.github.agwab:xrpl-bom:0.1.0')
-    implementation 'io.github.agwab:xrpl-client'
-    implementation 'io.github.agwab:xrpl-crypto'
+    implementation platform('io.github.agwab:xrpl4k-bom:0.1.0')
+    implementation 'io.github.agwab:xrpl4k-client'
+    implementation 'io.github.agwab:xrpl4k-crypto'
 }
 ```
 </details>

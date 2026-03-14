@@ -14,11 +14,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "xrpl-kotlin"
+rootProject.name = "xrpl4k"
 
-include(":xrpl-core")
-include(":xrpl-binary-codec")
-include(":xrpl-crypto")
-include(":xrpl-client")
-include(":xrpl-bom")
-include(":xrpl-test-fixtures")
+include(":xrpl4k-core")
+include(":xrpl4k-binary-codec")
+include(":xrpl4k-crypto")
+include(":xrpl4k-client")
+include(":xrpl4k-bom")
+include(":xrpl4k-test-fixtures")

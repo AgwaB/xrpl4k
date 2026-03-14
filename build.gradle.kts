@@ -6,7 +6,7 @@ plugins {
 }
 
 apiValidation {
-    ignoredProjects += listOf("xrpl-test-fixtures", "xrpl-bom")
+    ignoredProjects += listOf("xrpl4k-test-fixtures", "xrpl4k-bom")
 }
 
 val releaseVersion: String? by project
