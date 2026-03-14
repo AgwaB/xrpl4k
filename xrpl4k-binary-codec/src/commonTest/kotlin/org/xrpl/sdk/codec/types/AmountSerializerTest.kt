@@ -183,4 +183,65 @@ class AmountSerializerTest : FunSpec({
         result["value"] shouldBe "100"
         result["mpt_issuance_id"] shouldBe "000000000000000000000000000000000000000000000001"
     }
+
+    // ---- IOU large/small values ----
+
+    test("IOU very small value encode/decode preserves sign and magnitude") {
+        val writer = BinaryWriter()
+        val iou =
+            mapOf(
+                "value" to "1e-15",
+                "currency" to "USD",
+                "issuer" to "0000000000000000000000000000000000000001",
+            )
+        AmountSerializer.write(writer, iou)
+        val reader = BinaryReader(writer.toByteArray())
+
+        @Suppress("UNCHECKED_CAST")
+        val result = AmountSerializer.read(reader) as Map<String, String>
+        result["currency"] shouldBe "USD"
+        // Value preserved through mantissa/exponent normalization
+        result["value"]!!.toDouble() shouldBe 1e-15
+    }
+
+    test("IOU large value encode/decode preserves magnitude") {
+        val writer = BinaryWriter()
+        val iou =
+            mapOf(
+                "value" to "9999999999999999e80",
+                "currency" to "USD",
+                "issuer" to "0000000000000000000000000000000000000001",
+            )
+        AmountSerializer.write(writer, iou)
+        val reader = BinaryReader(writer.toByteArray())
+
+        @Suppress("UNCHECKED_CAST")
+        val result = AmountSerializer.read(reader) as Map<String, String>
+        result["currency"] shouldBe "USD"
+        result["value"]!!.toDouble() shouldBe 9999999999999999e80.toDouble()
+    }
+
+    test("IOU negative value encode/decode preserves sign") {
+        val writer = BinaryWriter()
+        val iou =
+            mapOf(
+                "value" to "-1",
+                "currency" to "USD",
+                "issuer" to "0000000000000000000000000000000000000001",
+            )
+        AmountSerializer.write(writer, iou)
+        val bytes = writer.toByteArray()
+
+        val reader = BinaryReader(bytes)
+        @Suppress("UNCHECKED_CAST")
+        val result = AmountSerializer.read(reader) as Map<String, String>
+        result["value"]!!.toDouble() shouldBe -1.0
+    }
+
+    test("XRP max drops (100 billion drops)") {
+        val writer = BinaryWriter()
+        AmountSerializer.write(writer, "100000000000000000")
+        val reader = BinaryReader(writer.toByteArray())
+        AmountSerializer.read(reader) shouldBe "100000000000000000"
+    }
 })

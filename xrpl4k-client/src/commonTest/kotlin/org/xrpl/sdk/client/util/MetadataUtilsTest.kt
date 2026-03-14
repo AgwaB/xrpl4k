@@ -87,4 +87,103 @@ class MetadataUtilsTest : FunSpec({
 
         getXChainClaimId(metadata) shouldBe null
     }
+
+    test("returns first XChainClaimID when multiple CreatedNodes exist") {
+        val metadata = buildJsonObject {
+            put("TransactionResult", "tesSUCCESS")
+            putJsonArray("AffectedNodes") {
+                add(
+                    buildJsonObject {
+                        putJsonObject("CreatedNode") {
+                            put("LedgerEntryType", "XChainOwnedClaimID")
+                            putJsonObject("NewFields") {
+                                put("XChainClaimID", "1")
+                            }
+                        }
+                    },
+                )
+                add(
+                    buildJsonObject {
+                        putJsonObject("CreatedNode") {
+                            put("LedgerEntryType", "XChainOwnedClaimID")
+                            putJsonObject("NewFields") {
+                                put("XChainClaimID", "2")
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        getXChainClaimId(metadata) shouldBe "1"
+    }
+
+    test("returns null when tesSUCCESS but AffectedNodes is empty array") {
+        val metadata = buildJsonObject {
+            put("TransactionResult", "tesSUCCESS")
+            putJsonArray("AffectedNodes") {}
+        }
+
+        getXChainClaimId(metadata) shouldBe null
+    }
+
+    test("returns null when XChainClaimID is missing from NewFields") {
+        val metadata = buildJsonObject {
+            put("TransactionResult", "tesSUCCESS")
+            putJsonArray("AffectedNodes") {
+                add(
+                    buildJsonObject {
+                        putJsonObject("CreatedNode") {
+                            put("LedgerEntryType", "XChainOwnedClaimID")
+                            putJsonObject("NewFields") {
+                                put("Account", "rSomeAccount")
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        getXChainClaimId(metadata) shouldBe null
+    }
+
+    test("ignores ModifiedNode with XChainOwnedClaimID (only CreatedNode matters)") {
+        val metadata = buildJsonObject {
+            put("TransactionResult", "tesSUCCESS")
+            putJsonArray("AffectedNodes") {
+                add(
+                    buildJsonObject {
+                        putJsonObject("ModifiedNode") {
+                            put("LedgerEntryType", "XChainOwnedClaimID")
+                            putJsonObject("FinalFields") {
+                                put("XChainClaimID", "99")
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        getXChainClaimId(metadata) shouldBe null
+    }
+
+    test("returns null for tecCLAIM_NO_BACKER even with valid CreatedNode") {
+        val metadata = buildJsonObject {
+            put("TransactionResult", "tecCLAIM_NO_BACKER")
+            putJsonArray("AffectedNodes") {
+                add(
+                    buildJsonObject {
+                        putJsonObject("CreatedNode") {
+                            put("LedgerEntryType", "XChainOwnedClaimID")
+                            putJsonObject("NewFields") {
+                                put("XChainClaimID", "1")
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        getXChainClaimId(metadata) shouldBe null
+    }
 })

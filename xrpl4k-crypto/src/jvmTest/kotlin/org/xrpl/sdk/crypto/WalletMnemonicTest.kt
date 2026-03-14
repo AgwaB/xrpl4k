@@ -133,4 +133,83 @@ class WalletMnemonicTest : FunSpec({
             }
         }
     }
+
+    // ── BIP39 validateMnemonic ──────────────────────────────────────────
+
+    test("validateMnemonic returns true for valid 12-word mnemonic") {
+        org.xrpl.sdk.crypto.internal.validateMnemonic(testMnemonic12) shouldBe true
+    }
+
+    test("validateMnemonic returns true for valid 24-word mnemonic") {
+        org.xrpl.sdk.crypto.internal.validateMnemonic(testMnemonic24) shouldBe true
+    }
+
+    test("validateMnemonic returns false for invalid word") {
+        val invalid = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon zzzzz"
+        org.xrpl.sdk.crypto.internal.validateMnemonic(invalid) shouldBe false
+    }
+
+    test("validateMnemonic returns false for wrong word count (3 words)") {
+        org.xrpl.sdk.crypto.internal.validateMnemonic("abandon abandon about") shouldBe false
+    }
+
+    test("validateMnemonic returns false for 13 words") {
+        val mnemonic13 = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        org.xrpl.sdk.crypto.internal.validateMnemonic(mnemonic13) shouldBe false
+    }
+
+    test("validateMnemonic returns true for 15-word mnemonic") {
+        val mnemonic15 = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        org.xrpl.sdk.crypto.internal.validateMnemonic(mnemonic15) shouldBe true
+    }
+
+    // ── BIP39 mnemonicToSeed ─────────────────────────────────────────────
+
+    test("mnemonicToSeed produces 64-byte seed") {
+        val seed = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, provider = provider)
+        seed.size shouldBe 64
+    }
+
+    test("mnemonicToSeed with passphrase produces different seed") {
+        val seed1 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, provider = provider)
+        val seed2 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, passphrase = "secret", provider = provider)
+        (seed1.contentEquals(seed2)) shouldBe false
+    }
+
+    test("mnemonicToSeed is deterministic") {
+        val seed1 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, provider = provider)
+        val seed2 = org.xrpl.sdk.crypto.internal.mnemonicToSeed(testMnemonic12, provider = provider)
+        seed1.contentEquals(seed2) shouldBe true
+    }
+
+    // ── BIP32 derivation path ────────────────────────────────────────────
+
+    test("fromMnemonic with invalid derivation path throws") {
+        shouldThrow<IllegalArgumentException> {
+            Wallet.fromMnemonic(testMnemonic12, derivationPath = "invalid/path", provider = provider)
+        }
+    }
+
+    test("fromMnemonic with path 'm' (no child derivation) produces a valid wallet") {
+        // m alone means just the master key
+        val wallet = Wallet.fromMnemonic(testMnemonic12, derivationPath = "m", provider = provider)
+        wallet.use {
+            it.address.value shouldStartWith "r"
+        }
+    }
+
+    test("fromMnemonic with account index 2 differs from 0 and 1") {
+        val wallet0 = Wallet.fromMnemonic(testMnemonic12, derivationPath = "m/44'/144'/0'/0/0", provider = provider)
+        val wallet1 = Wallet.fromMnemonic(testMnemonic12, derivationPath = "m/44'/144'/1'/0/0", provider = provider)
+        val wallet2 = Wallet.fromMnemonic(testMnemonic12, derivationPath = "m/44'/144'/2'/0/0", provider = provider)
+        wallet0.use { w0 ->
+            wallet1.use { w1 ->
+                wallet2.use { w2 ->
+                    w0.address shouldNotBe w1.address
+                    w0.address shouldNotBe w2.address
+                    w1.address shouldNotBe w2.address
+                }
+            }
+        }
+    }
 })

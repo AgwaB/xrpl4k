@@ -125,4 +125,52 @@ class ValidationTest : FunSpec({
         val corrupted = seed.dropLast(1) + replacement
         isValidSecret(corrupted, provider) shouldBe false
     }
+
+    // ── Well-known addresses ─────────────────────────────────────────
+
+    test("well-known genesis address is a valid classic address") {
+        isValidClassicAddress("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", provider) shouldBe true
+    }
+
+    test("well-known genesis address is not a valid X-Address") {
+        isValidXAddress("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", provider) shouldBe false
+    }
+
+    test("isValidAddress accepts well-known genesis address") {
+        isValidAddress("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", provider) shouldBe true
+    }
+
+    // ── X-Address with testnet flag ──────────────────────────────────
+
+    test("testnet X-Address is valid") {
+        val generated = Wallet.generate(KeyAlgorithm.Ed25519, provider)
+        generated.wallet.use { wallet ->
+            val xAddress = XAddressCodec.encode(wallet.address, tag = null, isTest = true, provider)
+            isValidXAddress(xAddress.value, provider) shouldBe true
+        }
+    }
+
+    test("classic address is not a valid X-Address") {
+        val generated = Wallet.generate(KeyAlgorithm.Ed25519, provider)
+        generated.wallet.use { wallet ->
+            isValidXAddress(wallet.address.value, provider) shouldBe false
+        }
+    }
+
+    // ── Edge cases ───────────────────────────────────────────────────
+
+    test("whitespace-only string returns false for classic address") {
+        isValidClassicAddress("   ", provider) shouldBe false
+    }
+
+    test("whitespace-only string returns false for secret") {
+        isValidSecret("   ", provider) shouldBe false
+    }
+
+    test("seed with corrupted middle characters returns false") {
+        val generated = Wallet.generate(KeyAlgorithm.Ed25519, provider)
+        val seed = generated.seedString
+        val corrupted = seed.take(5) + "ZZZZ" + seed.drop(9)
+        isValidSecret(corrupted, provider) shouldBe false
+    }
 })

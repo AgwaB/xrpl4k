@@ -185,5 +185,63 @@ class QualityConversionTest : FunSpec({
             val original = "0.5"
             qualityToDecimal(decimalToQuality(original)) shouldBe original
         }
+
+        test("special case 0 round-trips (decimalToQuality and qualityToDecimal both treat 0/1 specially)") {
+            // decimalToQuality("1") → 0, qualityToDecimal(0) → "1"
+            decimalToQuality("1") shouldBe 0L
+            qualityToDecimal(0) shouldBe "1"
+            qualityToDecimal(decimalToQuality("1")) shouldBe "1"
+        }
+    }
+
+    context("decimalToQuality — extended") {
+        test("quality allows values greater than 1") {
+            decimalToQuality("2") shouldBe 2_000_000_000L
+        }
+
+        test("quality value 1.5 produces 1500000000") {
+            decimalToQuality("1.5") shouldBe 1_500_000_000L
+        }
+
+        test("quality 0 and 1 both map to 0") {
+            // decimalToQuality("0") → scaled=0, 0 != ONE_BILLION → return 0
+            // decimalToQuality("1") → scaled=ONE_BILLION → return 0 (special case)
+            decimalToQuality("0") shouldBe 0L
+            decimalToQuality("1") shouldBe 0L
+        }
+    }
+
+    context("qualityToDecimal — extended") {
+        test("quality 2_000_000_000 produces '2'") {
+            qualityToDecimal(2_000_000_000L) shouldBe "2"
+        }
+
+        test("quality 1 produces '0.000000001'") {
+            qualityToDecimal(1L) shouldBe "0.000000001"
+        }
+    }
+
+    context("percentToTransferRate — extended") {
+        test("fractional percent 0.5% produces correct rate") {
+            percentToTransferRate("0.5%") shouldBe 1_005_000_000L
+        }
+
+        test("percent sign in the middle throws") {
+            shouldThrow<IllegalArgumentException> {
+                percentToTransferRate("50%50%")
+            }
+        }
+
+        test("empty percent throws") {
+            shouldThrow<IllegalArgumentException> {
+                percentToTransferRate("%")
+            }
+        }
+    }
+
+    context("whitespace handling") {
+        test("leading and trailing whitespace is trimmed") {
+            decimalToTransferRate("  0.5  ") shouldBe 1_500_000_000L
+        }
     }
 })

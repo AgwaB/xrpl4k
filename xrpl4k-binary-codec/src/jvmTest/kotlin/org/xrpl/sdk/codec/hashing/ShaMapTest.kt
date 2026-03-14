@@ -1,5 +1,6 @@
 package org.xrpl.sdk.codec.hashing
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -119,5 +120,50 @@ class ShaMapTest : FunSpec({
         val hash = map.hash
         hash.length shouldBe 64
         hash.all { it in '0'..'9' || it in 'a'..'f' } shouldBe true
+    }
+
+    test("duplicate tag throws error") {
+        val map = ShaMap(provider)
+        val tag = "F".repeat(64)
+        map.addItem(tag, "AABB", ShaMapNodeType.ACCOUNT_STATE)
+        shouldThrow<IllegalStateException> {
+            map.addItem(tag, "CCDD", ShaMapNodeType.ACCOUNT_STATE)
+        }
+    }
+
+    test("insertion order does not affect hash (order independence)") {
+        val tag1 = "1" + "0".repeat(63)
+        val tag2 = "2" + "0".repeat(63)
+        val tag3 = "3" + "0".repeat(63)
+
+        val map1 = ShaMap(provider)
+        map1.addItem(tag1, "AA", ShaMapNodeType.ACCOUNT_STATE)
+        map1.addItem(tag2, "BB", ShaMapNodeType.ACCOUNT_STATE)
+        map1.addItem(tag3, "CC", ShaMapNodeType.ACCOUNT_STATE)
+
+        val map2 = ShaMap(provider)
+        map2.addItem(tag3, "CC", ShaMapNodeType.ACCOUNT_STATE)
+        map2.addItem(tag1, "AA", ShaMapNodeType.ACCOUNT_STATE)
+        map2.addItem(tag2, "BB", ShaMapNodeType.ACCOUNT_STATE)
+
+        map1.hash shouldBe map2.hash
+    }
+
+    test("deeply colliding tags (same first 4 nibbles) produce valid hash") {
+        val map = ShaMap(provider)
+        // Tags share first 4 nibbles "ABCD", differ at nibble 5
+        map.addItem("ABCD1" + "0".repeat(59), "AA", ShaMapNodeType.ACCOUNT_STATE)
+        map.addItem("ABCD2" + "0".repeat(59), "BB", ShaMapNodeType.ACCOUNT_STATE)
+        map.hash shouldNotBe zeroHash
+        map.hash.length shouldBe 64
+    }
+
+    test("16 items in different branches produce valid hash") {
+        val map = ShaMap(provider)
+        for (nibble in "0123456789ABCDEF") {
+            map.addItem("$nibble" + "0".repeat(63), "FF", ShaMapNodeType.ACCOUNT_STATE)
+        }
+        map.hash shouldNotBe zeroHash
+        map.hash.length shouldBe 64
     }
 })
