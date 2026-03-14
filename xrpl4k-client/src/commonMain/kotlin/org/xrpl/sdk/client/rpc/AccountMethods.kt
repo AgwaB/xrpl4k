@@ -57,10 +57,10 @@ public suspend fun XrplClient.accountInfo(
     account: Address,
     ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
 ): XrplResult<AccountInfo> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_info",
-        request = AccountInfoRequest(account = account.value, ledgerIndex = ledgerParam),
+        request = AccountInfoRequest(account = account.value, ledgerIndex = ledgerIndex, ledgerHash = ledgerHash),
         requestSerializer = AccountInfoRequest.serializer(),
         responseDeserializer = AccountInfoResponse.serializer(),
     ) { resp ->
@@ -93,13 +93,14 @@ public suspend fun XrplClient.accountLines(
     marker: JsonElement? = null,
     limit: Int? = null,
 ): XrplResult<AccountLinesResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_lines",
         request =
             AccountLinesRequest(
                 account = account.value,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
                 marker = marker,
                 limit = limit,
             ),
@@ -143,13 +144,14 @@ public suspend fun XrplClient.accountObjects(
     marker: JsonElement? = null,
     limit: Int? = null,
 ): XrplResult<AccountObjectsResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_objects",
         request =
             AccountObjectsRequest(
                 account = account.value,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
                 type = type,
                 marker = marker,
                 limit = limit,
@@ -181,13 +183,14 @@ public suspend fun XrplClient.accountOffers(
     marker: JsonElement? = null,
     limit: Int? = null,
 ): XrplResult<AccountOffersResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_offers",
         request =
             AccountOffersRequest(
                 account = account.value,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
                 marker = marker,
                 limit = limit,
             ),
@@ -277,14 +280,15 @@ public suspend fun XrplClient.accountChannels(
     marker: JsonElement? = null,
     limit: Int? = null,
 ): XrplResult<AccountChannelsResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_channels",
         request =
             AccountChannelsRequest(
                 account = account.value,
                 destinationAccount = destinationAccount?.value,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
                 marker = marker,
                 limit = limit,
             ),
@@ -322,10 +326,10 @@ public suspend fun XrplClient.accountCurrencies(
     account: Address,
     ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
 ): XrplResult<AccountCurrenciesResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_currencies",
-        request = AccountCurrenciesRequest(account = account.value, ledgerIndex = ledgerParam),
+        request = AccountCurrenciesRequest(account = account.value, ledgerIndex = ledgerIndex, ledgerHash = ledgerHash),
         requestSerializer = AccountCurrenciesRequest.serializer(),
         responseDeserializer = AccountCurrenciesResponse.serializer(),
     ) { resp ->
@@ -352,13 +356,14 @@ public suspend fun XrplClient.accountNfts(
     marker: JsonElement? = null,
     limit: Int? = null,
 ): XrplResult<AccountNftsResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "account_nfts",
         request =
             AccountNftsRequest(
                 account = account.value,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
                 marker = marker,
                 limit = limit,
             ),
@@ -397,14 +402,15 @@ public suspend fun XrplClient.gatewayBalances(
     hotWallets: List<Address>? = null,
     ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
 ): XrplResult<GatewayBalancesResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "gateway_balances",
         request =
             GatewayBalancesRequest(
                 account = account.value,
                 hotWallet = hotWallets?.map { it.value },
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
             ),
         requestSerializer = GatewayBalancesRequest.serializer(),
         responseDeserializer = GatewayBalancesResponse.serializer(),
@@ -440,7 +446,7 @@ public suspend fun XrplClient.norippleCheck(
     includeTransactions: Boolean = false,
     ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
 ): XrplResult<NorippleCheckResult> {
-    val ledgerParam = ledgerSpecifier.toLedgerIndexParam()
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
     return executeRpc(
         method = "noripple_check",
         request =
@@ -448,7 +454,8 @@ public suspend fun XrplClient.norippleCheck(
                 account = account.value,
                 role = role,
                 transactions = includeTransactions,
-                ledgerIndex = ledgerParam,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
             ),
         requestSerializer = NorippleCheckRequest.serializer(),
         responseDeserializer = NorippleCheckResponse.serializer(),
@@ -462,17 +469,16 @@ public suspend fun XrplClient.norippleCheck(
 }
 
 /**
- * Converts a [LedgerSpecifier] to the string value used in the `ledger_index` RPC field.
+ * Returns a (ledgerIndex, ledgerHash) pair for building RPC request DTOs.
  *
- * For [LedgerSpecifier.Hash], the hash is passed as the `ledger_hash` param separately,
- * so this returns "validated" as a safe fallback; callers handling hash specifiers must
- * handle that case explicitly if needed.
+ * For [LedgerSpecifier.Hash], only `ledger_hash` is set; `ledger_index` is null so it is
+ * omitted from the serialized request (XrplJson uses `encodeDefaults = false`).
  */
-private fun LedgerSpecifier.toLedgerIndexParam(): String =
+private fun LedgerSpecifier.toLedgerParams(): Pair<String?, String?> =
     when (this) {
-        is LedgerSpecifier.Validated -> "validated"
-        is LedgerSpecifier.Current -> "current"
-        is LedgerSpecifier.Closed -> "closed"
-        is LedgerSpecifier.Index -> index.toString()
-        is LedgerSpecifier.Hash -> "validated"
+        is LedgerSpecifier.Validated -> "validated" to null
+        is LedgerSpecifier.Current -> "current" to null
+        is LedgerSpecifier.Closed -> "closed" to null
+        is LedgerSpecifier.Index -> index.toString() to null
+        is LedgerSpecifier.Hash -> null to hash.value
     }

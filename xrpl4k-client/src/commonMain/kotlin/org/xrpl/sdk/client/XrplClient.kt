@@ -61,6 +61,7 @@ public class XrplClient internal constructor(
                 engine = config.engine ?: defaultHttpClientEngine(),
                 scope = scope,
                 heartbeatInterval = config.webSocketConfig.heartbeatInterval,
+                requestTimeout = config.timeout,
             )
         }
 

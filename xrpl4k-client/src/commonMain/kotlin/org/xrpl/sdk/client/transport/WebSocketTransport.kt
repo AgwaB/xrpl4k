@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
@@ -52,6 +53,7 @@ internal class WebSocketTransport(
     engine: HttpClientEngine,
     private val scope: CoroutineScope,
     private val heartbeatInterval: Duration,
+    private val requestTimeout: Duration,
 ) : XrplTransport {
     private val client: HttpClient =
         HttpClient(engine) {
@@ -207,7 +209,10 @@ internal class WebSocketTransport(
         }
 
         return try {
-            val responseJson = deferred.await()
+            val responseJson =
+                withTimeout(requestTimeout) {
+                    deferred.await()
+                }
             val wsResponse = XrplJson.decodeFromJsonElement(WsJsonRpcResponse.serializer(), responseJson)
 
             val rpcError = extractWsRpcError(wsResponse)
@@ -218,6 +223,9 @@ internal class WebSocketTransport(
             val resultObj = wsResponse.result ?: responseJson
             val decoded = XrplJson.decodeFromJsonElement(deserializer, resultObj)
             XrplResult.Success(decoded)
+        } catch (e: kotlinx.coroutines.TimeoutCancellationException) {
+            pendingMutex.withLock { pendingRequests.remove(id) }
+            XrplResult.Failure(XrplFailure.NetworkError("Request timed out after $requestTimeout"))
         } catch (e: kotlinx.coroutines.CancellationException) {
             pendingMutex.withLock { pendingRequests.remove(id) }
             throw e

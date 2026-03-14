@@ -8,7 +8,8 @@ import kotlinx.serialization.json.JsonElement
 @Serializable
 internal data class AccountInfoRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
 )
 
 @Serializable
@@ -33,7 +34,8 @@ internal data class AccountData(
 @Serializable
 internal data class AccountLinesRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
     val marker: JsonElement? = null,
     val limit: Int? = null,
 )
@@ -61,7 +63,8 @@ internal data class TrustLineDto(
 @Serializable
 internal data class AccountObjectsRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
     val type: String? = null,
     val marker: JsonElement? = null,
     val limit: Int? = null,
@@ -79,7 +82,8 @@ internal data class AccountObjectsResponse(
 @Serializable
 internal data class AccountOffersRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
     val marker: JsonElement? = null,
     val limit: Int? = null,
 )
@@ -132,7 +136,8 @@ internal data class AccountTxEntry(
 internal data class AccountChannelsRequest(
     val account: String,
     @SerialName("destination_account") val destinationAccount: String? = null,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
     val marker: JsonElement? = null,
     val limit: Int? = null,
 )
@@ -160,7 +165,8 @@ internal data class ChannelDto(
 @Serializable
 internal data class AccountCurrenciesRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
 )
 
 @Serializable
@@ -174,7 +180,8 @@ internal data class AccountCurrenciesResponse(
 @Serializable
 internal data class AccountNftsRequest(
     val account: String,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
     val marker: JsonElement? = null,
     val limit: Int? = null,
 )
@@ -202,7 +209,8 @@ internal data class NftDto(
 internal data class GatewayBalancesRequest(
     val account: String,
     @SerialName("hotwallet") val hotWallet: List<String>? = null,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
 )
 
 @Serializable
@@ -226,7 +234,8 @@ internal data class NorippleCheckRequest(
     val account: String,
     val role: String,
     val transactions: Boolean = false,
-    @SerialName("ledger_index") val ledgerIndex: String = "validated",
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
 )
 
 @Serializable
