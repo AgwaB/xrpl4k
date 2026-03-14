@@ -11,16 +11,43 @@ import org.xrpl.sdk.core.model.amount.CurrencyAmount
 import org.xrpl.sdk.core.model.amount.IssuedAmount
 import org.xrpl.sdk.core.model.amount.MptAmount
 import org.xrpl.sdk.core.model.amount.XrpAmount
+import org.xrpl.sdk.core.model.transaction.AMMBidFields
+import org.xrpl.sdk.core.model.transaction.AMMClawbackFields
+import org.xrpl.sdk.core.model.transaction.AMMCreateFields
+import org.xrpl.sdk.core.model.transaction.AMMDeleteFields
+import org.xrpl.sdk.core.model.transaction.AMMDepositFields
+import org.xrpl.sdk.core.model.transaction.AMMVoteFields
+import org.xrpl.sdk.core.model.transaction.AMMWithdrawFields
 import org.xrpl.sdk.core.model.transaction.AccountDeleteFields
 import org.xrpl.sdk.core.model.transaction.AccountSetFields
+import org.xrpl.sdk.core.model.transaction.BatchFields
 import org.xrpl.sdk.core.model.transaction.CheckCancelFields
 import org.xrpl.sdk.core.model.transaction.CheckCashFields
 import org.xrpl.sdk.core.model.transaction.CheckCreateFields
 import org.xrpl.sdk.core.model.transaction.ClawbackFields
+import org.xrpl.sdk.core.model.transaction.CredentialAcceptFields
+import org.xrpl.sdk.core.model.transaction.CredentialCreateFields
+import org.xrpl.sdk.core.model.transaction.CredentialDeleteFields
+import org.xrpl.sdk.core.model.transaction.DIDDeleteFields
+import org.xrpl.sdk.core.model.transaction.DIDSetFields
+import org.xrpl.sdk.core.model.transaction.DelegateSetFields
 import org.xrpl.sdk.core.model.transaction.DepositPreauthFields
 import org.xrpl.sdk.core.model.transaction.EscrowCancelFields
 import org.xrpl.sdk.core.model.transaction.EscrowCreateFields
 import org.xrpl.sdk.core.model.transaction.EscrowFinishFields
+import org.xrpl.sdk.core.model.transaction.LoanBrokerCoverClawbackFields
+import org.xrpl.sdk.core.model.transaction.LoanBrokerCoverDepositFields
+import org.xrpl.sdk.core.model.transaction.LoanBrokerCoverWithdrawFields
+import org.xrpl.sdk.core.model.transaction.LoanBrokerDeleteFields
+import org.xrpl.sdk.core.model.transaction.LoanBrokerSetFields
+import org.xrpl.sdk.core.model.transaction.LoanDeleteFields
+import org.xrpl.sdk.core.model.transaction.LoanManageFields
+import org.xrpl.sdk.core.model.transaction.LoanPayFields
+import org.xrpl.sdk.core.model.transaction.LoanSetFields
+import org.xrpl.sdk.core.model.transaction.MPTokenAuthorizeFields
+import org.xrpl.sdk.core.model.transaction.MPTokenIssuanceCreateFields
+import org.xrpl.sdk.core.model.transaction.MPTokenIssuanceDestroyFields
+import org.xrpl.sdk.core.model.transaction.MPTokenIssuanceSetFields
 import org.xrpl.sdk.core.model.transaction.NFTokenAcceptOfferFields
 import org.xrpl.sdk.core.model.transaction.NFTokenBurnFields
 import org.xrpl.sdk.core.model.transaction.NFTokenCancelOfferFields
@@ -29,16 +56,35 @@ import org.xrpl.sdk.core.model.transaction.NFTokenMintFields
 import org.xrpl.sdk.core.model.transaction.NFTokenModifyFields
 import org.xrpl.sdk.core.model.transaction.OfferCancelFields
 import org.xrpl.sdk.core.model.transaction.OfferCreateFields
+import org.xrpl.sdk.core.model.transaction.OracleDeleteFields
+import org.xrpl.sdk.core.model.transaction.OracleSetFields
 import org.xrpl.sdk.core.model.transaction.PaymentChannelClaimFields
 import org.xrpl.sdk.core.model.transaction.PaymentChannelCreateFields
 import org.xrpl.sdk.core.model.transaction.PaymentChannelFundFields
 import org.xrpl.sdk.core.model.transaction.PaymentFields
+import org.xrpl.sdk.core.model.transaction.PermissionedDomainDeleteFields
+import org.xrpl.sdk.core.model.transaction.PermissionedDomainSetFields
 import org.xrpl.sdk.core.model.transaction.SetRegularKeyFields
 import org.xrpl.sdk.core.model.transaction.SignerListSetFields
 import org.xrpl.sdk.core.model.transaction.TicketCreateFields
 import org.xrpl.sdk.core.model.transaction.TransactionFields
 import org.xrpl.sdk.core.model.transaction.TrustSetFields
 import org.xrpl.sdk.core.model.transaction.UnknownTransactionFields
+import org.xrpl.sdk.core.model.transaction.VaultClawbackFields
+import org.xrpl.sdk.core.model.transaction.VaultCreateFields
+import org.xrpl.sdk.core.model.transaction.VaultDeleteFields
+import org.xrpl.sdk.core.model.transaction.VaultDepositFields
+import org.xrpl.sdk.core.model.transaction.VaultSetFields
+import org.xrpl.sdk.core.model.transaction.VaultWithdrawFields
+import org.xrpl.sdk.core.model.transaction.XChainAccountCreateCommitFields
+import org.xrpl.sdk.core.model.transaction.XChainAddAccountCreateAttestationFields
+import org.xrpl.sdk.core.model.transaction.XChainAddClaimAttestationFields
+import org.xrpl.sdk.core.model.transaction.XChainBridgeSpec
+import org.xrpl.sdk.core.model.transaction.XChainClaimFields
+import org.xrpl.sdk.core.model.transaction.XChainCommitFields
+import org.xrpl.sdk.core.model.transaction.XChainCreateBridgeFields
+import org.xrpl.sdk.core.model.transaction.XChainCreateClaimIDFields
+import org.xrpl.sdk.core.model.transaction.XChainModifyBridgeFields
 import org.xrpl.sdk.core.model.transaction.XrplTransaction
 import org.xrpl.sdk.core.type.Address
 import org.xrpl.sdk.crypto.codec.AddressCodec
@@ -239,6 +285,52 @@ internal object FilledTransactionSerializer {
             is NFTokenAcceptOfferFields -> serializeNFTokenAcceptOfferFields(fields, map)
             is NFTokenCancelOfferFields -> serializeNFTokenCancelOfferFields(fields, map)
             is NFTokenModifyFields -> serializeNFTokenModifyFields(fields, map)
+            is DIDSetFields -> serializeDIDSetFields(fields, map)
+            is DIDDeleteFields -> { /* no fields */ }
+            is MPTokenIssuanceCreateFields -> serializeMPTokenIssuanceCreateFields(fields, map)
+            is MPTokenIssuanceDestroyFields -> serializeMPTokenIssuanceDestroyFields(fields, map)
+            is MPTokenIssuanceSetFields -> serializeMPTokenIssuanceSetFields(fields, map)
+            is MPTokenAuthorizeFields -> serializeMPTokenAuthorizeFields(fields, map)
+            is CredentialCreateFields -> serializeCredentialCreateFields(fields, map)
+            is CredentialAcceptFields -> serializeCredentialAcceptFields(fields, map)
+            is CredentialDeleteFields -> serializeCredentialDeleteFields(fields, map)
+            is AMMCreateFields -> serializeAMMCreateFields(fields, map)
+            is AMMDepositFields -> serializeAMMDepositFields(fields, map)
+            is AMMWithdrawFields -> serializeAMMWithdrawFields(fields, map)
+            is AMMVoteFields -> serializeAMMVoteFields(fields, map)
+            is AMMBidFields -> serializeAMMBidFields(fields, map)
+            is AMMDeleteFields -> serializeAMMDeleteFields(fields, map)
+            is AMMClawbackFields -> serializeAMMClawbackFields(fields, map)
+            is BatchFields -> serializeBatchFields(fields, map)
+            is OracleSetFields -> serializeOracleSetFields(fields, map)
+            is OracleDeleteFields -> serializeOracleDeleteFields(fields, map)
+            is PermissionedDomainSetFields -> serializePermissionedDomainSetFields(fields, map)
+            is PermissionedDomainDeleteFields -> serializePermissionedDomainDeleteFields(fields, map)
+            is DelegateSetFields -> serializeDelegateSetFields(fields, map)
+            is VaultCreateFields -> serializeVaultCreateFields(fields, map)
+            is VaultSetFields -> serializeVaultSetFields(fields, map)
+            is VaultDeleteFields -> serializeVaultDeleteFields(fields, map)
+            is VaultDepositFields -> serializeVaultDepositFields(fields, map)
+            is VaultWithdrawFields -> serializeVaultWithdrawFields(fields, map)
+            is VaultClawbackFields -> serializeVaultClawbackFields(fields, map)
+            is LoanSetFields -> serializeLoanSetFields(fields, map)
+            is LoanDeleteFields -> serializeLoanDeleteFields(fields, map)
+            is LoanManageFields -> serializeLoanManageFields(fields, map)
+            is LoanPayFields -> serializeLoanPayFields(fields, map)
+            is LoanBrokerSetFields -> serializeLoanBrokerSetFields(fields, map)
+            is LoanBrokerDeleteFields -> { /* no fields */ }
+            is LoanBrokerCoverDepositFields -> serializeLoanBrokerCoverDepositFields(fields, map)
+            is LoanBrokerCoverWithdrawFields -> serializeLoanBrokerCoverWithdrawFields(fields, map)
+            is LoanBrokerCoverClawbackFields -> serializeLoanBrokerCoverClawbackFields(fields, map)
+            is XChainCreateBridgeFields -> serializeXChainCreateBridgeFields(fields, map)
+            is XChainModifyBridgeFields -> serializeXChainModifyBridgeFields(fields, map)
+            is XChainCreateClaimIDFields -> serializeXChainCreateClaimIDFields(fields, map)
+            is XChainCommitFields -> serializeXChainCommitFields(fields, map)
+            is XChainClaimFields -> serializeXChainClaimFields(fields, map)
+            is XChainAccountCreateCommitFields -> serializeXChainAccountCreateCommitFields(fields, map)
+            is XChainAddClaimAttestationFields -> serializeXChainAddClaimAttestationFields(fields, map)
+            is XChainAddAccountCreateAttestationFields ->
+                serializeXChainAddAccountCreateAttestationFields(fields, map)
             is UnknownTransactionFields -> serializeUnknownFields(fields, map)
             else -> { /* unknown type — no fields emitted */ }
         }
@@ -506,6 +598,427 @@ internal object FilledTransactionSerializer {
         map["NFTokenID"] = fields.nfTokenId
         fields.owner?.let { map["Owner"] = addressToHex(it) }
         fields.uri?.let { map["URI"] = it }
+    }
+
+    private fun serializeDIDSetFields(
+        fields: DIDSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.uri?.let { map["URI"] = it }
+        fields.data?.let { map["Data"] = it }
+        fields.didDocument?.let { map["DIDDocument"] = it }
+    }
+
+    private fun serializeMPTokenIssuanceCreateFields(
+        fields: MPTokenIssuanceCreateFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.assetScale?.let { map["AssetScale"] = it.toLong() }
+        fields.transferFee?.let { map["TransferFee"] = it.toLong() }
+        fields.maxAmount?.let { map["MaximumAmount"] = it }
+        fields.metadata?.let { map["MPTokenMetadata"] = it }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeMPTokenIssuanceDestroyFields(
+        fields: MPTokenIssuanceDestroyFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["MPTokenIssuanceID"] = fields.mptIssuanceId
+    }
+
+    private fun serializeMPTokenIssuanceSetFields(
+        fields: MPTokenIssuanceSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["MPTokenIssuanceID"] = fields.mptIssuanceId
+        fields.holder?.let { map["Holder"] = addressToHex(it) }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeMPTokenAuthorizeFields(
+        fields: MPTokenAuthorizeFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["MPTokenIssuanceID"] = fields.mptIssuanceId
+        fields.holder?.let { map["Holder"] = addressToHex(it) }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeCredentialCreateFields(
+        fields: CredentialCreateFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Subject"] = addressToHex(fields.subject)
+        map["CredentialType"] = fields.credentialType
+        fields.issuer?.let { map["Issuer"] = addressToHex(it) }
+        fields.expiration?.let { map["Expiration"] = it.toLong() }
+        fields.uri?.let { map["URI"] = it }
+    }
+
+    private fun serializeCredentialAcceptFields(
+        fields: CredentialAcceptFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Subject"] = addressToHex(fields.subject)
+        map["CredentialType"] = fields.credentialType
+        map["Issuer"] = addressToHex(fields.issuer)
+    }
+
+    private fun serializeCredentialDeleteFields(
+        fields: CredentialDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Subject"] = addressToHex(fields.subject)
+        map["CredentialType"] = fields.credentialType
+        fields.issuer?.let { map["Issuer"] = addressToHex(it) }
+    }
+
+    private fun serializeAMMCreateFields(
+        fields: AMMCreateFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Amount"] = serializeAmount(fields.amount)
+        map["Amount2"] = serializeAmount(fields.amount2)
+        fields.tradingFee?.let { map["TradingFee"] = it.toLong() }
+    }
+
+    private fun serializeAMMDepositFields(
+        fields: AMMDepositFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.asset?.let { map["Asset"] = it }
+        fields.asset2?.let { map["Asset2"] = it }
+        fields.amount?.let { map["Amount"] = serializeAmount(it) }
+        fields.amount2?.let { map["Amount2"] = serializeAmount(it) }
+        fields.ePrice?.let { map["EPrice"] = serializeAmount(it) }
+        fields.lpTokenOut?.let { map["LPTokenOut"] = serializeAmount(it) }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeAMMWithdrawFields(
+        fields: AMMWithdrawFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.asset?.let { map["Asset"] = it }
+        fields.asset2?.let { map["Asset2"] = it }
+        fields.amount?.let { map["Amount"] = serializeAmount(it) }
+        fields.amount2?.let { map["Amount2"] = serializeAmount(it) }
+        fields.ePrice?.let { map["EPrice"] = serializeAmount(it) }
+        fields.lpTokenIn?.let { map["LPTokenIn"] = serializeAmount(it) }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeAMMVoteFields(
+        fields: AMMVoteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.asset?.let { map["Asset"] = it }
+        fields.asset2?.let { map["Asset2"] = it }
+        map["TradingFee"] = fields.tradingFee.toLong()
+    }
+
+    private fun serializeAMMBidFields(
+        fields: AMMBidFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.asset?.let { map["Asset"] = it }
+        fields.asset2?.let { map["Asset2"] = it }
+        fields.bidMin?.let { map["BidMin"] = serializeAmount(it) }
+        fields.bidMax?.let { map["BidMax"] = serializeAmount(it) }
+        fields.authAccounts?.let { accounts ->
+            map["AuthAccounts"] =
+                accounts.map { account ->
+                    mapOf("AuthAccount" to mapOf("Account" to addressToHex(account)))
+                }
+        }
+    }
+
+    private fun serializeAMMDeleteFields(
+        fields: AMMDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.asset?.let { map["Asset"] = it }
+        fields.asset2?.let { map["Asset2"] = it }
+    }
+
+    private fun serializeAMMClawbackFields(
+        fields: AMMClawbackFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Holder"] = addressToHex(fields.holder)
+        fields.asset?.let { map["Asset"] = it }
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun serializeBatchFields(
+        fields: BatchFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["RawTransactions"] = fields.rawTransactions
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeOracleSetFields(
+        fields: OracleSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["OracleDocumentID"] = fields.oracleDocumentId.toLong()
+        fields.provider?.let { map["Provider"] = it }
+        fields.assetClass?.let { map["AssetClass"] = it }
+        fields.lastUpdateTime?.let { map["LastUpdateTime"] = it.toLong() }
+        fields.priceDataSeries?.let { series ->
+            map["PriceDataSeries"] =
+                series.map { priceData ->
+                    val pdMap = linkedMapOf<String, Any?>()
+                    pdMap["BaseAsset"] = priceData.baseAsset
+                    pdMap["QuoteAsset"] = priceData.quoteAsset
+                    priceData.assetPrice?.let { pdMap["AssetPrice"] = it }
+                    priceData.scale?.let { pdMap["Scale"] = it.toLong() }
+                    mapOf("PriceData" to pdMap)
+                }
+        }
+    }
+
+    private fun serializeOracleDeleteFields(
+        fields: OracleDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["OracleDocumentID"] = fields.oracleDocumentId.toLong()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun serializePermissionedDomainSetFields(
+        fields: PermissionedDomainSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.domainId?.let { map["DomainID"] = it }
+        fields.acceptedCredentials?.let { map["AcceptedCredentials"] = it }
+    }
+
+    private fun serializePermissionedDomainDeleteFields(
+        fields: PermissionedDomainDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["DomainID"] = fields.domainId
+    }
+
+    private fun serializeDelegateSetFields(
+        fields: DelegateSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Authorize"] = addressToHex(fields.authorize)
+        fields.permissions?.let { map["Permissions"] = it }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeVaultCreateFields(
+        fields: VaultCreateFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Asset"] = fields.asset
+        fields.mptIssuanceId?.let { map["MPTokenIssuanceID"] = it }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeVaultSetFields(
+        fields: VaultSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["VaultID"] = fields.vaultId
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeVaultDeleteFields(
+        fields: VaultDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["VaultID"] = fields.vaultId
+    }
+
+    private fun serializeVaultDepositFields(
+        fields: VaultDepositFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["VaultID"] = fields.vaultId
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeVaultWithdrawFields(
+        fields: VaultWithdrawFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["VaultID"] = fields.vaultId
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeVaultClawbackFields(
+        fields: VaultClawbackFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["VaultID"] = fields.vaultId
+        map["Amount"] = serializeAmount(fields.amount)
+        fields.holder?.let { map["Holder"] = addressToHex(it) }
+    }
+
+    private fun serializeLoanSetFields(
+        fields: LoanSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["CollateralAsset"] = fields.collateralAsset
+        map["LoanAsset"] = fields.loanAsset
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeLoanDeleteFields(
+        fields: LoanDeleteFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["LoanID"] = fields.loanId
+    }
+
+    private fun serializeLoanManageFields(
+        fields: LoanManageFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["LoanID"] = fields.loanId
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeLoanPayFields(
+        fields: LoanPayFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["LoanID"] = fields.loanId
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeLoanBrokerSetFields(
+        fields: LoanBrokerSetFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeLoanBrokerCoverDepositFields(
+        fields: LoanBrokerCoverDepositFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeLoanBrokerCoverWithdrawFields(
+        fields: LoanBrokerCoverWithdrawFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeLoanBrokerCoverClawbackFields(
+        fields: LoanBrokerCoverClawbackFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["Amount"] = serializeAmount(fields.amount)
+        fields.holder?.let { map["Holder"] = addressToHex(it) }
+    }
+
+    private fun serializeBridgeSpec(bridge: XChainBridgeSpec): Map<String, Any> =
+        mapOf(
+            "LockingChainDoor" to addressToHex(bridge.lockingChainDoor),
+            "LockingChainIssue" to bridge.lockingChainIssue,
+            "IssuingChainDoor" to addressToHex(bridge.issuingChainDoor),
+            "IssuingChainIssue" to bridge.issuingChainIssue,
+        )
+
+    private fun serializeXChainCreateBridgeFields(
+        fields: XChainCreateBridgeFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["SignatureReward"] = serializeAmount(fields.signatureReward)
+        fields.minAccountCreateAmount?.let { map["MinAccountCreateAmount"] = serializeAmount(it) }
+    }
+
+    private fun serializeXChainModifyBridgeFields(
+        fields: XChainModifyBridgeFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        fields.signatureReward?.let { map["SignatureReward"] = serializeAmount(it) }
+        fields.minAccountCreateAmount?.let { map["MinAccountCreateAmount"] = serializeAmount(it) }
+    }
+
+    private fun serializeXChainCreateClaimIDFields(
+        fields: XChainCreateClaimIDFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["SignatureReward"] = serializeAmount(fields.signatureReward)
+        map["OtherChainSource"] = addressToHex(fields.otherChainSource)
+    }
+
+    private fun serializeXChainCommitFields(
+        fields: XChainCommitFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["XChainClaimID"] = fields.claimId.toLong()
+        map["Amount"] = serializeAmount(fields.amount)
+        fields.otherChainDestination?.let { map["OtherChainDestination"] = addressToHex(it) }
+    }
+
+    private fun serializeXChainClaimFields(
+        fields: XChainClaimFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["XChainClaimID"] = fields.claimId.toLong()
+        map["Destination"] = addressToHex(fields.destination)
+        map["Amount"] = serializeAmount(fields.amount)
+    }
+
+    private fun serializeXChainAccountCreateCommitFields(
+        fields: XChainAccountCreateCommitFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["Amount"] = serializeAmount(fields.amount)
+        map["SignatureReward"] = serializeAmount(fields.signatureReward)
+        map["Destination"] = addressToHex(fields.destination)
+    }
+
+    private fun serializeXChainAddClaimAttestationFields(
+        fields: XChainAddClaimAttestationFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["PublicKey"] = fields.publicKey
+        map["Signature"] = fields.signature
+        map["OtherChainSource"] = addressToHex(fields.otherChainSource)
+        map["Amount"] = serializeAmount(fields.amount)
+        map["AttestationRewardAccount"] = addressToHex(fields.attestationRewardAccount)
+        map["AttestationSignerAccount"] = addressToHex(fields.attestationSignerAccount)
+        map["WasLockingChainSend"] = if (fields.wasLockingChainSend) 1L else 0L
+        map["XChainClaimID"] = fields.xChainClaimId.toLong()
+        fields.destination?.let { map["Destination"] = addressToHex(it) }
+    }
+
+    private fun serializeXChainAddAccountCreateAttestationFields(
+        fields: XChainAddAccountCreateAttestationFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["XChainBridge"] = serializeBridgeSpec(fields.bridge)
+        map["PublicKey"] = fields.publicKey
+        map["Signature"] = fields.signature
+        map["OtherChainSource"] = addressToHex(fields.otherChainSource)
+        map["Amount"] = serializeAmount(fields.amount)
+        map["AttestationRewardAccount"] = addressToHex(fields.attestationRewardAccount)
+        map["AttestationSignerAccount"] = addressToHex(fields.attestationSignerAccount)
+        map["WasLockingChainSend"] = if (fields.wasLockingChainSend) 1L else 0L
+        map["XChainAccountCreateCount"] = fields.xChainAccountCreateCount.toLong()
+        map["Destination"] = addressToHex(fields.destination)
+        map["SignatureReward"] = serializeAmount(fields.signatureReward)
     }
 
     @Suppress("UNCHECKED_CAST")
