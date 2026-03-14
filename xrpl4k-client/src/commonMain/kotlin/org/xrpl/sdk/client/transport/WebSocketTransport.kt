@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -79,6 +80,10 @@ internal class WebSocketTransport(
      */
     suspend fun connect() {
         if (_connectionState.value is ConnectionState.Connected) return
+        if (_connectionState.value is ConnectionState.Connecting) {
+            _connectionState.first { it is ConnectionState.Connected || it is ConnectionState.Failed }
+            return
+        }
         _connectionState.value = ConnectionState.Connecting
 
         connectionJob =
@@ -139,6 +144,9 @@ internal class WebSocketTransport(
                     failAllPendingRequests()
                 }
             }
+
+        // Wait until the connection is established or fails
+        _connectionState.first { it is ConnectionState.Connected || it is ConnectionState.Failed }
     }
 
     private suspend fun handleTextFrame(text: String) {

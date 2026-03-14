@@ -50,6 +50,7 @@ public class AMMCreateBuilder internal constructor() {
     public var tradingFee: UInt? = null
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -72,6 +73,7 @@ public class AMMCreateBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }
@@ -170,6 +172,7 @@ public class AMMDepositBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }
@@ -268,6 +271,7 @@ public class AMMWithdrawBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

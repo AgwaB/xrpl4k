@@ -65,6 +65,7 @@ public class SignerListSetBuilder internal constructor() {
     public var signerEntries: List<SignerEntry> = emptyList()
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -85,6 +86,7 @@ public class SignerListSetBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

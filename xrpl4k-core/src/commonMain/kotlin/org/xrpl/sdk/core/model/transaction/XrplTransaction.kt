@@ -26,6 +26,7 @@ public sealed interface XrplTransaction {
      * @property fields Transaction-type-specific fields.
      * @property memos Optional memos attached to the transaction.
      * @property sourceTag Optional source tag identifying the originator.
+     * @property flags Optional transaction flags (bitmask). Use constants from [TransactionFlags].
      */
     public class Unsigned(
         override val transactionType: TransactionType,
@@ -33,6 +34,7 @@ public sealed interface XrplTransaction {
         public val fields: TransactionFields,
         public val memos: List<Memo> = emptyList(),
         public val sourceTag: UInt? = null,
+        public val flags: UInt? = null,
     ) : XrplTransaction {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -41,7 +43,8 @@ public sealed interface XrplTransaction {
                 account == other.account &&
                 fields == other.fields &&
                 memos == other.memos &&
-                sourceTag == other.sourceTag
+                sourceTag == other.sourceTag &&
+                flags == other.flags
         }
 
         override fun hashCode(): Int {
@@ -50,6 +53,7 @@ public sealed interface XrplTransaction {
             result = 31 * result + fields.hashCode()
             result = 31 * result + memos.hashCode()
             result = 31 * result + (sourceTag?.hashCode() ?: 0)
+            result = 31 * result + (flags?.hashCode() ?: 0)
             return result
         }
 
@@ -59,7 +63,8 @@ public sealed interface XrplTransaction {
                 "account=$account, " +
                 "fields=$fields, " +
                 "memos=$memos, " +
-                "sourceTag=$sourceTag" +
+                "sourceTag=$sourceTag, " +
+                "flags=$flags" +
                 ")"
     }
 
@@ -80,6 +85,7 @@ public sealed interface XrplTransaction {
      * @property signers Multi-signers for this transaction.
      * @property ticketSequence Ticket sequence to use instead of account sequence.
      * @property networkId Network ID for replay protection.
+     * @property flags Optional transaction flags (bitmask). Use constants from [TransactionFlags].
      */
     public class Filled internal constructor(
         override val transactionType: TransactionType,
@@ -94,6 +100,7 @@ public sealed interface XrplTransaction {
         public val signers: List<Signer> = emptyList(),
         public val ticketSequence: UInt? = null,
         public val networkId: UInt? = null,
+        public val flags: UInt? = null,
     ) : XrplTransaction {
         public companion object {
             /**
@@ -115,6 +122,7 @@ public sealed interface XrplTransaction {
                 signers: List<Signer> = emptyList(),
                 ticketSequence: UInt? = null,
                 networkId: UInt? = null,
+                flags: UInt? = null,
             ): Filled =
                 Filled(
                     transactionType = transactionType,
@@ -129,6 +137,7 @@ public sealed interface XrplTransaction {
                     signers = signers,
                     ticketSequence = ticketSequence,
                     networkId = networkId,
+                    flags = flags,
                 )
         }
 
@@ -146,7 +155,8 @@ public sealed interface XrplTransaction {
                 accountTxnId == other.accountTxnId &&
                 signers == other.signers &&
                 ticketSequence == other.ticketSequence &&
-                networkId == other.networkId
+                networkId == other.networkId &&
+                flags == other.flags
         }
 
         override fun hashCode(): Int {
@@ -162,6 +172,7 @@ public sealed interface XrplTransaction {
             result = 31 * result + signers.hashCode()
             result = 31 * result + (ticketSequence?.hashCode() ?: 0)
             result = 31 * result + (networkId?.hashCode() ?: 0)
+            result = 31 * result + (flags?.hashCode() ?: 0)
             return result
         }
 
@@ -178,7 +189,8 @@ public sealed interface XrplTransaction {
                 "accountTxnId=$accountTxnId, " +
                 "signers=$signers, " +
                 "ticketSequence=$ticketSequence, " +
-                "networkId=$networkId" +
+                "networkId=$networkId, " +
+                "flags=$flags" +
                 ")"
     }
 

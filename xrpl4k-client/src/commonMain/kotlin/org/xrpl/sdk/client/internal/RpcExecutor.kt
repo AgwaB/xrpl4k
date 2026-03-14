@@ -88,6 +88,7 @@ internal suspend fun <Req, Resp, T> XrplClient.executeWsRpc(
             else -> JsonObject(emptyMap())
         }
 
+    webSocketTransport.connect()
     val result = webSocketTransport.request(method, params, responseDeserializer)
 
     return when (result) {

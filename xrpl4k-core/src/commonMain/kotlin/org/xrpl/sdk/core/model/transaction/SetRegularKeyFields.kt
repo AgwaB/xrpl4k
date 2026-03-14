@@ -31,6 +31,7 @@ public class SetRegularKeyBuilder internal constructor() {
     public var regularKey: Address? = null
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -46,6 +47,7 @@ public class SetRegularKeyBuilder internal constructor() {
             fields = SetRegularKeyFields(regularKey = regularKey),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

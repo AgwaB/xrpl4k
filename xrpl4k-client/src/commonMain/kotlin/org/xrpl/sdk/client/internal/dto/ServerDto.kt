@@ -99,7 +99,7 @@ internal data class FeatureEntryDto(
     val enabled: Boolean = false,
     val name: String? = null,
     val supported: Boolean = false,
-    val vetoed: Boolean? = null,
+    val vetoed: kotlinx.serialization.json.JsonElement? = null,
 )
 
 @Serializable

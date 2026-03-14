@@ -31,6 +31,7 @@ public class OfferCancelBuilder internal constructor() {
     public var offerSequence: UInt? = null
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -47,6 +48,7 @@ public class OfferCancelBuilder internal constructor() {
             fields = OfferCancelFields(offerSequence = seq),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

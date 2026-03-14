@@ -73,6 +73,7 @@ public class AccountSetBuilder internal constructor() {
     public var nftTokenMinter: Address? = null
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -97,6 +98,7 @@ public class AccountSetBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

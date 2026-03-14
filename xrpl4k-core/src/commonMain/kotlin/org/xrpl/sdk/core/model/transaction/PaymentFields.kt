@@ -104,6 +104,7 @@ public class PaymentBuilder internal constructor() {
     public var paths: List<List<PathStep>>? = null
     public var memos: List<Memo> = emptyList()
     public var sourceTag: UInt? = null
+    public var flags: UInt? = null
 
     private val memoList = mutableListOf<Memo>()
 
@@ -130,6 +131,7 @@ public class PaymentBuilder internal constructor() {
                 ),
             memos = if (memoList.isNotEmpty()) memoList.toList() else memos,
             sourceTag = sourceTag,
+            flags = flags,
         )
     }
 }

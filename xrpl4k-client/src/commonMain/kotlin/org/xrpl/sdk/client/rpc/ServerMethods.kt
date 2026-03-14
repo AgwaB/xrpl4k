@@ -137,7 +137,14 @@ public suspend fun XrplClient.feature(feature: String? = null): XrplResult<Featu
                         enabled = entry.enabled,
                         name = entry.name,
                         supported = entry.supported,
-                        vetoed = entry.vetoed,
+                        vetoed =
+                            when (val v = entry.vetoed) {
+                                is kotlinx.serialization.json.JsonPrimitive -> {
+                                    val content = v.content
+                                    content == "true"
+                                }
+                                else -> null
+                            },
                     )
                 },
         )

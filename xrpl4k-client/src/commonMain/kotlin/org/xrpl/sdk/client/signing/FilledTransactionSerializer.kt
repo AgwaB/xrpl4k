@@ -21,6 +21,12 @@ import org.xrpl.sdk.core.model.transaction.DepositPreauthFields
 import org.xrpl.sdk.core.model.transaction.EscrowCancelFields
 import org.xrpl.sdk.core.model.transaction.EscrowCreateFields
 import org.xrpl.sdk.core.model.transaction.EscrowFinishFields
+import org.xrpl.sdk.core.model.transaction.NFTokenAcceptOfferFields
+import org.xrpl.sdk.core.model.transaction.NFTokenBurnFields
+import org.xrpl.sdk.core.model.transaction.NFTokenCancelOfferFields
+import org.xrpl.sdk.core.model.transaction.NFTokenCreateOfferFields
+import org.xrpl.sdk.core.model.transaction.NFTokenMintFields
+import org.xrpl.sdk.core.model.transaction.NFTokenModifyFields
 import org.xrpl.sdk.core.model.transaction.OfferCancelFields
 import org.xrpl.sdk.core.model.transaction.OfferCreateFields
 import org.xrpl.sdk.core.model.transaction.PaymentChannelClaimFields
@@ -153,6 +159,7 @@ internal object FilledTransactionSerializer {
         map["LastLedgerSequence"] = transaction.lastLedgerSequence.toLong()
 
         // Optional common fields
+        transaction.flags?.let { map["Flags"] = it.toLong() }
         transaction.sourceTag?.let { map["SourceTag"] = it.toLong() }
         transaction.accountTxnId?.let { map["AccountTxnID"] = it.value }
         transaction.ticketSequence?.let { map["TicketSequence"] = it.toLong() }
@@ -226,6 +233,12 @@ internal object FilledTransactionSerializer {
             is PaymentChannelClaimFields -> serializePaymentChannelClaimFields(fields, map)
             is DepositPreauthFields -> serializeDepositPreauthFields(fields, map)
             is ClawbackFields -> serializeClawbackFields(fields, map)
+            is NFTokenMintFields -> serializeNFTokenMintFields(fields, map)
+            is NFTokenBurnFields -> serializeNFTokenBurnFields(fields, map)
+            is NFTokenCreateOfferFields -> serializeNFTokenCreateOfferFields(fields, map)
+            is NFTokenAcceptOfferFields -> serializeNFTokenAcceptOfferFields(fields, map)
+            is NFTokenCancelOfferFields -> serializeNFTokenCancelOfferFields(fields, map)
+            is NFTokenModifyFields -> serializeNFTokenModifyFields(fields, map)
             is UnknownTransactionFields -> serializeUnknownFields(fields, map)
             else -> { /* unknown type — no fields emitted */ }
         }
@@ -438,6 +451,61 @@ internal object FilledTransactionSerializer {
     ) {
         map["Amount"] = serializeAmount(fields.amount)
         fields.holder?.let { map["Holder"] = addressToHex(it) }
+    }
+
+    private fun serializeNFTokenMintFields(
+        fields: NFTokenMintFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["NFTokenTaxon"] = fields.nfTokenTaxon.toLong()
+        fields.issuer?.let { map["Issuer"] = addressToHex(it) }
+        fields.transferFee?.let { map["TransferFee"] = it.toLong() }
+        fields.uri?.let { map["URI"] = it }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeNFTokenBurnFields(
+        fields: NFTokenBurnFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["NFTokenID"] = fields.nfTokenId
+    }
+
+    private fun serializeNFTokenCreateOfferFields(
+        fields: NFTokenCreateOfferFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["NFTokenID"] = fields.nfTokenId
+        map["Amount"] = serializeAmount(fields.amount)
+        fields.destination?.let { map["Destination"] = addressToHex(it) }
+        fields.owner?.let { map["Owner"] = addressToHex(it) }
+        fields.expiration?.let { map["Expiration"] = it.toLong() }
+        fields.flags?.let { map["Flags"] = it.toLong() }
+    }
+
+    private fun serializeNFTokenAcceptOfferFields(
+        fields: NFTokenAcceptOfferFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        fields.nfTokenSellOffer?.let { map["NFTokenSellOffer"] = it }
+        fields.nfTokenBuyOffer?.let { map["NFTokenBuyOffer"] = it }
+        fields.nfTokenBrokerFee?.let { map["NFTokenBrokerFee"] = serializeAmount(it) }
+    }
+
+    private fun serializeNFTokenCancelOfferFields(
+        fields: NFTokenCancelOfferFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["NFTokenOffers"] = fields.nfTokenOffers
+    }
+
+    private fun serializeNFTokenModifyFields(
+        fields: NFTokenModifyFields,
+        map: MutableMap<String, Any?>,
+    ) {
+        map["NFTokenID"] = fields.nfTokenId
+        fields.owner?.let { map["Owner"] = addressToHex(it) }
+        fields.uri?.let { map["URI"] = it }
     }
 
     @Suppress("UNCHECKED_CAST")

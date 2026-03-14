@@ -87,6 +87,7 @@ public suspend fun XrplClient.autofill(tx: XrplTransaction.Unsigned): XrplResult
                 sequence = sequence,
                 lastLedgerSequence = lastLedgerSequence,
                 networkId = networkId,
+                flags = tx.flags,
             )
 
         XrplResult.Success(filled)
