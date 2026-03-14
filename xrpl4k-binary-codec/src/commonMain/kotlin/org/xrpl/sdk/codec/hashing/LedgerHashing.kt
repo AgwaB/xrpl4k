@@ -8,8 +8,10 @@ import org.xrpl.sdk.crypto.hashing.sha512HalfWithPrefix
 /**
  * Encodes an integer as a big-endian hex string with the specified byte length.
  */
-private fun intToHex(value: Long, byteLength: Int): String =
-    value.toString(16).padStart(byteLength * 2, '0')
+private fun intToHex(
+    value: Long,
+    byteLength: Int,
+): String = value.toString(16).padStart(byteLength * 2, '0')
 
 /**
  * Computes the hash of a ledger header.
@@ -40,17 +42,18 @@ public fun hashLedgerHeader(
     closeFlags: Int,
     provider: CryptoProvider,
 ): String {
-    val hex = buildString {
-        append(intToHex(ledgerSequence, 4))
-        append(intToHex(totalCoins, 8))
-        append(parentHash)
-        append(transactionHash)
-        append(stateHash)
-        append(intToHex(parentCloseTime, 4))
-        append(intToHex(closeTime, 4))
-        append(intToHex(closeTimeResolution.toLong(), 1))
-        append(intToHex(closeFlags.toLong(), 1))
-    }
+    val hex =
+        buildString {
+            append(intToHex(ledgerSequence, 4))
+            append(intToHex(totalCoins, 8))
+            append(parentHash)
+            append(transactionHash)
+            append(stateHash)
+            append(intToHex(parentCloseTime, 4))
+            append(intToHex(closeTime, 4))
+            append(intToHex(closeTimeResolution.toLong(), 1))
+            append(intToHex(closeFlags.toLong(), 1))
+        }
 
     return sha512HalfWithPrefix(HashPrefix.LEDGER.bytes, hex.hexToByteArray(), provider)
         .toHexString()
@@ -72,11 +75,12 @@ public fun hashTxTree(
     val shaMap = ShaMap(provider)
     for ((txBlob, metaBlob) in transactions) {
         // Compute transaction hash = sha512Half(TRANSACTION_ID prefix + txBlob bytes)
-        val txHash = sha512HalfWithPrefix(
-            HashPrefix.TRANSACTION_ID.bytes,
-            txBlob.hexToByteArray(),
-            provider,
-        ).toHexString()
+        val txHash =
+            sha512HalfWithPrefix(
+                HashPrefix.TRANSACTION_ID.bytes,
+                txBlob.hexToByteArray(),
+                provider,
+            ).toHexString()
 
         val data = addLengthPrefix(txBlob) + addLengthPrefix(metaBlob)
         shaMap.addItem(txHash, data, ShaMapNodeType.TRANSACTION_METADATA)
@@ -113,26 +117,27 @@ public fun hashStateTree(
 @Suppress("MagicNumber")
 private fun addLengthPrefix(hex: String): String {
     val length = hex.length / 2
-    val prefix = when {
-        length <= 192 -> {
-            byteArrayOf(length.toByte())
+    val prefix =
+        when {
+            length <= 192 -> {
+                byteArrayOf(length.toByte())
+            }
+            length <= 12480 -> {
+                val adjusted = length - 193
+                byteArrayOf(
+                    (193 + (adjusted ushr 8)).toByte(),
+                    (adjusted and 0xFF).toByte(),
+                )
+            }
+            length <= 918744 -> {
+                val adjusted = length - 12481
+                byteArrayOf(
+                    (241 + (adjusted ushr 16)).toByte(),
+                    ((adjusted ushr 8) and 0xFF).toByte(),
+                    (adjusted and 0xFF).toByte(),
+                )
+            }
+            else -> error("Variable integer overflow.")
         }
-        length <= 12480 -> {
-            val adjusted = length - 193
-            byteArrayOf(
-                (193 + (adjusted ushr 8)).toByte(),
-                (adjusted and 0xFF).toByte(),
-            )
-        }
-        length <= 918744 -> {
-            val adjusted = length - 12481
-            byteArrayOf(
-                (241 + (adjusted ushr 16)).toByte(),
-                ((adjusted ushr 8) and 0xFF).toByte(),
-                (adjusted and 0xFF).toByte(),
-            )
-        }
-        else -> error("Variable integer overflow.")
-    }
     return prefix.toHexString() + hex
 }

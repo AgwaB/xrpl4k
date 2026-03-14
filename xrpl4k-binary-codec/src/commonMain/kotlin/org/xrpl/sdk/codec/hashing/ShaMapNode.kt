@@ -24,7 +24,6 @@ internal class ShaMapLeafNode(
     val data: String,
     val type: ShaMapNodeType,
 ) : ShaMapNode() {
-
     override fun hash(provider: CryptoProvider): String {
         return when (type) {
             ShaMapNodeType.ACCOUNT_STATE -> {
@@ -65,7 +64,6 @@ private val HEX_ZERO = "0".repeat(HASH_HEX_LENGTH)
 internal class ShaMapInnerNode(
     val depth: Int = 0,
 ) : ShaMapNode() {
-
     private val branches: Array<ShaMapNode?> = arrayOfNulls(SLOT_MAX + 1)
     private var empty: Boolean = true
 
@@ -73,12 +71,13 @@ internal class ShaMapInnerNode(
         if (empty) return HEX_ZERO
 
         // Concatenate all 16 child hashes (each 32 bytes = 64 hex chars)
-        val childHashes = buildString(HASH_HEX_LENGTH * (SLOT_MAX + 1)) {
-            for (i in 0..SLOT_MAX) {
-                val child = branches[i]
-                append(child?.hash(provider) ?: HEX_ZERO)
+        val childHashes =
+            buildString(HASH_HEX_LENGTH * (SLOT_MAX + 1)) {
+                for (i in 0..SLOT_MAX) {
+                    val child = branches[i]
+                    append(child?.hash(provider) ?: HEX_ZERO)
+                }
             }
-        }
 
         val payload = childHashes.hexToByteArray()
         return sha512HalfWithPrefix(HashPrefix.INNER_NODE.bytes, payload, provider)
@@ -88,7 +87,10 @@ internal class ShaMapInnerNode(
     /**
      * Adds a leaf node at the correct branch determined by the tag nibble at [depth].
      */
-    fun addItem(tag: String, node: ShaMapLeafNode) {
+    fun addItem(
+        tag: String,
+        node: ShaMapLeafNode,
+    ) {
         val nibble = tag[depth].digitToInt(HEX_RADIX)
         val existing = branches[nibble]
 

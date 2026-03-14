@@ -16,7 +16,6 @@ import org.xrpl.sdk.crypto.CryptoProvider
  * @property provider Cryptographic provider for SHA-512Half computation.
  */
 public class ShaMap(private val provider: CryptoProvider) {
-
     private val root: ShaMapInnerNode = ShaMapInnerNode(depth = 0)
 
     /**
@@ -33,7 +32,11 @@ public class ShaMap(private val provider: CryptoProvider) {
      * @param data Hex-encoded data for the entry.
      * @param type The type of data being added.
      */
-    public fun addItem(tag: String, data: String, type: ShaMapNodeType) {
+    public fun addItem(
+        tag: String,
+        data: String,
+        type: ShaMapNodeType,
+    ) {
         root.addItem(tag, ShaMapLeafNode(tag, data, type))
     }
 }

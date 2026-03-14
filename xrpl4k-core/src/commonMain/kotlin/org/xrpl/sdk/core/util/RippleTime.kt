@@ -18,8 +18,7 @@ public const val RIPPLE_EPOCH_DIFF: Long = 946_684_800L
  * @param rippleTime seconds since Ripple epoch.
  * @return milliseconds since Unix epoch.
  */
-public fun rippleTimeToUnixTime(rippleTime: Long): Long =
-    (rippleTime + RIPPLE_EPOCH_DIFF) * 1000
+public fun rippleTimeToUnixTime(rippleTime: Long): Long = (rippleTime + RIPPLE_EPOCH_DIFF) * 1000
 
 /**
  * Converts a Unix epoch timestamp in **milliseconds** to a Ripple epoch timestamp
@@ -28,8 +27,7 @@ public fun rippleTimeToUnixTime(rippleTime: Long): Long =
  * @param unixTimeMs milliseconds since Unix epoch.
  * @return seconds since Ripple epoch.
  */
-public fun unixTimeToRippleTime(unixTimeMs: Long): Long =
-    (unixTimeMs / 1000) - RIPPLE_EPOCH_DIFF
+public fun unixTimeToRippleTime(unixTimeMs: Long): Long = (unixTimeMs / 1000) - RIPPLE_EPOCH_DIFF
 
 /**
  * Converts a Ripple epoch timestamp to a [kotlinx.datetime.Instant].
@@ -50,8 +48,7 @@ public fun rippleTimeToInstant(rippleTime: Long): Instant =
  * @param instant the instant to convert.
  * @return seconds since Ripple epoch.
  */
-public fun instantToRippleTime(instant: Instant): Long =
-    instant.epochSeconds - RIPPLE_EPOCH_DIFF
+public fun instantToRippleTime(instant: Instant): Long = instant.epochSeconds - RIPPLE_EPOCH_DIFF
 
 /**
  * Converts a Ripple epoch timestamp to an ISO 8601 string (UTC).
@@ -59,8 +56,7 @@ public fun instantToRippleTime(instant: Instant): Long =
  * @param rippleTime seconds since Ripple epoch.
  * @return ISO 8601 date-time string (e.g. `"2000-01-01T00:00:00Z"`).
  */
-public fun rippleTimeToISOTime(rippleTime: Long): String =
-    rippleTimeToInstant(rippleTime).toString()
+public fun rippleTimeToISOTime(rippleTime: Long): String = rippleTimeToInstant(rippleTime).toString()
 
 /**
  * Converts an ISO 8601 date-time string to a Ripple epoch timestamp in seconds.
@@ -68,5 +64,4 @@ public fun rippleTimeToISOTime(rippleTime: Long): String =
  * @param iso8601 ISO 8601 date-time string.
  * @return seconds since Ripple epoch.
  */
-public fun isoTimeToRippleTime(iso8601: String): Long =
-    instantToRippleTime(Instant.parse(iso8601))
+public fun isoTimeToRippleTime(iso8601: String): Long = instantToRippleTime(Instant.parse(iso8601))

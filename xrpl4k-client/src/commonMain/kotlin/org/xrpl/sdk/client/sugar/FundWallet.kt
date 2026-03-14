@@ -94,23 +94,25 @@ public suspend fun XrplClient.fundWallet(
     val faucetHost = options.faucetHost ?: resolveFaucetHost(network.rpcUrl)
     val faucetPath = options.faucetPath ?: "/accounts"
 
-    val requestBody = buildJsonObject {
-        put("destination", targetWallet.address.value)
-        if (options.amount != null) {
-            put("xrpAmount", options.amount)
+    val requestBody =
+        buildJsonObject {
+            put("destination", targetWallet.address.value)
+            if (options.amount != null) {
+                put("xrpAmount", options.amount)
+            }
+            if (options.usageContext != null) {
+                put("usageContext", options.usageContext)
+            }
+            put("userAgent", "xrpl4k")
         }
-        if (options.usageContext != null) {
-            put("usageContext", options.usageContext)
-        }
-        put("userAgent", "xrpl4k")
-    }
 
     val httpClient = HttpClient()
     try {
-        val response = httpClient.post("https://$faucetHost$faucetPath") {
-            contentType(ContentType.Application.Json)
-            setBody(requestBody.toString())
-        }
+        val response =
+            httpClient.post("https://$faucetHost$faucetPath") {
+                contentType(ContentType.Application.Json)
+                setBody(requestBody.toString())
+            }
 
         if (!response.status.isSuccess()) {
             val body = response.bodyAsText()

@@ -207,11 +207,12 @@ public class Wallet internal constructor(
             val publicKeyBytes = provider.secp256k1PublicKey(derivedKey.privateKey)
             val publicKey = PublicKey(publicKeyBytes.toHexString().uppercase())
 
-            val keyPair = KeyPair(
-                publicKey = publicKey,
-                privateKeyBytes = derivedKey.privateKey.copyOf(),
-                algorithm = KeyAlgorithm.Secp256k1,
-            )
+            val keyPair =
+                KeyPair(
+                    publicKey = publicKey,
+                    privateKeyBytes = derivedKey.privateKey.copyOf(),
+                    algorithm = KeyAlgorithm.Secp256k1,
+                )
 
             val accountId = AddressCodec.accountIdFromPublicKey(publicKey, provider)
             val address = AddressCodec.encodeAddress(accountId, provider)

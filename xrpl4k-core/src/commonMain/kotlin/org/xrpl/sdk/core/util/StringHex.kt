@@ -8,8 +8,7 @@ package org.xrpl.sdk.core.util
  * @param str the string to convert.
  * @return the hex-encoded string (uppercase).
  */
-public fun convertStringToHex(str: String): String =
-    str.encodeToByteArray().toHexString().uppercase()
+public fun convertStringToHex(str: String): String = str.encodeToByteArray().toHexString().uppercase()
 
 /**
  * Converts a hexadecimal string back to a UTF-8 string.
@@ -20,5 +19,4 @@ public fun convertStringToHex(str: String): String =
  * @return the decoded UTF-8 string.
  * @throws IllegalArgumentException if the hex string has odd length or contains non-hex characters.
  */
-public fun convertHexToString(hex: String): String =
-    hex.hexToByteArray().decodeToString()
+public fun convertHexToString(hex: String): String = hex.hexToByteArray().decodeToString()

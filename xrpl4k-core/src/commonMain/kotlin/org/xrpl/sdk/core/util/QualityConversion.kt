@@ -60,8 +60,7 @@ public fun transferRateToDecimal(rate: Long): String {
  * @return the transfer rate in billionths format.
  * @throws IllegalArgumentException if the percent is not valid.
  */
-public fun percentToTransferRate(percent: String): Long =
-    decimalToTransferRate(percentToDecimal(percent))
+public fun percentToTransferRate(percent: String): Long = decimalToTransferRate(percentToDecimal(percent))
 
 /**
  * Converts a decimal string to the billionths Quality format (QualityIn/QualityOut).
@@ -110,8 +109,7 @@ public fun qualityToDecimal(quality: Long): String {
  * @return the quality in billionths format.
  * @throws IllegalArgumentException if the percent is not valid.
  */
-public fun percentToQuality(percent: String): Long =
-    decimalToQuality(percentToDecimal(percent))
+public fun percentToQuality(percent: String): Long = decimalToQuality(percentToDecimal(percent))
 
 /**
  * Parses a percent string like `"50%"` to a decimal string like `"0.5"`.
@@ -161,16 +159,20 @@ private fun decimalStringToScaled(decimal: String): Long {
         "Decimal exceeds maximum precision."
     }
 
-    val intValue = if (intPart.isEmpty()) 0L else {
-        intPart.toLongOrNull() ?: throw IllegalArgumentException("Value is not a number")
-    }
+    val intValue =
+        if (intPart.isEmpty()) {
+            0L
+        } else {
+            intPart.toLongOrNull() ?: throw IllegalArgumentException("Value is not a number")
+        }
 
-    val fracValue = if (fracPart.isEmpty()) {
-        0L
-    } else {
-        val padded = fracPart.padEnd(MAX_DECIMAL_PLACES, '0')
-        padded.toLongOrNull() ?: throw IllegalArgumentException("Value is not a number")
-    }
+    val fracValue =
+        if (fracPart.isEmpty()) {
+            0L
+        } else {
+            val padded = fracPart.padEnd(MAX_DECIMAL_PLACES, '0')
+            padded.toLongOrNull() ?: throw IllegalArgumentException("Value is not a number")
+        }
 
     val result = intValue * ONE_BILLION + fracValue
     return if (negative) -result else result
@@ -188,12 +190,13 @@ private fun scaledToDecimalString(scaled: Long): String {
     val intPart = abs / ONE_BILLION
     val fracPart = abs % ONE_BILLION
 
-    val result = if (fracPart == 0L) {
-        intPart.toString()
-    } else {
-        val fracStr = fracPart.toString().padStart(MAX_DECIMAL_PLACES, '0').trimEnd('0')
-        "$intPart.$fracStr"
-    }
+    val result =
+        if (fracPart == 0L) {
+            intPart.toString()
+        } else {
+            val fracStr = fracPart.toString().padStart(MAX_DECIMAL_PLACES, '0').trimEnd('0')
+            "$intPart.$fracStr"
+        }
 
     return if (negative) "-$result" else result
 }
