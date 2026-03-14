@@ -1000,6 +1000,8 @@ public final class org/xrpl/sdk/client/subscription/SubscriptionsKt {
 	public static final fun subscribeToAccount-Byc2tv8 (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToLedger (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToOrderBook (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToOrderBook (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Z)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun subscribeToOrderBook$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToTransactions (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
 }
 
