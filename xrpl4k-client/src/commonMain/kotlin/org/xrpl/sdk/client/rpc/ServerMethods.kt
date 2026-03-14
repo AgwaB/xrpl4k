@@ -154,7 +154,7 @@ public suspend fun XrplClient.version(): XrplResult<String?> =
         method = "version",
         responseDeserializer = VersionResponseDto.serializer(),
     ) { dto ->
-        dto.version
+        dto.version?.good
     }
 
 // ---------------------------------------------------------------------------

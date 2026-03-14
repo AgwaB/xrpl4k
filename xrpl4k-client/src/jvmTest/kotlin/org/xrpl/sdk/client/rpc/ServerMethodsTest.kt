@@ -133,7 +133,7 @@ class ServerMethodsTest : FunSpec({
         runTest {
             val client =
                 clientWithMockEngine(
-                    successResponse(""""version":"1.12.0""""),
+                    successResponse(""""version":{"first":"1.12.0","good":"1.12.0","last":"1.12.0"}"""),
                 )
             client.use { c ->
                 val result = c.version()

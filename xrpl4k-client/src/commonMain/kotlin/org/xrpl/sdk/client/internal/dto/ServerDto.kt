@@ -108,8 +108,15 @@ internal data class FeatureResponseDto(
 )
 
 @Serializable
+internal data class VersionInfoDto(
+    val first: String? = null,
+    val good: String? = null,
+    val last: String? = null,
+)
+
+@Serializable
 internal data class VersionResponseDto(
-    val version: String? = null,
+    val version: VersionInfoDto? = null,
 )
 
 @Serializable
