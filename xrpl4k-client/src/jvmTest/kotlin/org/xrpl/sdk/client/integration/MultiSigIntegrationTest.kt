@@ -58,8 +58,7 @@ class MultiSigIntegrationTest : IntegrationTestBase({
 
                                 // Step 1: Set up signer list on mainAccount (quorum=2, both signers weight=1)
                                 val signerListTx =
-                                    signerListSet {
-                                        account = main.address
+                                    signerListSet(main.address) {
                                         signerQuorum = 2u
                                         signerEntries =
                                             listOf(
@@ -72,7 +71,7 @@ class MultiSigIntegrationTest : IntegrationTestBase({
                                 signerListResult.shouldBeInstanceOf<XrplResult.Success<*>>()
                                 (signerListResult.getOrThrow().engineResult?.startsWith("tes")) shouldBe true
 
-                                // Step 2: Create a payment from mainAccount, autofill fields
+                                // Step 2: Create a payment from mainAccount, autofill with multi-sig fee
                                 val paymentUnsigned =
                                     XrplTransaction.Unsigned(
                                         transactionType = TransactionType.Payment,
@@ -84,22 +83,10 @@ class MultiSigIntegrationTest : IntegrationTestBase({
                                             ),
                                     )
 
-                                // Autofill with extra fee for multi-sig (fee = base + 12 * numSigners)
-                                val filledResult = c.autofill(paymentUnsigned)
+                                // Autofill auto-calculates fee for multi-sig: base * (1 + numSigners)
+                                val filledResult = c.autofill(paymentUnsigned, multisigSigners = 2)
                                 filledResult.shouldBeInstanceOf<XrplResult.Success<*>>()
-                                val filled = filledResult.getOrThrow()
-
-                                // Use higher fee for multi-sig (signers add 12 drops each)
-                                val filledWithHigherFee =
-                                    XrplTransaction.Filled.create(
-                                        transactionType = filled.transactionType,
-                                        account = filled.account,
-                                        fields = filled.fields,
-                                        // base 12 + 2*12 for 2 signers
-                                        fee = XrpDrops(36),
-                                        sequence = filled.sequence,
-                                        lastLedgerSequence = filled.lastLedgerSequence,
-                                    )
+                                val filledWithHigherFee = filledResult.getOrThrow()
 
                                 // Step 3: Each signer multi-signs the transaction
                                 val sig1 = s1.multiSignTransaction(filledWithHigherFee, provider)
