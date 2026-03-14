@@ -110,6 +110,47 @@ class RippleTimeTest : FunSpec({
         }
     }
 
+    context("rippleTimeToUnixTime(UInt) overload") {
+        test("UInt 0 produces same result as Long 0") {
+            rippleTimeToUnixTime(0u) shouldBe rippleTimeToUnixTime(0L)
+        }
+
+        test("UInt positive value matches Long overload") {
+            val rippleTime = 631_152_000u
+            rippleTimeToUnixTime(rippleTime) shouldBe rippleTimeToUnixTime(631_152_000L)
+        }
+
+        test("UInt max value (year ~2136)") {
+            val maxUInt = UInt.MAX_VALUE
+            rippleTimeToUnixTime(maxUInt) shouldBe rippleTimeToUnixTime(maxUInt.toLong())
+        }
+
+        test("UInt 1 produces expected unix time") {
+            rippleTimeToUnixTime(1u) shouldBe 946_684_801_000L
+        }
+    }
+
+    context("round-trip via UInt") {
+        test("rippleTimeToUnixTime -> unixTimeToRippleTime round-trips for UInt") {
+            val rippleTime = 631_152_000u
+            val unixMs = rippleTimeToUnixTime(rippleTime)
+            val roundTripped = unixTimeToRippleTime(unixMs)
+            roundTripped shouldBe rippleTime.toLong()
+        }
+
+        test("round-trip for UInt.MAX_VALUE") {
+            val rippleTime = UInt.MAX_VALUE
+            val unixMs = rippleTimeToUnixTime(rippleTime)
+            val roundTripped = unixTimeToRippleTime(unixMs)
+            roundTripped shouldBe rippleTime.toLong()
+        }
+
+        test("round-trip for UInt zero") {
+            val unixMs = rippleTimeToUnixTime(0u)
+            unixTimeToRippleTime(unixMs) shouldBe 0L
+        }
+    }
+
     context("edge cases") {
         test("unixTimeToRippleTime truncates sub-second milliseconds") {
             // 946684800500ms = ripple epoch + 500ms → truncated to 0

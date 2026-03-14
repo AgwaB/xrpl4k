@@ -20,6 +20,7 @@ public sealed interface LedgerObject {
     public val index: String
 }
 
+/** A Check ledger object representing a deferred payment. */
 public class CheckObject(
     override val index: String,
     public val account: Address,
@@ -54,6 +55,7 @@ public class CheckObject(
             "sendMax=$sendMax, sequence=$sequence, expiration=$expiration)"
 }
 
+/** An Escrow ledger object representing a conditional XRP payment held in escrow. */
 public class EscrowObject(
     override val index: String,
     public val account: Address,
@@ -91,6 +93,7 @@ public class EscrowObject(
             "amount=$amount, finishAfter=$finishAfter, cancelAfter=$cancelAfter, condition=$condition)"
 }
 
+/** An Offer ledger object representing an order on the decentralized exchange. */
 public class OfferObject(
     override val index: String,
     public val account: Address,
@@ -125,6 +128,7 @@ public class OfferObject(
             "takerPays=$takerPays, sequence=$sequence, flags=$flags)"
 }
 
+/** A PayChannel ledger object representing a unidirectional XRP payment channel. */
 public class PaymentChannelObject(
     override val index: String,
     public val account: Address,
@@ -162,6 +166,7 @@ public class PaymentChannelObject(
             "amount=$amount, balance=$balance, settleDelay=$settleDelay, publicKey=$publicKey)"
 }
 
+/** A SignerList ledger object representing a list of authorized multi-signers. */
 public class SignerListObject(
     override val index: String,
     public val signerQuorum: UInt,
@@ -186,6 +191,7 @@ public class SignerListObject(
         "SignerListObject(index=$index, signerQuorum=$signerQuorum, signerEntries=$signerEntries)"
 }
 
+/** A Ticket ledger object representing a reserved sequence number for future use. */
 public class TicketObject(
     override val index: String,
     public val account: Address,
@@ -209,6 +215,7 @@ public class TicketObject(
     override fun toString(): String = "TicketObject(index=$index, account=$account, ticketSequence=$ticketSequence)"
 }
 
+/** A RippleState ledger object representing a trust line between two accounts. */
 public class RippleStateObject(
     override val index: String,
     public val balance: JsonElement,
@@ -240,6 +247,7 @@ public class RippleStateObject(
             "lowLimit=$lowLimit, flags=$flags)"
 }
 
+/** A DepositPreauth ledger object representing a preauthorization for deposit. */
 public class DepositPreauthObject(
     override val index: String,
     public val account: Address,
@@ -263,6 +271,7 @@ public class DepositPreauthObject(
     override fun toString(): String = "DepositPreauthObject(index=$index, account=$account, authorize=$authorize)"
 }
 
+/** An NFTokenOffer ledger object representing a buy or sell offer for an NFT. */
 public class NftOfferObject(
     override val index: String,
     public val owner: Address,

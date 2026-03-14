@@ -12,6 +12,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import org.xrpl.sdk.client.XrplClient
 import org.xrpl.sdk.client.internal.XrplJson
 import org.xrpl.sdk.client.internal.dto.LedgerEventDto
+import org.xrpl.sdk.client.internal.dto.OrderBookSpec
 import org.xrpl.sdk.client.internal.dto.TransactionEventDto
 import org.xrpl.sdk.client.model.AccountEvent
 import org.xrpl.sdk.client.model.LedgerEvent
@@ -19,6 +20,7 @@ import org.xrpl.sdk.client.model.OrderBookEvent
 import org.xrpl.sdk.client.model.TransactionEvent
 import org.xrpl.sdk.client.rpc.subscribe
 import org.xrpl.sdk.client.transport.WebSocketTransport
+import org.xrpl.sdk.core.model.amount.CurrencySpec
 import org.xrpl.sdk.core.result.XrplException
 import org.xrpl.sdk.core.result.getOrThrow
 import org.xrpl.sdk.core.type.Address
@@ -191,8 +193,72 @@ public fun XrplClient.subscribeToAccount(address: Address): Flow<AccountEvent> =
  *
  * @param takerGets the currency the taker gets.
  * @param takerPays the currency the taker pays.
+ * @param snapshot if true, the server sends a snapshot of the current order book before streaming updates.
  * @return a cold [Flow] of [OrderBookEvent].
  */
+public fun XrplClient.subscribeToOrderBook(
+    takerGets: CurrencySpec,
+    takerPays: CurrencySpec,
+    snapshot: Boolean = false,
+): Flow<OrderBookEvent> =
+    callbackFlow {
+        val collecting = CompletableDeferred<Unit>()
+
+        val job =
+            launch {
+                getWebSocketTransport().subscriptionEvents
+                    .onSubscription { collecting.complete(Unit) }
+                    .filter { json ->
+                        json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
+                    }
+                    .collect { json ->
+                        try {
+                            val dto = XrplJson.decodeFromJsonElement(TransactionEventDto.serializer(), json)
+                            val event =
+                                OrderBookEvent(
+                                    ledgerIndex = dto.ledgerIndex?.let { LedgerIndex(it.toUInt()) },
+                                    transaction = dto.transaction,
+                                    meta = dto.meta,
+                                )
+                            send(event)
+                        } catch (_: Exception) {
+                            // Skip malformed events
+                        }
+                    }
+            }
+
+        collecting.await()
+        subscribe(
+            books =
+                listOf(
+                    OrderBookSpec(
+                        takerGets = takerGets.toDto(),
+                        takerPays = takerPays.toDto(),
+                        snapshot = if (snapshot) true else null,
+                    ),
+                ),
+        ).getOrThrow()
+
+        awaitClose {
+            job.cancel()
+        }
+    }
+
+/**
+ * Subscribes to order book changes via WebSocket.
+ *
+ * @param takerGets the currency the taker gets (raw string, e.g. "XRP").
+ * @param takerPays the currency the taker pays (raw string, e.g. "USD").
+ * @return a cold [Flow] of [OrderBookEvent].
+ */
+@Deprecated(
+    message = "Use the overload with CurrencySpec parameters instead.",
+    replaceWith =
+        ReplaceWith(
+            "subscribeToOrderBook(takerGets = TODO(), takerPays = TODO())",
+            "org.xrpl.sdk.core.model.amount.CurrencySpec",
+        ),
+)
 public fun XrplClient.subscribeToOrderBook(
     takerGets: String,
     takerPays: String,
@@ -224,11 +290,33 @@ public fun XrplClient.subscribeToOrderBook(
             }
 
         collecting.await()
-        subscribe(streams = listOf("book")).getOrThrow()
+        subscribe(
+            books =
+                listOf(
+                    OrderBookSpec(
+                        takerGets = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerGets),
+                        takerPays = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerPays),
+                    ),
+                ),
+        ).getOrThrow()
 
         awaitClose {
             job.cancel()
         }
+    }
+
+/**
+ * Converts a public [CurrencySpec] to the internal DTO [org.xrpl.sdk.client.internal.dto.CurrencySpec].
+ */
+private fun CurrencySpec.toDto(): org.xrpl.sdk.client.internal.dto.CurrencySpec =
+    when (this) {
+        is CurrencySpec.Xrp ->
+            org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = "XRP")
+        is CurrencySpec.Issued ->
+            org.xrpl.sdk.client.internal.dto.CurrencySpec(
+                currency = currency.value,
+                issuer = issuer.value,
+            )
     }
 
 /**

@@ -1,6 +1,7 @@
 package org.xrpl.sdk.client.rpc
 
 import org.xrpl.sdk.client.XrplClient
+import org.xrpl.sdk.client.internal.dto.OrderBookSpec
 import org.xrpl.sdk.client.internal.dto.SubscribeRequest
 import org.xrpl.sdk.client.internal.dto.SubscribeResponse
 import org.xrpl.sdk.client.internal.dto.UnsubscribeRequest
@@ -16,6 +17,7 @@ import org.xrpl.sdk.core.type.Address
 internal suspend fun XrplClient.subscribe(
     streams: List<String>? = null,
     accounts: List<Address>? = null,
+    books: List<OrderBookSpec>? = null,
 ): XrplResult<SubscribeResponse> {
     return executeWsRpc(
         method = "subscribe",
@@ -23,6 +25,7 @@ internal suspend fun XrplClient.subscribe(
             SubscribeRequest(
                 streams = streams,
                 accounts = accounts?.map { it.value },
+                books = books,
             ),
         requestSerializer = SubscribeRequest.serializer(),
         responseDeserializer = SubscribeResponse.serializer(),
