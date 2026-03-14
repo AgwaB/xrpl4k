@@ -11,6 +11,8 @@ import org.xrpl.sdk.client.model.BookChange
 import org.xrpl.sdk.client.model.BookChangesResult
 import org.xrpl.sdk.client.model.BookOffer
 import org.xrpl.sdk.client.model.BookOffersResult
+import org.xrpl.sdk.core.model.amount.CurrencySpec
+import org.xrpl.sdk.core.model.amount.toJson
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.Address
 import org.xrpl.sdk.core.type.LedgerIndex
@@ -61,6 +63,38 @@ public suspend fun XrplClient.bookOffers(
             ledgerIndex = resp.ledgerIndex?.let { LedgerIndex(it.toUInt()) },
         )
     }
+
+/**
+ * Retrieves offers for a currency pair from the order book using typed currency specs.
+ *
+ * This is a convenience overload that accepts [CurrencySpec] instead of raw [JsonElement].
+ *
+ * ```kotlin
+ * val usd = CurrencySpec.Issued(CurrencyCode("USD"), issuerAddress)
+ * client.bookOffers(takerGets = usd, takerPays = CurrencySpec.Xrp)
+ * ```
+ *
+ * @param takerGets The currency the account taking the offer would receive.
+ * @param takerPays The currency the account taking the offer would pay.
+ * @param taker Optional account to use as the perspective for offer quality.
+ * @param limit Maximum number of offers to return.
+ * @param ledgerIndex Which ledger version to use. Defaults to "validated".
+ * @return [XrplResult] containing [BookOffersResult] on success.
+ */
+public suspend fun XrplClient.bookOffers(
+    takerGets: CurrencySpec,
+    takerPays: CurrencySpec,
+    taker: Address? = null,
+    limit: Int? = null,
+    ledgerIndex: String? = null,
+): XrplResult<BookOffersResult> =
+    bookOffers(
+        takerGets = takerGets.toJson(),
+        takerPays = takerPays.toJson(),
+        taker = taker,
+        limit = limit,
+        ledgerIndex = ledgerIndex,
+    )
 
 /**
  * Retrieves order book changes that occurred in a given ledger.

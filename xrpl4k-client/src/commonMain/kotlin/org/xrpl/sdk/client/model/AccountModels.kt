@@ -148,6 +148,17 @@ public class AccountObjectsResult(
     public val marker: JsonElement?,
     public val ledgerIndex: LedgerIndex?,
 ) {
+    /**
+     * Typed ledger objects parsed from [accountObjects].
+     *
+     * Each element is mapped to the appropriate [LedgerObject] subtype based on its
+     * `LedgerEntryType` field. Unrecognized types become [UnknownLedgerObject].
+     * The list is computed lazily and cached on first access.
+     */
+    public val objects: List<LedgerObject> by lazy {
+        accountObjects.map { parseLedgerObject(it) }
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is AccountObjectsResult) return false

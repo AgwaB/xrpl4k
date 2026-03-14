@@ -1,9 +1,11 @@
 package org.xrpl.sdk.client.subscription
 
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
@@ -27,6 +29,9 @@ import org.xrpl.sdk.core.type.TxHash
 /**
  * Subscribes to ledger close events via WebSocket.
  *
+ * The collector is guaranteed to be active before the `subscribe` command is sent,
+ * so no events are lost between subscription and collection.
+ *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
  * Use `Flow.retry {}` to re-subscribe.
@@ -37,11 +42,12 @@ import org.xrpl.sdk.core.type.TxHash
  */
 public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
     callbackFlow {
-        subscribe(streams = listOf("ledger")).getOrThrow()
+        val collecting = CompletableDeferred<Unit>()
 
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
+                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "ledgerClosed"
                     }
@@ -62,14 +68,19 @@ public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
                     }
             }
 
+        collecting.await()
+        subscribe(streams = listOf("ledger")).getOrThrow()
+
         awaitClose {
             job.cancel()
-            // Unsubscribe is best-effort; connection may already be closed
         }
     }
 
 /**
  * Subscribes to all transaction events via WebSocket.
+ *
+ * The collector is guaranteed to be active before the `subscribe` command is sent,
+ * so no events are lost between subscription and collection.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -79,11 +90,12 @@ public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
  */
 public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
     callbackFlow {
-        subscribe(streams = listOf("transactions")).getOrThrow()
+        val collecting = CompletableDeferred<Unit>()
 
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
+                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -107,14 +119,19 @@ public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
                     }
             }
 
+        collecting.await()
+        subscribe(streams = listOf("transactions")).getOrThrow()
+
         awaitClose {
             job.cancel()
-            // Unsubscribe is best-effort; connection may already be closed
         }
     }
 
 /**
  * Subscribes to events affecting a specific account via WebSocket.
+ *
+ * The collector is guaranteed to be active before the `subscribe` command is sent,
+ * so no events are lost between subscription and collection.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -125,11 +142,12 @@ public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
  */
 public fun XrplClient.subscribeToAccount(address: Address): Flow<AccountEvent> =
     callbackFlow {
-        subscribe(accounts = listOf(address)).getOrThrow()
+        val collecting = CompletableDeferred<Unit>()
 
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
+                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -153,14 +171,19 @@ public fun XrplClient.subscribeToAccount(address: Address): Flow<AccountEvent> =
                     }
             }
 
+        collecting.await()
+        subscribe(accounts = listOf(address)).getOrThrow()
+
         awaitClose {
             job.cancel()
-            // Unsubscribe is best-effort; connection may already be closed
         }
     }
 
 /**
  * Subscribes to order book changes via WebSocket.
+ *
+ * The collector is guaranteed to be active before the `subscribe` command is sent,
+ * so no events are lost between subscription and collection.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -175,11 +198,12 @@ public fun XrplClient.subscribeToOrderBook(
     takerPays: String,
 ): Flow<OrderBookEvent> =
     callbackFlow {
-        subscribe(streams = listOf("book")).getOrThrow()
+        val collecting = CompletableDeferred<Unit>()
 
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
+                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -198,6 +222,9 @@ public fun XrplClient.subscribeToOrderBook(
                         }
                     }
             }
+
+        collecting.await()
+        subscribe(streams = listOf("book")).getOrThrow()
 
         awaitClose {
             job.cancel()
