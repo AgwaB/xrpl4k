@@ -60,6 +60,40 @@ public interface CryptoProvider {
         key1: ByteArray,
         key2: ByteArray,
     ): ByteArray
+
+    /**
+     * Computes HMAC-SHA512 per RFC 2104.
+     *
+     * Default implementation uses pure Kotlin with [sha512].
+     * Platform implementations may override for better performance
+     * (e.g. BouncyCastle on JVM).
+     *
+     * @param key the HMAC key.
+     * @param data the message to authenticate.
+     * @return 64-byte HMAC-SHA512 output.
+     */
+    @Suppress("MagicNumber")
+    public fun hmacSha512(
+        key: ByteArray,
+        data: ByteArray,
+    ): ByteArray {
+        val blockSize = 128
+        val normalizedKey = if (key.size > blockSize) sha512(key) else key
+        val paddedKey = normalizedKey.copyOf(blockSize)
+
+        val ipad = ByteArray(blockSize) { (paddedKey[it].toInt() xor 0x36).toByte() }
+        val opad = ByteArray(blockSize) { (paddedKey[it].toInt() xor 0x5c).toByte() }
+
+        val innerInput = ByteArray(blockSize + data.size)
+        ipad.copyInto(innerInput)
+        data.copyInto(innerInput, blockSize)
+        val innerHash = sha512(innerInput)
+
+        val outerInput = ByteArray(blockSize + innerHash.size)
+        opad.copyInto(outerInput)
+        innerHash.copyInto(outerInput, blockSize)
+        return sha512(outerInput)
+    }
 }
 
 public expect fun platformCryptoProvider(): CryptoProvider

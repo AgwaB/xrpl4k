@@ -6,7 +6,12 @@ import org.xrpl.sdk.core.type.Address
 import org.xrpl.sdk.core.type.KeyAlgorithm
 import org.xrpl.sdk.core.type.PublicKey
 import org.xrpl.sdk.core.util.hexToByteArray
+import org.xrpl.sdk.core.util.toHexString
 import org.xrpl.sdk.crypto.codec.AddressCodec
+import org.xrpl.sdk.crypto.internal.deriveFromSeed
+import org.xrpl.sdk.crypto.internal.derivePath
+import org.xrpl.sdk.crypto.internal.mnemonicToSeed
+import org.xrpl.sdk.crypto.internal.validateMnemonic
 import org.xrpl.sdk.crypto.keys.KeyDerivation
 import org.xrpl.sdk.crypto.keys.KeyPair
 import org.xrpl.sdk.crypto.signing.PrivateKey
@@ -169,6 +174,49 @@ public class Wallet internal constructor(
             val accountId = AddressCodec.accountIdFromPublicKey(keyPair.publicKey, provider)
             val address = AddressCodec.encodeAddress(accountId, provider)
             return Wallet(address, keyPair.publicKey, algorithm, keyPair, entropy.copyOf(), provider)
+        }
+
+        /**
+         * Derive a wallet from a BIP39 mnemonic phrase.
+         *
+         * Uses BIP39 to convert the mnemonic to a seed, then BIP32/BIP44
+         * HD key derivation to derive the private key.
+         *
+         * @param mnemonic BIP39 mnemonic phrase (12 or 24 words, space-separated).
+         * @param derivationPath BIP44 derivation path (default: XRPL standard path).
+         * @param passphrase Optional BIP39 passphrase (default: empty).
+         * @param provider The crypto provider to use.
+         * @return The derived [Wallet].
+         * @throws IllegalArgumentException if the mnemonic is invalid.
+         */
+        public fun fromMnemonic(
+            mnemonic: String,
+            derivationPath: String = "m/44'/144'/0'/0/0",
+            passphrase: String = "",
+            provider: CryptoProvider = platformCryptoProvider(),
+        ): Wallet {
+            require(validateMnemonic(mnemonic)) {
+                "Unable to parse the given mnemonic using bip39 encoding"
+            }
+
+            val seed = mnemonicToSeed(mnemonic, passphrase, provider)
+            val masterKey = deriveFromSeed(seed, provider)
+            val derivedKey = derivePath(masterKey, derivationPath, provider)
+
+            // BIP32 always uses secp256k1
+            val publicKeyBytes = provider.secp256k1PublicKey(derivedKey.privateKey)
+            val publicKey = PublicKey(publicKeyBytes.toHexString().uppercase())
+
+            val keyPair = KeyPair(
+                publicKey = publicKey,
+                privateKeyBytes = derivedKey.privateKey.copyOf(),
+                algorithm = KeyAlgorithm.Secp256k1,
+            )
+
+            val accountId = AddressCodec.accountIdFromPublicKey(publicKey, provider)
+            val address = AddressCodec.encodeAddress(accountId, provider)
+
+            return Wallet(address, publicKey, KeyAlgorithm.Secp256k1, keyPair, null, provider)
         }
     }
 }

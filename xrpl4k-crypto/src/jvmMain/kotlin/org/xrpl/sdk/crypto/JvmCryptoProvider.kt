@@ -7,6 +7,9 @@ import org.bouncycastle.asn1.ASN1Sequence
 import org.bouncycastle.asn1.DERSequence
 import org.bouncycastle.crypto.digests.RIPEMD160Digest
 import org.bouncycastle.crypto.digests.SHA256Digest
+import org.bouncycastle.crypto.digests.SHA512Digest
+import org.bouncycastle.crypto.macs.HMac
+import org.bouncycastle.crypto.params.KeyParameter
 import org.bouncycastle.crypto.ec.CustomNamedCurves
 import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters
@@ -55,6 +58,17 @@ internal object JvmCryptoProvider : CryptoProvider {
         val bytes = ByteArray(size)
         secureRandom.nextBytes(bytes)
         return bytes
+    }
+
+    // ── HMAC-SHA512 ───────────────────────────────────────────────────────
+
+    override fun hmacSha512(key: ByteArray, data: ByteArray): ByteArray {
+        val hmac = HMac(SHA512Digest())
+        hmac.init(KeyParameter(key))
+        hmac.update(data, 0, data.size)
+        val result = ByteArray(hmac.macSize)
+        hmac.doFinal(result, 0)
+        return result
     }
 
     // ── Ed25519 ─────────────────────────────────────────────────────────

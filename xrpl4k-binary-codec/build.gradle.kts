@@ -8,6 +8,7 @@ val catalog = extensions.getByType<org.gradle.api.artifacts.VersionCatalogsExten
 
 dependencies {
     "commonMainApi"(project(":xrpl4k-core"))
+    "commonMainApi"(project(":xrpl4k-crypto"))
     "commonMainImplementation"(catalog.findLibrary("kotlinx-serialization-json").get())
     "jvmTestImplementation"(catalog.findLibrary("kotest-property").get())
 }

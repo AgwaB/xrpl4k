@@ -14,6 +14,7 @@ import org.xrpl.sdk.core.type.TxHash
 import org.xrpl.sdk.core.util.hexToByteArray
 import org.xrpl.sdk.core.util.toHexString
 import org.xrpl.sdk.crypto.CryptoProvider
+import org.xrpl.sdk.crypto.hashing.sha512HalfWithPrefix
 
 /**
  * A balance change for a single account resulting from a transaction.
@@ -60,8 +61,7 @@ public fun hashSignedTx(
 ): TxHash {
     val hashPrefix = byteArrayOf(0x54, 0x58, 0x4E, 0x00)
     val txBlobBytes = txBlob.hexToByteArray()
-    val hashInput = hashPrefix + txBlobBytes
-    val hash = provider.sha512Half(hashInput).toHexString().uppercase()
+    val hash = sha512HalfWithPrefix(hashPrefix, txBlobBytes, provider).toHexString().uppercase()
     return TxHash(hash)
 }
 

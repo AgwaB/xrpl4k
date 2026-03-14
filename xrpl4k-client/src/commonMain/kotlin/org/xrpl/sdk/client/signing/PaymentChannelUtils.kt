@@ -36,3 +36,35 @@ public fun signPaymentChannelClaim(
         }
     return signatureBytes.toHexString().uppercase()
 }
+
+/**
+ * Verifies a payment channel claim signature.
+ *
+ * @param channelId The 256-bit channel ID (64-char hex).
+ * @param amount The amount in drops (decimal string).
+ * @param signature The signature hex string to verify.
+ * @param publicKey The signer's public key hex string (33 bytes, with algorithm prefix).
+ * @return `true` if the signature is valid for the given channel claim.
+ */
+public fun verifyPaymentChannelClaim(
+    channelId: String,
+    amount: String,
+    signature: String,
+    publicKey: String,
+    provider: CryptoProvider = platformCryptoProvider(),
+): Boolean {
+    val claimJson = """{"Channel":"$channelId","Amount":"$amount"}"""
+    val signingData = BinaryCodec.encodeForSigningClaim(claimJson)
+    val signingBytes = signingData.hexToByteArray()
+    val signatureBytes = signature.hexToByteArray()
+    val publicKeyBytes = publicKey.hexToByteArray()
+
+    return if (publicKey.uppercase().startsWith("ED")) {
+        // Ed25519: public key is 33 bytes with 0xED prefix; strip the prefix for verification
+        val rawPublicKey = publicKeyBytes.copyOfRange(1, publicKeyBytes.size)
+        provider.ed25519Verify(signingBytes, signatureBytes, rawPublicKey)
+    } else {
+        // secp256k1: verify against SHA-512Half of the signing bytes
+        provider.secp256k1Verify(provider.sha512Half(signingBytes), signatureBytes, publicKeyBytes)
+    }
+}
