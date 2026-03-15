@@ -1,11 +1,9 @@
 package org.xrpl.sdk.client.subscription
 
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
@@ -31,8 +29,9 @@ import org.xrpl.sdk.core.type.TxHash
 /**
  * Subscribes to ledger close events via WebSocket.
  *
- * The collector is guaranteed to be active before the `subscribe` command is sent,
- * so no events are lost between subscription and collection.
+ * The subscribe command is sent first, then the collector is activated.
+ * The SharedFlow's extraBufferCapacity ensures no events are lost between
+ * subscription registration and collector startup.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -44,12 +43,13 @@ import org.xrpl.sdk.core.type.TxHash
  */
 public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
     callbackFlow {
-        val collecting = CompletableDeferred<Unit>()
+        // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
+        subscribe(streams = listOf("ledger")).getOrThrow()
 
+        // THEN start collecting — picks up buffered events
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
-                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "ledgerClosed"
                     }
@@ -70,19 +70,19 @@ public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
                     }
             }
 
-        collecting.await()
-        subscribe(streams = listOf("ledger")).getOrThrow()
-
         awaitClose {
             job.cancel()
+            // Server-side cleanup happens automatically when the WS connection closes.
+            // Individual unsubscribe is not sent here because awaitClose is non-suspend.
         }
     }
 
 /**
  * Subscribes to all transaction events via WebSocket.
  *
- * The collector is guaranteed to be active before the `subscribe` command is sent,
- * so no events are lost between subscription and collection.
+ * The subscribe command is sent first, then the collector is activated.
+ * The SharedFlow's extraBufferCapacity ensures no events are lost between
+ * subscription registration and collector startup.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -92,12 +92,13 @@ public fun XrplClient.subscribeToLedger(): Flow<LedgerEvent> =
  */
 public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
     callbackFlow {
-        val collecting = CompletableDeferred<Unit>()
+        // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
+        subscribe(streams = listOf("transactions")).getOrThrow()
 
+        // THEN start collecting — picks up buffered events
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
-                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -121,19 +122,19 @@ public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
                     }
             }
 
-        collecting.await()
-        subscribe(streams = listOf("transactions")).getOrThrow()
-
         awaitClose {
             job.cancel()
+            // Server-side cleanup happens automatically when the WS connection closes.
+            // Individual unsubscribe is not sent here because awaitClose is non-suspend.
         }
     }
 
 /**
  * Subscribes to events affecting a specific account via WebSocket.
  *
- * The collector is guaranteed to be active before the `subscribe` command is sent,
- * so no events are lost between subscription and collection.
+ * The subscribe command is sent first, then the collector is activated.
+ * The SharedFlow's extraBufferCapacity ensures no events are lost between
+ * subscription registration and collector startup.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -144,12 +145,13 @@ public fun XrplClient.subscribeToTransactions(): Flow<TransactionEvent> =
  */
 public fun XrplClient.subscribeToAccount(address: Address): Flow<AccountEvent> =
     callbackFlow {
-        val collecting = CompletableDeferred<Unit>()
+        // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
+        subscribe(accounts = listOf(address)).getOrThrow()
 
+        // THEN start collecting — picks up buffered events
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
-                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -173,19 +175,19 @@ public fun XrplClient.subscribeToAccount(address: Address): Flow<AccountEvent> =
                     }
             }
 
-        collecting.await()
-        subscribe(accounts = listOf(address)).getOrThrow()
-
         awaitClose {
             job.cancel()
+            // Server-side cleanup happens automatically when the WS connection closes.
+            // Individual unsubscribe is not sent here because awaitClose is non-suspend.
         }
     }
 
 /**
  * Subscribes to order book changes via WebSocket.
  *
- * The collector is guaranteed to be active before the `subscribe` command is sent,
- * so no events are lost between subscription and collection.
+ * The subscribe command is sent first, then the collector is activated.
+ * The SharedFlow's extraBufferCapacity ensures no events are lost between
+ * subscription registration and collector startup.
  *
  * This Flow does not automatically resume after WebSocket reconnection.
  * If the connection drops, the Flow completes exceptionally with [XrplException].
@@ -202,12 +204,22 @@ public fun XrplClient.subscribeToOrderBook(
     snapshot: Boolean = false,
 ): Flow<OrderBookEvent> =
     callbackFlow {
-        val collecting = CompletableDeferred<Unit>()
+        // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
+        subscribe(
+            books =
+                listOf(
+                    OrderBookSpec(
+                        takerGets = takerGets.toDto(),
+                        takerPays = takerPays.toDto(),
+                        snapshot = if (snapshot) true else null,
+                    ),
+                ),
+        ).getOrThrow()
 
+        // THEN start collecting — picks up buffered events
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
-                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -227,20 +239,9 @@ public fun XrplClient.subscribeToOrderBook(
                     }
             }
 
-        collecting.await()
-        subscribe(
-            books =
-                listOf(
-                    OrderBookSpec(
-                        takerGets = takerGets.toDto(),
-                        takerPays = takerPays.toDto(),
-                        snapshot = if (snapshot) true else null,
-                    ),
-                ),
-        ).getOrThrow()
-
         awaitClose {
             job.cancel()
+            // No unsubscribe for order books — unsubscribe API does not support books param
         }
     }
 
@@ -264,12 +265,21 @@ public fun XrplClient.subscribeToOrderBook(
     takerPays: String,
 ): Flow<OrderBookEvent> =
     callbackFlow {
-        val collecting = CompletableDeferred<Unit>()
+        // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
+        subscribe(
+            books =
+                listOf(
+                    OrderBookSpec(
+                        takerGets = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerGets),
+                        takerPays = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerPays),
+                    ),
+                ),
+        ).getOrThrow()
 
+        // THEN start collecting — picks up buffered events
         val job =
             launch {
                 getWebSocketTransport().subscriptionEvents
-                    .onSubscription { collecting.complete(Unit) }
                     .filter { json ->
                         json["type"]?.jsonPrimitive?.contentOrNull == "transaction"
                     }
@@ -289,19 +299,9 @@ public fun XrplClient.subscribeToOrderBook(
                     }
             }
 
-        collecting.await()
-        subscribe(
-            books =
-                listOf(
-                    OrderBookSpec(
-                        takerGets = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerGets),
-                        takerPays = org.xrpl.sdk.client.internal.dto.CurrencySpec(currency = takerPays),
-                    ),
-                ),
-        ).getOrThrow()
-
         awaitClose {
             job.cancel()
+            // No unsubscribe for order books — unsubscribe API does not support books param
         }
     }
 

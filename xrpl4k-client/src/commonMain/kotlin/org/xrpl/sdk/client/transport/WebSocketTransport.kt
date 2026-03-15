@@ -71,6 +71,7 @@ internal class WebSocketTransport(
     private val pendingRequests = HashMap<Int, CompletableDeferred<JsonObject>>()
 
     private val idCounter = AtomicInt(1)
+    private val connectMutex = Mutex()
     private var connectionJob: Job? = null
     private val sendChannel = Channel<String>(Channel.BUFFERED)
 
@@ -79,92 +80,108 @@ internal class WebSocketTransport(
      * Must be called before [request].
      */
     suspend fun connect() {
-        if (_connectionState.value is ConnectionState.Connected) return
-        if (_connectionState.value is ConnectionState.Connecting) {
-            _connectionState.first { it is ConnectionState.Connected || it is ConnectionState.Failed }
-            return
-        }
-        _connectionState.value = ConnectionState.Connecting
+        connectMutex.withLock {
+            if (_connectionState.value is ConnectionState.Connected) return
+            if (_connectionState.value is ConnectionState.Connecting) {
+                // Already connecting — release lock and wait below
+            } else {
+                _connectionState.value = ConnectionState.Connecting
 
-        connectionJob =
-            scope.launch {
-                try {
-                    client.webSocket(url) {
-                        _connectionState.value = ConnectionState.Connected
-
-                        // Heartbeat job
-                        val heartbeatJob =
-                            launch {
-                                while (true) {
-                                    delay(heartbeatInterval)
-                                    try {
-                                        send(Frame.Ping(ByteArray(0)))
-                                    } catch (_: Exception) {
-                                        break
-                                    }
-                                }
-                            }
-
-                        // Send job
-                        val sendJob =
-                            launch {
-                                for (message in sendChannel) {
-                                    try {
-                                        send(Frame.Text(message))
-                                    } catch (_: Exception) {
-                                        break
-                                    }
-                                }
-                            }
-
-                        // Receive loop
+                connectionJob =
+                    scope.launch {
                         try {
-                            for (frame in incoming) {
-                                when (frame) {
-                                    is Frame.Text -> handleTextFrame(frame.readText())
-                                    else -> { /* ignore */ }
+                            client.webSocket(url) {
+                                _connectionState.value = ConnectionState.Connected
+
+                                // Heartbeat job
+                                val heartbeatJob =
+                                    launch {
+                                        while (true) {
+                                            delay(heartbeatInterval)
+                                            try {
+                                                send(Frame.Ping(ByteArray(0)))
+                                            } catch (_: Exception) {
+                                                break
+                                            }
+                                        }
+                                    }
+
+                                // Send job
+                                val sendJob =
+                                    launch {
+                                        for (message in sendChannel) {
+                                            try {
+                                                send(Frame.Text(message))
+                                            } catch (_: Exception) {
+                                                break
+                                            }
+                                        }
+                                    }
+
+                                // Receive loop
+                                try {
+                                    for (frame in incoming) {
+                                        when (frame) {
+                                            is Frame.Text -> handleTextFrame(frame.readText())
+                                            else -> { /* ignore */ }
+                                        }
+                                    }
+                                } finally {
+                                    heartbeatJob.cancel()
+                                    sendChannel.close()
+                                    sendJob.cancel()
                                 }
                             }
+                        } catch (e: Exception) {
+                            _connectionState.value = ConnectionState.Failed(e)
                         } finally {
-                            heartbeatJob.cancel()
-                            sendJob.cancel()
+                            // Only transition to Failed if we're still Connected/Connecting
+                            // (don't overwrite if close() already set Disconnected)
+                            val current = _connectionState.value
+                            if (current is ConnectionState.Connected ||
+                                current is ConnectionState.Connecting
+                            ) {
+                                _connectionState.value =
+                                    ConnectionState.Failed(
+                                        IllegalStateException("WebSocket disconnected"),
+                                    )
+                            }
+                            failAllPendingRequests()
                         }
                     }
-                } catch (e: Exception) {
-                    _connectionState.value = ConnectionState.Failed(e)
-                } finally {
-                    if (_connectionState.value is ConnectionState.Connected ||
-                        _connectionState.value is ConnectionState.Connecting
-                    ) {
-                        _connectionState.value =
-                            ConnectionState.Failed(
-                                IllegalStateException("WebSocket disconnected"),
-                            )
-                    }
-                    failAllPendingRequests()
-                }
             }
+        }
 
-        // Wait until the connection is established or fails
+        // Wait OUTSIDE the lock so the launched job can update state
         _connectionState.first { it is ConnectionState.Connected || it is ConnectionState.Failed }
     }
 
     private suspend fun handleTextFrame(text: String) {
-        try {
-            val json = XrplJson.decodeFromString<JsonObject>(text)
-            val response = XrplJson.decodeFromJsonElement(WsJsonRpcResponse.serializer(), json)
+        val json =
+            try {
+                XrplJson.decodeFromString<JsonObject>(text)
+            } catch (_: Exception) {
+                return // Unparseable frame — skip
+            }
 
-            if (response.id != null) {
-                // Request/response — route by id
+        val response =
+            try {
+                XrplJson.decodeFromJsonElement(WsJsonRpcResponse.serializer(), json)
+            } catch (_: Exception) {
+                // Valid JSON but not a recognizable RPC envelope — treat as subscription event
+                _subscriptionEvents.tryEmit(json)
+                return
+            }
+
+        if (response.id != null) {
+            val deferred =
                 pendingMutex.withLock {
                     pendingRequests.remove(response.id)
-                }?.complete(json)
-            } else {
-                // Subscription event — no id field
-                _subscriptionEvents.emit(json)
-            }
-        } catch (_: Exception) {
-            // Malformed frame — ignore
+                }
+            deferred?.complete(json)
+            // If deferred is null, response arrived for an already-timed-out or cancelled request — ignore
+        } else {
+            _subscriptionEvents.tryEmit(json)
         }
     }
 
@@ -192,7 +209,12 @@ internal class WebSocketTransport(
             )
         }
 
-        val id = idCounter.fetchAndAdd(1)
+        var id = idCounter.fetchAndAdd(1)
+        if (id < 0) {
+            // Overflow — reset to positive range
+            idCounter.store(1)
+            id = 1
+        }
         val deferred = CompletableDeferred<JsonObject>()
 
         pendingMutex.withLock {
@@ -238,18 +260,38 @@ internal class WebSocketTransport(
             pendingMutex.withLock { pendingRequests.remove(id) }
             throw e
         } catch (e: XrplException) {
+            pendingMutex.withLock { pendingRequests.remove(id) }
             XrplResult.Failure(e.failure)
         } catch (e: Exception) {
+            pendingMutex.withLock { pendingRequests.remove(id) }
             XrplResult.Failure(XrplFailure.NetworkError(e.message ?: "Unknown error", e))
         }
     }
 
     override fun close() {
-        connectionJob?.cancel()
-        sendChannel.close()
-        client.close()
-        if (_connectionState.value !is ConnectionState.Failed) {
-            _connectionState.value = ConnectionState.Disconnected
+        val acquiredConnectLock = connectMutex.tryLock()
+        try {
+            connectionJob?.cancel()
+            connectionJob = null
+            sendChannel.close()
+
+            // Fail all pending requests so callers don't hang forever (Issue 3).
+            // CompletableDeferred.completeExceptionally is thread-safe; duplicate
+            // calls are harmless (only the first wins). After cancelling the
+            // connectionJob and closing the sendChannel, no new requests will be
+            // enqueued, so iterating without the pendingMutex is safe here.
+            val error = XrplException(XrplFailure.NetworkError("WebSocket closed"))
+            pendingRequests.values.forEach { it.completeExceptionally(error) }
+            pendingRequests.clear()
+
+            client.close()
+            if (_connectionState.value !is ConnectionState.Failed) {
+                _connectionState.value = ConnectionState.Disconnected
+            }
+        } finally {
+            if (acquiredConnectLock) {
+                connectMutex.unlock()
+            }
         }
     }
 }
