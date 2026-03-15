@@ -1,5 +1,5 @@
 @file:Suppress("MagicNumber")
-@file:JvmName("PartialPaymentUtils")
+@file:kotlin.jvm.JvmName("PartialPaymentUtils")
 
 package org.xrpl.sdk.client.util
 
@@ -51,14 +51,14 @@ public fun isPartialPayment(entry: AccountTxEntry): Boolean {
 /**
  * Extension property that checks if this [ValidatedTransaction] is a partial payment.
  */
-@get:JvmName("isPartialPaymentProperty")
+@get:kotlin.jvm.JvmName("isPartialPaymentProperty")
 public val ValidatedTransaction.isPartialPayment: Boolean
     get() = isPartialPayment(this)
 
 /**
  * Extension property that checks if this [AccountTxEntry] is a partial payment.
  */
-@get:JvmName("isPartialPaymentEntryProperty")
+@get:kotlin.jvm.JvmName("isPartialPaymentEntryProperty")
 public val AccountTxEntry.isPartialPayment: Boolean
     get() = isPartialPayment(this)
 

@@ -32,6 +32,19 @@ public final class org/xrpl/sdk/crypto/JvmCryptoProviderKt {
 	public static final fun platformCryptoProvider ()Lorg/xrpl/sdk/crypto/CryptoProvider;
 }
 
+public final class org/xrpl/sdk/crypto/SecretNumbers {
+	public static final field INSTANCE Lorg/xrpl/sdk/crypto/SecretNumbers;
+	public final fun toWallet (Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun toWallet (Ljava/util/List;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun toWallet$default (Lorg/xrpl/sdk/crypto/SecretNumbers;Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun toWallet$default (Lorg/xrpl/sdk/crypto/SecretNumbers;Ljava/util/List;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+}
+
+public final class org/xrpl/sdk/crypto/SecretNumbersKt {
+	public static final fun fromSecretNumbers (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun fromSecretNumbers$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+}
+
 public final class org/xrpl/sdk/crypto/Wallet : java/lang/AutoCloseable {
 	public static final field Companion Lorg/xrpl/sdk/crypto/Wallet$Companion;
 	public fun close ()V
@@ -39,6 +52,8 @@ public final class org/xrpl/sdk/crypto/Wallet : java/lang/AutoCloseable {
 	public final fun getAddress-Qvly9Vo ()Ljava/lang/String;
 	public final fun getAlgorithm ()Lorg/xrpl/sdk/core/type/KeyAlgorithm;
 	public final fun getPublicKey--KILZx4 ()Ljava/lang/String;
+	public final fun getXAddress-aPkLuA0 (Lkotlin/UInt;Z)Ljava/lang/String;
+	public static synthetic fun getXAddress-aPkLuA0$default (Lorg/xrpl/sdk/crypto/Wallet;Lkotlin/UInt;ZILjava/lang/Object;)Ljava/lang/String;
 	public fun hashCode ()I
 	public final fun multiSignWith-dWLzdvI (Lorg/xrpl/sdk/crypto/signing/TransactionSigner;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Ljava/lang/String;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
 	public final fun sign ([B)[B
@@ -52,6 +67,10 @@ public final class org/xrpl/sdk/crypto/Wallet$Companion {
 	public static synthetic fun fromEntropy$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;[BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
 	public final fun fromMnemonic (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
 	public static synthetic fun fromMnemonic$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun fromRfc1751Mnemonic (Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun fromRfc1751Mnemonic$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
+	public final fun fromSecret (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
+	public static synthetic fun fromSecret$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
 	public final fun fromSeed (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/Wallet;
 	public static synthetic fun fromSeed$default (Lorg/xrpl/sdk/crypto/Wallet$Companion;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/Wallet;
 	public final fun generate (Lorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/GeneratedWallet;
@@ -66,12 +85,18 @@ public final class org/xrpl/sdk/crypto/codec/AddressCodec {
 	public static synthetic fun decodeAccountPublicKey$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)[B
 	public final fun decodeAddress-jDuigWA (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static synthetic fun decodeAddress-jDuigWA$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun decodeNodePublic (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)[B
+	public static synthetic fun decodeNodePublic$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)[B
 	public final fun decodeSeed (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lkotlin/Pair;
 	public static synthetic fun decodeSeed$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lkotlin/Pair;
+	public final fun deriveNodeAddress-pMFV_A4 (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun deriveNodeAddress-pMFV_A4$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
 	public final fun encodeAccountPublicKey ([BLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static synthetic fun encodeAccountPublicKey$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;[BLorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
 	public final fun encodeAddress-vTWNurM (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static synthetic fun encodeAddress-vTWNurM$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun encodeNodePublic ([BLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static synthetic fun encodeNodePublic$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;[BLorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
 	public final fun encodeSeed ([BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static synthetic fun encodeSeed$default (Lorg/xrpl/sdk/crypto/codec/AddressCodec;[BLorg/xrpl/sdk/core/type/KeyAlgorithm;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Ljava/lang/String;
 }

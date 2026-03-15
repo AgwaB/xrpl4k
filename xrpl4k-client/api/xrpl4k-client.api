@@ -10,8 +10,16 @@ public final class org/xrpl/sdk/client/RetryConfig {
 
 public final class org/xrpl/sdk/client/WebSocketConfig {
 	public fun <init> ()V
+	public final fun getAutoReconnect ()Z
 	public final fun getHeartbeatInterval-UwyO8pc ()J
+	public final fun getInitialReconnectDelay-UwyO8pc ()J
+	public final fun getMaxReconnectAttempts ()I
+	public final fun getMaxReconnectDelay-UwyO8pc ()J
+	public final fun setAutoReconnect (Z)V
 	public final fun setHeartbeatInterval-LRDsOJo (J)V
+	public final fun setInitialReconnectDelay-LRDsOJo (J)V
+	public final fun setMaxReconnectAttempts (I)V
+	public final fun setMaxReconnectDelay-LRDsOJo (J)V
 }
 
 public final class org/xrpl/sdk/client/XrplClient : java/lang/AutoCloseable {
@@ -252,6 +260,14 @@ public final class org/xrpl/sdk/client/model/BookOffersResult {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/client/model/ChannelVerifyResult {
+	public fun <init> (Z)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSignatureVerified ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class org/xrpl/sdk/client/model/CheckObject : org/xrpl/sdk/client/model/LedgerObject {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILkotlin/UInt;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -262,6 +278,26 @@ public final class org/xrpl/sdk/client/model/CheckObject : org/xrpl/sdk/client/m
 	public fun getIndex ()Ljava/lang/String;
 	public final fun getSendMax ()Lkotlinx/serialization/json/JsonElement;
 	public final fun getSequence-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/ConsensusEvent {
+	public fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPhase ()Ljava/lang/String;
+	public final fun getRawJson ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/model/DepositAuthorizedResult {
+	public synthetic fun <init> (ZLjava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDepositAuthorized ()Z
+	public final fun getDestinationAccount-Qvly9Vo ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getSourceAccount-Qvly9Vo ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -851,6 +887,21 @@ public final class org/xrpl/sdk/client/model/ValidatedTransaction {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/client/model/ValidationEvent {
+	public synthetic fun <init> (Ljava/lang/String;Lorg/xrpl/sdk/core/type/LedgerIndex;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags ()Ljava/lang/Long;
+	public final fun getFull ()Ljava/lang/Boolean;
+	public final fun getLedgerHash ()Ljava/lang/String;
+	public final fun getLedgerIndex-16nC92Y ()Lorg/xrpl/sdk/core/type/LedgerIndex;
+	public final fun getRawJson ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getSigningTime ()Ljava/lang/Long;
+	public final fun getValidationPublicKey ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class org/xrpl/sdk/client/rpc/AccountMethodsKt {
 	public static final fun accountChannels-Vnq4vBc (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun accountChannels-Vnq4vBc$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
@@ -870,6 +921,8 @@ public final class org/xrpl/sdk/client/rpc/AccountMethodsKt {
 	public static synthetic fun accountOffers-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun accountTx-PTQaJc4 (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun accountTx-PTQaJc4$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun depositAuthorized-Ng1hAEk (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun depositAuthorized-Ng1hAEk$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun gatewayBalances-QpdslXA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/util/List;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun gatewayBalances-QpdslXA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/util/List;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun norippleCheck-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;ZLorg/xrpl/sdk/client/model/LedgerSpecifier;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -930,14 +983,28 @@ public final class org/xrpl/sdk/client/rpc/OrderBookMethodsKt {
 public final class org/xrpl/sdk/client/rpc/PaginatedMethodsKt {
 	public static final fun accountTransactions-1H0EIFY (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLjava/lang/Integer;Ljava/lang/Boolean;)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun accountTransactions-1H0EIFY$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JJLjava/lang/Integer;Ljava/lang/Boolean;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allAccountChannels-7GjxfYs (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allAccountChannels-7GjxfYs$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun allAccountLines-DbgGrbA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun allAccountLines-DbgGrbA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allAccountObjects-QpdslXA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allAccountObjects-QpdslXA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/rpc/AccountObjectType;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allAccountObjects-QpdslXA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allAccountObjects-QpdslXA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/rpc/AccountObjectType;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allAccountOffers-DbgGrbA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allAccountOffers-DbgGrbA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Lorg/xrpl/sdk/client/model/LedgerSpecifier;Ljava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun allLedgerData (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/Integer;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun allLedgerData$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/client/model/LedgerSpecifier;ZLjava/lang/Integer;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public final class org/xrpl/sdk/client/rpc/PathMethodsKt {
 	public static final fun pathFind-Ng1hAEk (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun ripplePathFind--ene3UA (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun ripplePathFind--ene3UA$default (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/rpc/PaymentChannelMethodsKt {
+	public static final fun channelVerify-Y1mnP1Y (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class org/xrpl/sdk/client/rpc/ServerMethodsKt {
@@ -965,6 +1032,12 @@ public final class org/xrpl/sdk/client/rpc/TransactionMethodsKt {
 public final class org/xrpl/sdk/client/rpc/UtilityMethodsKt {
 	public static final fun ping (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun random (Lorg/xrpl/sdk/client/XrplClient;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/signing/BatchSignUtilsKt {
+	public static final fun combineBatchSigners (Ljava/util/List;)Ljava/util/List;
+	public static final fun signBatchTransaction (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
+	public static synthetic fun signBatchTransaction$default (Lorg/xrpl/sdk/crypto/Wallet;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Filled;Lorg/xrpl/sdk/crypto/CryptoProvider;ILjava/lang/Object;)Lorg/xrpl/sdk/crypto/signing/SingleSignature;
 }
 
 public final class org/xrpl/sdk/client/signing/InMemorySigner : org/xrpl/sdk/crypto/signing/TransactionSigner {
@@ -998,16 +1071,20 @@ public final class org/xrpl/sdk/client/signing/WalletSigningExtensionsKt {
 
 public final class org/xrpl/sdk/client/subscription/SubscriptionsKt {
 	public static final fun subscribeToAccount-Byc2tv8 (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToConsensus (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToLedger (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToOrderBook (Lorg/xrpl/sdk/client/XrplClient;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToOrderBook (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Z)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun subscribeToOrderBook$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun subscribeToTransactions (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribeToValidations (Lorg/xrpl/sdk/client/XrplClient;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public final class org/xrpl/sdk/client/sugar/AutofillKt {
 	public static final fun autofill-iC4mN9g (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;ILkotlin/UInt;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun autofill-iC4mN9g$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;ILkotlin/UInt;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun resolveXAddress-FrkygD8 (Ljava/lang/String;Lkotlin/UInt;)Lorg/xrpl/sdk/client/sugar/ResolvedAddress;
+	public static synthetic fun resolveXAddress-FrkygD8$default (Ljava/lang/String;Lkotlin/UInt;ILjava/lang/Object;)Lorg/xrpl/sdk/client/sugar/ResolvedAddress;
 }
 
 public final class org/xrpl/sdk/client/sugar/Balance {
@@ -1063,6 +1140,33 @@ public final class org/xrpl/sdk/client/sugar/FundWalletResult {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/client/sugar/GetOrderbookKt {
+	public static final fun getOrderbook-ElTltnk (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun getOrderbook-ElTltnk$default (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Lorg/xrpl/sdk/core/model/amount/CurrencySpec;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/xrpl/sdk/client/sugar/OrderBook {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuy ()Ljava/util/List;
+	public final fun getSell ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/sugar/ResolvedAddress {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/UInt;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-Qvly9Vo ()Ljava/lang/String;
+	public final fun component2-0hXNFcg ()Lkotlin/UInt;
+	public final fun copy-7-IB_t4 (Ljava/lang/String;Lkotlin/UInt;)Lorg/xrpl/sdk/client/sugar/ResolvedAddress;
+	public static synthetic fun copy-7-IB_t4$default (Lorg/xrpl/sdk/client/sugar/ResolvedAddress;Ljava/lang/String;Lkotlin/UInt;ILjava/lang/Object;)Lorg/xrpl/sdk/client/sugar/ResolvedAddress;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassicAddress-Qvly9Vo ()Ljava/lang/String;
+	public final fun getTag-0hXNFcg ()Lkotlin/UInt;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class org/xrpl/sdk/client/sugar/SubmitAndWaitKt {
 	public static final fun submitAndWait (Lorg/xrpl/sdk/client/XrplClient;Lorg/xrpl/sdk/core/model/transaction/XrplTransaction$Unsigned;Lorg/xrpl/sdk/crypto/Wallet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -1099,6 +1203,15 @@ public final class org/xrpl/sdk/client/transport/ConnectionState$Failed : org/xr
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/client/transport/ConnectionState$Reconnecting : org/xrpl/sdk/client/transport/ConnectionState {
+	public fun <init> (ILjava/lang/Throwable;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAttempt ()I
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class org/xrpl/sdk/client/util/BalanceChange {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -1112,6 +1225,13 @@ public final class org/xrpl/sdk/client/util/BalanceChange {
 
 public final class org/xrpl/sdk/client/util/MetadataUtilsKt {
 	public static final fun getXChainClaimId (Lkotlinx/serialization/json/JsonObject;)Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/client/util/PartialPaymentUtils {
+	public static final fun isPartialPayment (Lorg/xrpl/sdk/client/model/AccountTxEntry;)Z
+	public static final fun isPartialPayment (Lorg/xrpl/sdk/client/model/ValidatedTransaction;)Z
+	public static final fun isPartialPaymentEntryProperty (Lorg/xrpl/sdk/client/model/AccountTxEntry;)Z
+	public static final fun isPartialPaymentProperty (Lorg/xrpl/sdk/client/model/ValidatedTransaction;)Z
 }
 
 public final class org/xrpl/sdk/client/util/TransactionUtilsKt {

@@ -1,16 +1,20 @@
 public final class org/xrpl/sdk/codec/BinaryCodec {
 	public static final field INSTANCE Lorg/xrpl/sdk/codec/BinaryCodec;
 	public final fun decode (Ljava/lang/String;)Ljava/lang/String;
+	public final fun decode (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public final fun decodeLedgerData (Ljava/lang/String;)Ljava/lang/String;
 	public final fun decodeQuality (Ljava/lang/String;)Ljava/lang/String;
 	public final fun encode (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encode (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public final fun encodeForMultiSigning (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public final fun encodeForSigning (Ljava/lang/String;)Ljava/lang/String;
+	public final fun encodeForSigningBatch (Ljava/lang/String;)Ljava/lang/String;
 	public final fun encodeForSigningClaim (Ljava/lang/String;)Ljava/lang/String;
 	public final fun encodeQuality (Ljava/lang/String;)Ljava/lang/String;
 }
 
 public final class org/xrpl/sdk/codec/hashing/HashPrefix : java/lang/Enum {
+	public static final field BATCH Lorg/xrpl/sdk/codec/hashing/HashPrefix;
 	public static final field INNER_NODE Lorg/xrpl/sdk/codec/hashing/HashPrefix;
 	public static final field LEAF_NODE Lorg/xrpl/sdk/codec/hashing/HashPrefix;
 	public static final field LEDGER Lorg/xrpl/sdk/codec/hashing/HashPrefix;
@@ -23,6 +27,15 @@ public final class org/xrpl/sdk/codec/hashing/HashPrefix : java/lang/Enum {
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lorg/xrpl/sdk/codec/hashing/HashPrefix;
 	public static fun values ()[Lorg/xrpl/sdk/codec/hashing/HashPrefix;
+}
+
+public final class org/xrpl/sdk/codec/hashing/LedgerHashesKt {
+	public static final fun hashAccountRoot (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashEscrow (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashOfferId (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashPaymentChannel (Ljava/lang/String;Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashSignerListId (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashTrustline (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 }
 
 public final class org/xrpl/sdk/codec/hashing/LedgerHashingKt {

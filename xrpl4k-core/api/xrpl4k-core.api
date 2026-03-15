@@ -3200,6 +3200,31 @@ public final class org/xrpl/sdk/core/util/HexUtilsKt {
 	public static final fun toHexString ([B)Ljava/lang/String;
 }
 
+public final class org/xrpl/sdk/core/util/ParsedNFTokenID {
+	public synthetic fun <init> (Ljava/lang/String;IILjava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2-pVg5ArA ()I
+	public final fun component3-pVg5ArA ()I
+	public final fun component4-pRtlBMA ()Ljava/lang/String;
+	public final fun component5-pVg5ArA ()I
+	public final fun component6-pVg5ArA ()I
+	public final fun copy-zBt2fW8 (Ljava/lang/String;IILjava/lang/String;II)Lorg/xrpl/sdk/core/util/ParsedNFTokenID;
+	public static synthetic fun copy-zBt2fW8$default (Lorg/xrpl/sdk/core/util/ParsedNFTokenID;Ljava/lang/String;IILjava/lang/String;IIILjava/lang/Object;)Lorg/xrpl/sdk/core/util/ParsedNFTokenID;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFlags-pVg5ArA ()I
+	public final fun getIssuer-pRtlBMA ()Ljava/lang/String;
+	public final fun getNfTokenId ()Ljava/lang/String;
+	public final fun getSequence-pVg5ArA ()I
+	public final fun getTaxon-pVg5ArA ()I
+	public final fun getTransferFee-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/xrpl/sdk/core/util/ParsedNFTokenIDKt {
+	public static final fun parseNFTokenID (Ljava/lang/String;)Lorg/xrpl/sdk/core/util/ParsedNFTokenID;
+}
+
 public final class org/xrpl/sdk/core/util/QualityConversionKt {
 	public static final field ONE_BILLION J
 	public static final fun decimalToQuality (Ljava/lang/String;)J
