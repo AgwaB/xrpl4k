@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
@@ -59,6 +60,9 @@ kotlin {
     }
 
     jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
             if (!project.hasProperty("integration")) {
