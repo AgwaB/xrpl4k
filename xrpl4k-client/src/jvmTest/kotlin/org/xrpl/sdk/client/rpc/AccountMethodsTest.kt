@@ -20,6 +20,7 @@ import org.xrpl.sdk.client.model.AccountObjectsResult
 import org.xrpl.sdk.client.model.AccountOffersResult
 import org.xrpl.sdk.client.model.AccountTxResult
 import org.xrpl.sdk.client.model.CheckObject
+import org.xrpl.sdk.client.model.DepositAuthorizedResult
 import org.xrpl.sdk.client.model.GatewayBalancesResult
 import org.xrpl.sdk.client.model.NorippleCheckResult
 import org.xrpl.sdk.client.model.TicketObject
@@ -402,6 +403,54 @@ class AccountMethodsTest : FunSpec({
                 val result = c.norippleCheck(GENESIS_ADDRESS, role = "user")
                 result.shouldBeInstanceOf<XrplResult.Success<NorippleCheckResult>>()
                 (result as XrplResult.Success<NorippleCheckResult>).value.problems shouldHaveSize 0
+            }
+        }
+    }
+
+    // ── depositAuthorized ───────────────────────────────────────
+
+    test("depositAuthorized returns true when authorized") {
+        runTest {
+            val destAddress = Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"deposit_authorized":true,""" +
+                            """"source_account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"destination_account":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",""" +
+                            """"ledger_index":5000""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.depositAuthorized(GENESIS_ADDRESS, destAddress)
+                result.shouldBeInstanceOf<XrplResult.Success<DepositAuthorizedResult>>()
+                val data = (result as XrplResult.Success<DepositAuthorizedResult>).value
+                data.depositAuthorized shouldBe true
+                data.sourceAccount shouldBe GENESIS_ADDRESS
+                data.destinationAccount shouldBe destAddress
+                data.ledgerIndex?.value shouldBe 5000u
+            }
+        }
+    }
+
+    test("depositAuthorized returns false when not authorized") {
+        runTest {
+            val destAddress = Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"deposit_authorized":false,""" +
+                            """"source_account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"destination_account":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.depositAuthorized(GENESIS_ADDRESS, destAddress)
+                result.shouldBeInstanceOf<XrplResult.Success<DepositAuthorizedResult>>()
+                val data = (result as XrplResult.Success<DepositAuthorizedResult>).value
+                data.depositAuthorized shouldBe false
+                data.sourceAccount shouldBe GENESIS_ADDRESS
+                data.destinationAccount shouldBe destAddress
             }
         }
     }

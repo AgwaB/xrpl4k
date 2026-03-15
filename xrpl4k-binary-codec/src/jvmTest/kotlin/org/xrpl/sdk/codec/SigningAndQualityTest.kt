@@ -248,4 +248,74 @@ class SigningAndQualityTest : FunSpec({
         // total_coins should be the unsigned string representation of Long.MAX_VALUE
         obj["total_coins"]?.jsonPrimitive?.content shouldBe Long.MAX_VALUE.toULong().toString()
     }
+
+    // ---- Batch signing tests ----
+
+    test("encodeForSigningBatch produces non-empty hex output") {
+        val batchJson =
+            """
+            {
+                "flags": 0,
+                "txIDs": [
+                    "A000000000000000000000000000000000000000000000000000000000000001"
+                ]
+            }
+            """.trimIndent()
+        val encoded = BinaryCodec.encodeForSigningBatch(batchJson)
+        encoded.isNotEmpty() shouldBe true
+    }
+
+    test("encodeForSigningBatch starts with BATCH_SIGN prefix 42434800") {
+        val batchJson =
+            """
+            {
+                "flags": 1,
+                "txIDs": [
+                    "B000000000000000000000000000000000000000000000000000000000000002"
+                ]
+            }
+            """.trimIndent()
+        val encoded = BinaryCodec.encodeForSigningBatch(batchJson)
+        encoded shouldStartWith "42434800"
+    }
+
+    test("encodeForSigningBatch has correct structure: prefix(4B) + flags(4B) + count(4B) + txIDs(32B each)") {
+        val txId1 = "A" + "0".repeat(63)
+        val txId2 = "B" + "0".repeat(63)
+        val batchJson =
+            """{"flags":0,"txIDs":["$txId1","$txId2"]}"""
+        val encoded = BinaryCodec.encodeForSigningBatch(batchJson)
+
+        // Total = 4 (prefix) + 4 (flags) + 4 (count) + 2*32 (txIDs) = 76 bytes = 152 hex chars
+        encoded.length shouldBe 152
+
+        // Verify prefix
+        encoded.substring(0, 8) shouldBe "42434800"
+
+        // Verify flags = 0 => 00000000
+        encoded.substring(8, 16) shouldBe "00000000"
+
+        // Verify count = 2 => 00000002
+        encoded.substring(16, 24) shouldBe "00000002"
+
+        // Verify first txID (32 bytes = 64 hex chars)
+        encoded.substring(24, 88) shouldBe txId1.lowercase()
+
+        // Verify second txID
+        encoded.substring(88, 152) shouldBe txId2.lowercase()
+    }
+
+    test("encodeForSigningBatch with different flags produces different output") {
+        val txId = "C" + "0".repeat(63)
+        val batch1 = BinaryCodec.encodeForSigningBatch("""{"flags":0,"txIDs":["$txId"]}""")
+        val batch2 = BinaryCodec.encodeForSigningBatch("""{"flags":1,"txIDs":["$txId"]}""")
+        batch1 shouldNotBe batch2
+    }
+
+    test("encodeForSigningBatch with zero txIDs produces 12-byte output") {
+        val encoded = BinaryCodec.encodeForSigningBatch("""{"flags":0,"txIDs":[]}""")
+        // 4 (prefix) + 4 (flags) + 4 (count) = 12 bytes = 24 hex chars
+        encoded.length shouldBe 24
+        encoded.substring(16, 24) shouldBe "00000000"
+    }
 })
