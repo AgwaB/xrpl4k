@@ -1,6 +1,7 @@
 package org.xrpl.sdk.client.model
 
 import kotlinx.serialization.json.JsonElement
+import org.xrpl.sdk.core.type.Address
 import org.xrpl.sdk.core.type.Hash256
 import org.xrpl.sdk.core.type.LedgerIndex
 import org.xrpl.sdk.core.type.TxHash
@@ -146,4 +147,105 @@ public class OrderBookEvent(
     override fun hashCode(): Int = ledgerIndex?.hashCode() ?: 0
 
     override fun toString(): String = "OrderBookEvent(ledgerIndex=$ledgerIndex)"
+}
+
+/**
+ * A peer status event from a WebSocket subscription to the "peer_status" stream.
+ */
+public class PeerStatusEvent(
+    public val action: String?,
+    public val date: String?,
+    public val address: String?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PeerStatusEvent) return false
+        return action == other.action && date == other.date && address == other.address
+    }
+
+    override fun hashCode(): Int {
+        var result = action?.hashCode() ?: 0
+        result = 31 * result + (date?.hashCode() ?: 0)
+        result = 31 * result + (address?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String = "PeerStatusEvent(action=$action, address=$address)"
+}
+
+/**
+ * A manifest event from a WebSocket subscription to the "manifests" stream.
+ */
+public class ManifestEvent(
+    public val masterKey: String?,
+    public val signingKey: String?,
+    public val seq: Long?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ManifestEvent) return false
+        return masterKey == other.masterKey && signingKey == other.signingKey && seq == other.seq
+    }
+
+    override fun hashCode(): Int {
+        var result = masterKey?.hashCode() ?: 0
+        result = 31 * result + (signingKey?.hashCode() ?: 0)
+        result = 31 * result + (seq?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String = "ManifestEvent(masterKey=$masterKey, seq=$seq)"
+}
+
+/**
+ * A server status event from a WebSocket subscription to the "server" stream.
+ */
+public class ServerEvent(
+    public val serverStatus: String?,
+    public val loadFactor: Double?,
+    public val baseFee: Long?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ServerEvent) return false
+        return serverStatus == other.serverStatus && baseFee == other.baseFee
+    }
+
+    override fun hashCode(): Int {
+        var result = serverStatus?.hashCode() ?: 0
+        result = 31 * result + (baseFee?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "ServerEvent(serverStatus=$serverStatus, loadFactor=$loadFactor, baseFee=$baseFee)"
+}
+
+/**
+ * A path find update event from a WebSocket `path_find` create subscription.
+ */
+public class PathFindEvent(
+    public val alternatives: JsonElement?,
+    public val sourceAccount: Address?,
+    public val destinationAccount: Address?,
+    public val destinationAmount: JsonElement?,
+    public val fullReply: Boolean?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PathFindEvent) return false
+        return sourceAccount == other.sourceAccount &&
+            destinationAccount == other.destinationAccount &&
+            fullReply == other.fullReply
+    }
+
+    override fun hashCode(): Int {
+        var result = sourceAccount?.hashCode() ?: 0
+        result = 31 * result + (destinationAccount?.hashCode() ?: 0)
+        result = 31 * result + (fullReply?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "PathFindEvent(sourceAccount=$sourceAccount, destinationAccount=$destinationAccount, fullReply=$fullReply)"
 }

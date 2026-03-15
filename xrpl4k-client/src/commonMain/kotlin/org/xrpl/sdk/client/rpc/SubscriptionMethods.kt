@@ -17,6 +17,7 @@ import org.xrpl.sdk.core.type.Address
 internal suspend fun XrplClient.subscribe(
     streams: List<String>? = null,
     accounts: List<Address>? = null,
+    accountsProposed: List<Address>? = null,
     books: List<OrderBookSpec>? = null,
 ): XrplResult<SubscribeResponse> {
     return executeWsRpc(
@@ -25,6 +26,7 @@ internal suspend fun XrplClient.subscribe(
             SubscribeRequest(
                 streams = streams,
                 accounts = accounts?.map { it.value },
+                accountsProposed = accountsProposed?.map { it.value },
                 books = books,
             ),
         requestSerializer = SubscribeRequest.serializer(),
@@ -40,6 +42,7 @@ internal suspend fun XrplClient.subscribe(
 internal suspend fun XrplClient.unsubscribe(
     streams: List<String>? = null,
     accounts: List<Address>? = null,
+    accountsProposed: List<Address>? = null,
 ): XrplResult<Unit> {
     return executeWsRpc(
         method = "unsubscribe",
@@ -47,6 +50,7 @@ internal suspend fun XrplClient.unsubscribe(
             UnsubscribeRequest(
                 streams = streams,
                 accounts = accounts?.map { it.value },
+                accountsProposed = accountsProposed?.map { it.value },
             ),
         requestSerializer = UnsubscribeRequest.serializer(),
         responseDeserializer = SubscribeResponse.serializer(),

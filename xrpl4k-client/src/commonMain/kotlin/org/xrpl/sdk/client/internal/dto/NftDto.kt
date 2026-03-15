@@ -72,3 +72,38 @@ internal data class NftHistoryEntryDto(
     val meta: JsonElement? = null,
     val validated: Boolean? = null,
 )
+
+// NftsByIssuer (Clio-only)
+
+@Serializable
+internal data class NftsByIssuerRequest(
+    val issuer: String,
+    @SerialName("nft_taxon") val nftTaxon: Long? = null,
+    val marker: JsonElement? = null,
+    val limit: Int? = null,
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+)
+
+@Serializable
+internal data class NftsByIssuerResponseDto(
+    val issuer: String,
+    val nfts: List<NftsByIssuerTokenDto> = emptyList(),
+    val marker: JsonElement? = null,
+    val limit: Int? = null,
+    @SerialName("nft_taxon") val nftTaxon: Long? = null,
+)
+
+@Serializable
+internal data class NftsByIssuerTokenDto(
+    @SerialName("nft_id") val nftId: String,
+    @SerialName("ledger_index") val ledgerIndex: Long? = null,
+    val owner: String? = null,
+    @SerialName("is_burned") val isBurned: Boolean = false,
+    val flags: Long = 0,
+    @SerialName("transfer_fee") val transferFee: Long? = null,
+    val issuer: String? = null,
+    @SerialName("nft_taxon") val nftTaxon: Long? = null,
+    @SerialName("nft_serial") val nftSerial: Long? = null,
+    val uri: String? = null,
+)

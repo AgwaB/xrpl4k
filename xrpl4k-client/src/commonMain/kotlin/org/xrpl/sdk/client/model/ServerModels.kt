@@ -1,5 +1,6 @@
 package org.xrpl.sdk.client.model
 
+import kotlinx.serialization.json.JsonElement
 import org.xrpl.sdk.core.type.LedgerIndex
 import org.xrpl.sdk.core.type.XrpDrops
 
@@ -299,4 +300,130 @@ public class FeatureResult(
     override fun hashCode(): Int = features.hashCode()
 
     override fun toString(): String = "FeatureResult(features=$features)"
+}
+
+// ── GetAggregatePrice ─────────────────────────────────────────────
+
+/**
+ * Oracle specification for [getAggregatePrice].
+ */
+public class OracleSpec(
+    public val account: String,
+    public val oracleDocumentId: Long,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is OracleSpec) return false
+        return account == other.account && oracleDocumentId == other.oracleDocumentId
+    }
+
+    override fun hashCode(): Int {
+        var result = account.hashCode()
+        result = 31 * result + oracleDocumentId.hashCode()
+        return result
+    }
+
+    override fun toString(): String = "OracleSpec(account=$account, oracleDocumentId=$oracleDocumentId)"
+}
+
+/**
+ * A set of aggregate price statistics.
+ */
+public class AggregatePriceSet(
+    public val mean: String?,
+    public val size: Int?,
+    public val standardDeviation: String?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AggregatePriceSet) return false
+        return mean == other.mean && size == other.size && standardDeviation == other.standardDeviation
+    }
+
+    override fun hashCode(): Int {
+        var result = mean?.hashCode() ?: 0
+        result = 31 * result + (size?.hashCode() ?: 0)
+        result = 31 * result + (standardDeviation?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String = "AggregatePriceSet(mean=$mean, size=$size, standardDeviation=$standardDeviation)"
+}
+
+/**
+ * Result of a [getAggregatePrice] RPC call.
+ */
+public class AggregatePriceResult(
+    public val entireSet: AggregatePriceSet?,
+    public val trimmedSet: AggregatePriceSet?,
+    public val median: String?,
+    public val time: Long?,
+    public val ledgerCurrentIndex: Long?,
+    public val validated: Boolean?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AggregatePriceResult) return false
+        return entireSet == other.entireSet &&
+            trimmedSet == other.trimmedSet &&
+            median == other.median &&
+            time == other.time &&
+            ledgerCurrentIndex == other.ledgerCurrentIndex &&
+            validated == other.validated
+    }
+
+    override fun hashCode(): Int {
+        var result = entireSet?.hashCode() ?: 0
+        result = 31 * result + (trimmedSet?.hashCode() ?: 0)
+        result = 31 * result + (median?.hashCode() ?: 0)
+        result = 31 * result + (time?.hashCode() ?: 0)
+        result = 31 * result + (ledgerCurrentIndex?.hashCode() ?: 0)
+        result = 31 * result + (validated?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "AggregatePriceResult(" +
+            "entireSet=$entireSet, " +
+            "trimmedSet=$trimmedSet, " +
+            "median=$median, " +
+            "time=$time, " +
+            "ledgerCurrentIndex=$ledgerCurrentIndex, " +
+            "validated=$validated" +
+            ")"
+}
+
+// ── VaultInfo ─────────────────────────────────────────────────────
+
+/**
+ * Result of a [vaultInfo] RPC call.
+ *
+ * The vault field is kept as raw [JsonElement] because VaultInfo responses
+ * have a complex nested structure that varies.
+ */
+public class VaultInfoResult(
+    public val vault: JsonElement?,
+    public val ledgerHash: String?,
+    public val ledgerIndex: Long?,
+    public val validated: Boolean?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is VaultInfoResult) return false
+        return vault == other.vault &&
+            ledgerHash == other.ledgerHash &&
+            ledgerIndex == other.ledgerIndex &&
+            validated == other.validated
+    }
+
+    override fun hashCode(): Int {
+        var result = vault?.hashCode() ?: 0
+        result = 31 * result + (ledgerHash?.hashCode() ?: 0)
+        result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
+        result = 31 * result + (validated?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "VaultInfoResult(vault=$vault, ledgerHash=$ledgerHash, ledgerIndex=$ledgerIndex, validated=$validated)"
 }

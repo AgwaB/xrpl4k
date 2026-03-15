@@ -24,6 +24,9 @@ private object LedgerSpace {
     const val ESCROW: Char = 'u'
     const val SIGNER_LIST: Char = 'S'
     const val PAYCHAN: Char = 'x'
+    const val VAULT: Char = 'V'
+    const val LOAN_BROKER: Char = 'l'
+    const val LOAN: Char = 'L'
 }
 
 /**
@@ -255,3 +258,154 @@ private fun compareByteArrays(
     }
     return a.size - b.size
 }
+
+/**
+ * Computes the Vault ledger object index (hash).
+ *
+ * `SHA-512Half(0x0056 + AccountID + Sequence)`
+ *
+ * @param address Classic r-address of the Vault owner (account submitting VaultCreate).
+ * @param sequence The sequence number of the VaultCreate transaction.
+ * @return 64-character lowercase hex hash.
+ */
+public fun hashVault(
+    address: String,
+    sequence: Long,
+    provider: CryptoProvider,
+): String =
+    sha512HalfLedger(
+        LedgerSpace.VAULT,
+        addressToBytes(address, provider),
+        uintToBytes(sequence),
+        provider = provider,
+    )
+
+/**
+ * Computes the LoanBroker ledger object index (hash).
+ *
+ * `SHA-512Half(0x006C + AccountID + Sequence)`
+ *
+ * @param address Classic r-address of the Lender (LoanBrokerSet submitter).
+ * @param sequence The sequence number of the LoanBrokerSet transaction.
+ * @return 64-character lowercase hex hash.
+ */
+public fun hashLoanBroker(
+    address: String,
+    sequence: Long,
+    provider: CryptoProvider,
+): String =
+    sha512HalfLedger(
+        LedgerSpace.LOAN_BROKER,
+        addressToBytes(address, provider),
+        uintToBytes(sequence),
+        provider = provider,
+    )
+
+/**
+ * Computes the Loan ledger object index (hash).
+ *
+ * `SHA-512Half(0x004C + LoanBrokerID + LoanSequence)`
+ *
+ * Note: [loanBrokerId] is the 64-character hex LoanBroker object ID,
+ * not an r-address.
+ *
+ * @param loanBrokerId The 64-char hex ID of the associated LoanBroker object.
+ * @param loanSequence The sequence number of the Loan.
+ * @return 64-character lowercase hex hash.
+ */
+public fun hashLoan(
+    loanBrokerId: String,
+    loanSequence: Long,
+    provider: CryptoProvider,
+): String =
+    sha512HalfLedger(
+        LedgerSpace.LOAN,
+        loanBrokerId.hexToByteArray(),
+        uintToBytes(loanSequence),
+        provider = provider,
+    )
+
+// ---------------------------------------------------------------------------
+// Transaction and Ledger hashing
+// ---------------------------------------------------------------------------
+
+/**
+ * Computes SHA-512Half with an arbitrary 4-byte prefix and concatenated parts.
+ */
+private fun sha512HalfPrefixed(
+    prefix: ByteArray,
+    vararg parts: ByteArray,
+    provider: CryptoProvider,
+): String {
+    var totalSize = prefix.size
+    for (part in parts) totalSize += part.size
+
+    val input = ByteArray(totalSize)
+    prefix.copyInto(input)
+    var offset = prefix.size
+    for (part in parts) {
+        part.copyInto(input, offset)
+        offset += part.size
+    }
+
+    return provider.sha512Half(input).toHexString()
+}
+
+/**
+ * Hashes a transaction blob with the single-signing prefix (`STX\0`).
+ *
+ * This is the hash-to-sign for a transaction.
+ *
+ * @param txBlob Hex-encoded serialized transaction (no signature prefix).
+ * @return 64-character lowercase hex hash.
+ */
+public fun hashTx(
+    txBlob: String,
+    provider: CryptoProvider,
+): String =
+    sha512HalfPrefixed(
+        HashPrefix.TRANSACTION_SIGN.bytes,
+        txBlob.hexToByteArray(),
+        provider = provider,
+    )
+
+/**
+ * Hashes a signed transaction blob to produce the transaction ID.
+ *
+ * Uses the `TXN\0` prefix, matching xrpl.js `hashSignedTx`.
+ *
+ * @param txBlob Hex-encoded signed transaction blob.
+ * @return 64-character lowercase hex hash (the transaction ID).
+ */
+public fun hashSignedTx(
+    txBlob: String,
+    provider: CryptoProvider,
+): String =
+    sha512HalfPrefixed(
+        HashPrefix.TRANSACTION_ID.bytes,
+        txBlob.hexToByteArray(),
+        provider = provider,
+    )
+
+/**
+ * Hashes a ledger header to produce the ledger hash.
+ *
+ * Uses the `LWR\0` prefix, matching xrpl.js `hashLedgerHeader`.
+ *
+ * The caller must construct the ledger header bytes in the canonical order:
+ * `ledgerIndex(4) + totalCoins(8) + parentHash(32) + transactionHash(32) +
+ *  accountHash(32) + parentCloseTime(4) + closeTime(4) +
+ *  closeTimeResolution(1) + closeFlags(1)`
+ *
+ * @param ledgerHeaderHex Hex-encoded concatenation of ledger header fields.
+ * @return 64-character lowercase hex hash.
+ */
+public fun hashLedgerHeader(
+    ledgerHeaderHex: String,
+    provider: CryptoProvider,
+): String =
+    sha512HalfPrefixed(
+        HashPrefix.LEDGER.bytes,
+        ledgerHeaderHex.hexToByteArray(),
+        provider = provider,
+    )

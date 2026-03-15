@@ -127,3 +127,56 @@ internal data class ServerDefinitionsResponseDto(
     @SerialName("transaction_types") val transactionTypes: JsonElement? = null,
     val types: JsonElement? = null,
 )
+
+// GetAggregatePrice
+
+@Serializable
+internal data class GetAggregatePriceRequest(
+    @SerialName("base_asset") val baseAsset: String,
+    @SerialName("quote_asset") val quoteAsset: String,
+    val oracles: List<OracleSpecDto>,
+    val trim: Int? = null,
+    @SerialName("trim_threshold") val trimThreshold: Int? = null,
+)
+
+@Serializable
+internal data class OracleSpecDto(
+    val account: String,
+    @SerialName("oracle_document_id") val oracleDocumentId: Long,
+)
+
+@Serializable
+internal data class GetAggregatePriceResponseDto(
+    @SerialName("entire_set") val entireSet: AggregatePriceSetDto? = null,
+    @SerialName("trimmed_set") val trimmedSet: AggregatePriceSetDto? = null,
+    val median: String? = null,
+    val time: Long? = null,
+    @SerialName("ledger_current_index") val ledgerCurrentIndex: Long? = null,
+    val validated: Boolean? = null,
+)
+
+@Serializable
+internal data class AggregatePriceSetDto(
+    val mean: String? = null,
+    val size: Int? = null,
+    @SerialName("standard_deviation") val standardDeviation: String? = null,
+)
+
+// VaultInfo
+
+@Serializable
+internal data class VaultInfoRequest(
+    @SerialName("vault_id") val vaultId: String? = null,
+    val owner: String? = null,
+    val seq: Long? = null,
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+)
+
+@Serializable
+internal data class VaultInfoResponseDto(
+    val vault: JsonElement? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+    @SerialName("ledger_index") val ledgerIndex: Long? = null,
+    val validated: Boolean? = null,
+)

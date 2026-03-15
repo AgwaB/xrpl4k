@@ -9,9 +9,12 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.test.runTest
 import org.xrpl.sdk.client.TestHelper.clientWithMockEngine
 import org.xrpl.sdk.client.TestHelper.successResponse
+import org.xrpl.sdk.client.model.AggregatePriceResult
 import org.xrpl.sdk.client.model.FeatureResult
 import org.xrpl.sdk.client.model.FeeResult
+import org.xrpl.sdk.client.model.OracleSpec
 import org.xrpl.sdk.client.model.ServerInfo
+import org.xrpl.sdk.client.model.VaultInfoResult
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.XrpDrops
 
@@ -226,6 +229,109 @@ class ServerMethodsTest : FunSpec({
                 val result = c.version()
                 result.shouldBeInstanceOf<XrplResult.Success<String?>>()
                 (result as XrplResult.Success<String?>).value shouldBe null
+            }
+        }
+    }
+
+    // ── getAggregatePrice ────────────────────────────────────────
+
+    test("getAggregatePrice returns AggregatePriceResult with statistics") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"entire_set":{"mean":"74.75","size":10,"standard_deviation":"0.50"},""" +
+                            """"trimmed_set":{"mean":"74.80","size":8,"standard_deviation":"0.40"},""" +
+                            """"median":"74.75","time":78937648,""" +
+                            """"ledger_current_index":25,""" +
+                            """"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result =
+                    c.getAggregatePrice(
+                        baseAsset = "XRP",
+                        quoteAsset = "USD",
+                        oracles = listOf(OracleSpec("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1)),
+                        trim = 20,
+                    )
+                result.shouldBeInstanceOf<XrplResult.Success<AggregatePriceResult>>()
+                val value = (result as XrplResult.Success<AggregatePriceResult>).value
+                value.entireSet shouldNotBe null
+                value.entireSet!!.mean shouldBe "74.75"
+                value.entireSet!!.size shouldBe 10
+                value.trimmedSet shouldNotBe null
+                value.trimmedSet!!.mean shouldBe "74.80"
+                value.median shouldBe "74.75"
+                value.time shouldBe 78937648L
+                value.validated shouldBe true
+            }
+        }
+    }
+
+    test("getAggregatePrice without trim returns no trimmed_set") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"entire_set":{"mean":"74.75","size":10,"standard_deviation":"0.50"},""" +
+                            """"median":"74.75","time":78937648,""" +
+                            """"ledger_current_index":25,""" +
+                            """"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result =
+                    c.getAggregatePrice(
+                        baseAsset = "XRP",
+                        quoteAsset = "USD",
+                        oracles = listOf(OracleSpec("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1)),
+                    )
+                result.shouldBeInstanceOf<XrplResult.Success<AggregatePriceResult>>()
+                val value = (result as XrplResult.Success<AggregatePriceResult>).value
+                value.entireSet shouldNotBe null
+                value.trimmedSet shouldBe null
+            }
+        }
+    }
+
+    // ── vaultInfo ────────────────────────────────────────────────
+
+    test("vaultInfo returns VaultInfoResult with vault data") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"vault":{"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"LedgerEntryType":"Vault","Owner":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",""" +
+                            """"Sequence":1},""" +
+                            """"ledger_hash":"ABC123","ledger_index":100,"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.vaultInfo(vaultId = "ABC123DEF456")
+                result.shouldBeInstanceOf<XrplResult.Success<VaultInfoResult>>()
+                val value = (result as XrplResult.Success<VaultInfoResult>).value
+                value.vault shouldNotBe null
+                value.ledgerHash shouldBe "ABC123"
+                value.ledgerIndex shouldBe 100L
+                value.validated shouldBe true
+            }
+        }
+    }
+
+    test("vaultInfo with null vault returns VaultInfoResult with null vault") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(""""vault":null,"validated":false"""),
+                )
+            client.use { c ->
+                val result = c.vaultInfo(vaultId = "DEADBEEF")
+                result.shouldBeInstanceOf<XrplResult.Success<VaultInfoResult>>()
+                val value = (result as XrplResult.Success<VaultInfoResult>).value
+                value.vault shouldBe null
+                value.validated shouldBe false
             }
         }
     }

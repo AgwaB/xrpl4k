@@ -4,6 +4,7 @@ package org.xrpl.sdk.codec.hashing
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.xrpl.sdk.crypto.platformCryptoProvider
 
 /**
@@ -96,6 +97,112 @@ class LedgerHashesTest : FunSpec({
                     provider,
                 )
             hash shouldBe "e35708503b3c3143fb522d749aafcc296e8060f0fb371a9a56fae0b1ed127366"
+        }
+    }
+
+    context("hashVault") {
+        test("produces deterministic hash") {
+            val hash1 = hashVault("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1, provider)
+            val hash2 = hashVault("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1, provider)
+            hash1 shouldBe hash2
+            hash1.length shouldBe 64
+        }
+
+        test("different sequence produces different hash") {
+            val hash1 = hashVault("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1, provider)
+            val hash2 = hashVault("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 2, provider)
+            hash1 shouldNotBe hash2
+        }
+
+        test("different address produces different hash") {
+            val hash1 = hashVault("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 1, provider)
+            val hash2 = hashVault("rDx69ebzbowuqztksVDmZXjizTd12BVr4x", 1, provider)
+            hash1 shouldNotBe hash2
+        }
+    }
+
+    context("hashLoanBroker") {
+        test("produces deterministic hash") {
+            val hash1 = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 10, provider)
+            val hash2 = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 10, provider)
+            hash1 shouldBe hash2
+            hash1.length shouldBe 64
+        }
+
+        test("different sequence produces different hash") {
+            val hash1 = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 10, provider)
+            val hash2 = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 20, provider)
+            hash1 shouldNotBe hash2
+        }
+    }
+
+    context("hashLoan") {
+        test("produces deterministic hash with hex loanBrokerId") {
+            // Use a known vault/broker hash as the loanBrokerId input
+            val brokerId = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 10, provider)
+            val hash1 = hashLoan(brokerId, 1, provider)
+            val hash2 = hashLoan(brokerId, 1, provider)
+            hash1 shouldBe hash2
+            hash1.length shouldBe 64
+        }
+
+        test("different loanSequence produces different hash") {
+            val brokerId = hashLoanBroker("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", 10, provider)
+            val hash1 = hashLoan(brokerId, 1, provider)
+            val hash2 = hashLoan(brokerId, 2, provider)
+            hash1 shouldNotBe hash2
+        }
+    }
+
+    context("hashTx") {
+        test("produces 64-char hex hash") {
+            // A valid even-length hex blob for testing
+            val txBlob = "12000022000000002400000003614000000000002710684000000000000064"
+            val hash = hashTx(txBlob, provider)
+            hash.length shouldBe 64
+        }
+
+        test("is deterministic") {
+            val txBlob = "1200002200000000"
+            val hash1 = hashTx(txBlob, provider)
+            val hash2 = hashTx(txBlob, provider)
+            hash1 shouldBe hash2
+        }
+    }
+
+    context("hashSignedTx") {
+        test("produces 64-char hex hash") {
+            val txBlob =
+                "1200002200000000240000000361D4838D7EA4C68000000000000000000000000000" +
+                    "55534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000C"
+            val hash = hashSignedTx(txBlob, provider)
+            hash.length shouldBe 64
+        }
+
+        test("differs from hashTx for same blob") {
+            val txBlob = "1200002200000000"
+            val signedHash = hashSignedTx(txBlob, provider)
+            val txHash = hashTx(txBlob, provider)
+            signedHash shouldNotBe txHash
+        }
+    }
+
+    context("hashLedgerHeader") {
+        test("produces 64-char hex hash") {
+            // Minimal header: 4 + 8 + 32 + 32 + 32 + 4 + 4 + 1 + 1 = 118 bytes = 236 hex chars
+            val header =
+                "00000001" + "0".repeat(200) +
+                    "0000000A0000000B0C0D"
+            val hash = hashLedgerHeader(header, provider)
+            hash.length shouldBe 64
+        }
+
+        test("is deterministic") {
+            val header =
+                "00000001" + "0".repeat(228)
+            val hash1 = hashLedgerHeader(header, provider)
+            val hash2 = hashLedgerHeader(header, provider)
+            hash1 shouldBe hash2
         }
     }
 })

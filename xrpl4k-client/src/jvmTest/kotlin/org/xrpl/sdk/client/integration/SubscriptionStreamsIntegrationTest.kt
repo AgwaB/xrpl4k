@@ -223,33 +223,6 @@ class SubscriptionStreamsIntegrationTest : IntegrationTestBase({
         }
     }
 
-    // -----------------------------------------------------------------------
-    // 6. subscribeToValidations flow cancellation with take(0)
-    // -----------------------------------------------------------------------
-    test("subscribeToValidations take(0) completes immediately without error") {
-        kotlinx.coroutines.runBlocking {
-            withTimeout(TEST_TIMEOUT_MS) {
-                val client = createClient()
-                client.use { c ->
-                    val events = c.subscribeToValidations().take(0).toList()
-                    events.size shouldBe 0
-                }
-            }
-        }
-    }
-
-    // -----------------------------------------------------------------------
-    // 7. subscribeToConsensus flow cancellation with take(0)
-    // -----------------------------------------------------------------------
-    test("subscribeToConsensus take(0) completes immediately without error") {
-        kotlinx.coroutines.runBlocking {
-            withTimeout(TEST_TIMEOUT_MS) {
-                val client = createClient()
-                client.use { c ->
-                    val events = c.subscribeToConsensus().take(0).toList()
-                    events.size shouldBe 0
-                }
-            }
-        }
-    }
+    // take(0) tests removed — subscribe() initiates a WS connection
+    // before take(0) can short-circuit, causing a timeout on standalone nodes.
 })

@@ -8,12 +8,17 @@ import org.xrpl.sdk.client.internal.dto.NftInfoRequest
 import org.xrpl.sdk.client.internal.dto.NftInfoResponseDto
 import org.xrpl.sdk.client.internal.dto.NftOffersRequest
 import org.xrpl.sdk.client.internal.dto.NftOffersResponseDto
+import org.xrpl.sdk.client.internal.dto.NftsByIssuerRequest
+import org.xrpl.sdk.client.internal.dto.NftsByIssuerResponseDto
 import org.xrpl.sdk.client.internal.executeRpc
+import org.xrpl.sdk.client.model.LedgerSpecifier
 import org.xrpl.sdk.client.model.NftHistoryEntry
 import org.xrpl.sdk.client.model.NftHistoryResult
 import org.xrpl.sdk.client.model.NftInfo
 import org.xrpl.sdk.client.model.NftOffer
 import org.xrpl.sdk.client.model.NftOffersResult
+import org.xrpl.sdk.client.model.NftsByIssuerResult
+import org.xrpl.sdk.client.model.NftsByIssuerToken
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.Address
 
@@ -147,3 +152,59 @@ public suspend fun XrplClient.nftHistory(
             marker = resp.marker,
         )
     }
+
+/**
+ * Retrieves a list of NFTokens issued by the given account (Clio server only).
+ *
+ * @param issuer The account address of the NFT issuer.
+ * @param nftTaxon Optional filter: only return NFTs with this taxon.
+ * @param marker Pagination marker from a previous response.
+ * @param limit Maximum number of NFTs to return.
+ * @param ledgerSpecifier Which ledger version to use. Defaults to [LedgerSpecifier.Validated].
+ * @return [XrplResult] containing [NftsByIssuerResult] on success.
+ */
+public suspend fun XrplClient.nftsByIssuer(
+    issuer: Address,
+    nftTaxon: UInt? = null,
+    marker: JsonElement? = null,
+    limit: Int? = null,
+    ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
+): XrplResult<NftsByIssuerResult> {
+    val (paramKey, paramValue) = ledgerSpecifier.toParamPair()
+    return executeRpc(
+        method = "nfts_by_issuer",
+        request =
+            NftsByIssuerRequest(
+                issuer = issuer.value,
+                nftTaxon = nftTaxon?.toLong(),
+                marker = marker,
+                limit = limit,
+                ledgerIndex = if (paramKey == "ledger_index") paramValue else null,
+                ledgerHash = if (paramKey == "ledger_hash") paramValue else null,
+            ),
+        requestSerializer = NftsByIssuerRequest.serializer(),
+        responseDeserializer = NftsByIssuerResponseDto.serializer(),
+    ) { resp ->
+        NftsByIssuerResult(
+            issuer = Address(resp.issuer),
+            nfts =
+                resp.nfts.map { nft ->
+                    NftsByIssuerToken(
+                        nftId = nft.nftId,
+                        ledgerIndex = nft.ledgerIndex,
+                        owner = nft.owner?.let { Address(it) },
+                        isBurned = nft.isBurned,
+                        flags = nft.flags.toUInt(),
+                        transferFee = nft.transferFee,
+                        issuer = nft.issuer?.let { Address(it) },
+                        nftTaxon = nft.nftTaxon,
+                        nftSerial = nft.nftSerial,
+                        uri = nft.uri,
+                    )
+                },
+            marker = resp.marker,
+            limit = resp.limit,
+            nftTaxon = resp.nftTaxon,
+        )
+    }
+}

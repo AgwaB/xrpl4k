@@ -12,6 +12,7 @@ import org.xrpl.sdk.client.TestHelper.successResponse
 import org.xrpl.sdk.client.model.NftHistoryResult
 import org.xrpl.sdk.client.model.NftInfo
 import org.xrpl.sdk.client.model.NftOffersResult
+import org.xrpl.sdk.client.model.NftsByIssuerResult
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.Address
 
@@ -160,6 +161,57 @@ class NftMethodsTest : FunSpec({
                 value.transactions shouldHaveSize 1
                 val entry = value.transactions.first()
                 entry.validated shouldBe true
+            }
+        }
+    }
+
+    // ── nftsByIssuer ──────────────────────────────────────────────
+
+    test("nftsByIssuer returns NftsByIssuerResult with nft list") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"issuer":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"nfts":[{"nft_id":"$NFT_ID","ledger_index":100,""" +
+                            """"owner":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",""" +
+                            """"is_burned":false,"flags":8,"transfer_fee":500,""" +
+                            """"issuer":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"nft_taxon":0,"nft_serial":155,"uri":"68747470733A2F2F"}],""" +
+                            """"limit":10,"nft_taxon":0""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.nftsByIssuer(issuer = NFT_OWNER)
+                result.shouldBeInstanceOf<XrplResult.Success<NftsByIssuerResult>>()
+                val value = (result as XrplResult.Success<NftsByIssuerResult>).value
+                value.issuer shouldBe NFT_OWNER
+                value.nfts shouldHaveSize 1
+                val nft = value.nfts.first()
+                nft.nftId shouldBe NFT_ID
+                nft.flags shouldBe 8u
+                nft.owner shouldBe Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
+                nft.isBurned shouldBe false
+                nft.transferFee shouldBe 500L
+                nft.nftSerial shouldBe 155L
+                value.limit shouldBe 10
+                value.nftTaxon shouldBe 0L
+            }
+        }
+    }
+
+    test("nftsByIssuer with empty list returns empty nfts") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"issuer":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh","nfts":[]""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.nftsByIssuer(issuer = NFT_OWNER)
+                result.shouldBeInstanceOf<XrplResult.Success<NftsByIssuerResult>>()
+                (result as XrplResult.Success<NftsByIssuerResult>).value.nfts shouldHaveSize 0
             }
         }
     }

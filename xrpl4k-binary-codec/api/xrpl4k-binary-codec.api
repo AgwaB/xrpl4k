@@ -32,10 +32,16 @@ public final class org/xrpl/sdk/codec/hashing/HashPrefix : java/lang/Enum {
 public final class org/xrpl/sdk/codec/hashing/LedgerHashesKt {
 	public static final fun hashAccountRoot (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static final fun hashEscrow (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashLedgerHeader (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashLoan (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashLoanBroker (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static final fun hashOfferId (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static final fun hashPaymentChannel (Ljava/lang/String;Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashSignedTx (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static final fun hashSignerListId (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 	public static final fun hashTrustline (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashTx (Ljava/lang/String;Lorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
+	public static final fun hashVault (Ljava/lang/String;JLorg/xrpl/sdk/crypto/CryptoProvider;)Ljava/lang/String;
 }
 
 public final class org/xrpl/sdk/codec/hashing/LedgerHashingKt {

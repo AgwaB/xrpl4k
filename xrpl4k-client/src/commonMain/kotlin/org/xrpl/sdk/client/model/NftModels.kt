@@ -163,3 +163,95 @@ public class NftHistoryResult(
 
     override fun toString(): String = "NftHistoryResult(nftId=$nftId, transactions=$transactions, marker=$marker)"
 }
+
+/**
+ * An individual NFToken returned by [nftsByIssuer].
+ */
+public class NftsByIssuerToken(
+    public val nftId: String,
+    public val ledgerIndex: Long?,
+    public val owner: Address?,
+    public val isBurned: Boolean,
+    public val flags: UInt,
+    public val transferFee: Long?,
+    public val issuer: Address?,
+    public val nftTaxon: Long?,
+    public val nftSerial: Long?,
+    public val uri: String?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is NftsByIssuerToken) return false
+        return nftId == other.nftId &&
+            ledgerIndex == other.ledgerIndex &&
+            owner == other.owner &&
+            isBurned == other.isBurned &&
+            flags == other.flags &&
+            transferFee == other.transferFee &&
+            issuer == other.issuer &&
+            nftTaxon == other.nftTaxon &&
+            nftSerial == other.nftSerial &&
+            uri == other.uri
+    }
+
+    override fun hashCode(): Int {
+        var result = nftId.hashCode()
+        result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
+        result = 31 * result + (owner?.hashCode() ?: 0)
+        result = 31 * result + isBurned.hashCode()
+        result = 31 * result + flags.hashCode()
+        result = 31 * result + (transferFee?.hashCode() ?: 0)
+        result = 31 * result + (issuer?.hashCode() ?: 0)
+        result = 31 * result + (nftTaxon?.hashCode() ?: 0)
+        result = 31 * result + (nftSerial?.hashCode() ?: 0)
+        result = 31 * result + (uri?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "NftsByIssuerToken(" +
+            "nftId=$nftId, " +
+            "ledgerIndex=$ledgerIndex, " +
+            "owner=$owner, " +
+            "isBurned=$isBurned, " +
+            "flags=$flags, " +
+            "transferFee=$transferFee, " +
+            "issuer=$issuer, " +
+            "nftTaxon=$nftTaxon, " +
+            "nftSerial=$nftSerial, " +
+            "uri=$uri" +
+            ")"
+}
+
+/**
+ * Result of an [nftsByIssuer] RPC call (Clio-only).
+ */
+public class NftsByIssuerResult(
+    public val issuer: Address,
+    public val nfts: List<NftsByIssuerToken>,
+    public val marker: JsonElement?,
+    public val limit: Int?,
+    public val nftTaxon: Long?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is NftsByIssuerResult) return false
+        return issuer == other.issuer &&
+            nfts == other.nfts &&
+            marker == other.marker &&
+            limit == other.limit &&
+            nftTaxon == other.nftTaxon
+    }
+
+    override fun hashCode(): Int {
+        var result = issuer.hashCode()
+        result = 31 * result + nfts.hashCode()
+        result = 31 * result + (marker?.hashCode() ?: 0)
+        result = 31 * result + (limit?.hashCode() ?: 0)
+        result = 31 * result + (nftTaxon?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "NftsByIssuerResult(issuer=$issuer, nfts=$nfts, marker=$marker, limit=$limit, nftTaxon=$nftTaxon)"
+}

@@ -8,6 +8,7 @@ import kotlinx.serialization.json.JsonElement
 internal data class SubscribeRequest(
     val streams: List<String>? = null,
     val accounts: List<String>? = null,
+    @SerialName("accounts_proposed") val accountsProposed: List<String>? = null,
     val books: List<OrderBookSpec>? = null,
 )
 
@@ -39,6 +40,7 @@ internal data class SubscribeResponse(
 internal data class UnsubscribeRequest(
     val streams: List<String>? = null,
     val accounts: List<String>? = null,
+    @SerialName("accounts_proposed") val accountsProposed: List<String>? = null,
 )
 
 // Subscription event DTOs
@@ -84,4 +86,52 @@ internal data class TransactionEventDto(
     val validated: Boolean? = null,
     val type: String? = null,
     @SerialName("ledger_hash") val ledgerHash: String? = null,
+)
+
+@Serializable
+internal data class PeerStatusEventDto(
+    val action: String? = null,
+    val date: String? = null,
+    val address: String? = null,
+    val type: String? = null,
+)
+
+@Serializable
+internal data class ManifestEventDto(
+    @SerialName("master_key") val masterKey: String? = null,
+    @SerialName("signing_key") val signingKey: String? = null,
+    @SerialName("seq") val seq: Long? = null,
+    val type: String? = null,
+)
+
+@Serializable
+internal data class ServerEventDto(
+    @SerialName("server_status") val serverStatus: String? = null,
+    @SerialName("load_factor") val loadFactor: Double? = null,
+    @SerialName("base_fee") val baseFee: Long? = null,
+    val type: String? = null,
+)
+
+@Serializable
+internal data class PathFindCreateRequest(
+    val subcommand: String = "create",
+    @SerialName("source_account") val sourceAccount: String,
+    @SerialName("destination_account") val destinationAccount: String,
+    @SerialName("destination_amount") val destinationAmount: JsonElement,
+)
+
+@Serializable
+internal data class PathFindCloseRequest(
+    val subcommand: String = "close",
+)
+
+@Serializable
+internal data class PathFindStreamEventDto(
+    val alternatives: JsonElement? = null,
+    @SerialName("source_account") val sourceAccount: String? = null,
+    @SerialName("destination_account") val destinationAccount: String? = null,
+    @SerialName("destination_amount") val destinationAmount: JsonElement? = null,
+    @SerialName("full_reply") val fullReply: Boolean? = null,
+    val type: String? = null,
+    val id: Int? = null,
 )
