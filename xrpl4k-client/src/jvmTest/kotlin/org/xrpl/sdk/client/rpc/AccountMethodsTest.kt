@@ -5,6 +5,7 @@ package org.xrpl.sdk.client.rpc
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.test.runTest
 import org.xrpl.sdk.client.TestHelper.clientWithMockEngine
@@ -18,8 +19,10 @@ import org.xrpl.sdk.client.model.AccountNftsResult
 import org.xrpl.sdk.client.model.AccountObjectsResult
 import org.xrpl.sdk.client.model.AccountOffersResult
 import org.xrpl.sdk.client.model.AccountTxResult
+import org.xrpl.sdk.client.model.CheckObject
 import org.xrpl.sdk.client.model.GatewayBalancesResult
 import org.xrpl.sdk.client.model.NorippleCheckResult
+import org.xrpl.sdk.client.model.TicketObject
 import org.xrpl.sdk.core.result.XrplFailure
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.Address
@@ -83,6 +86,35 @@ class AccountMethodsTest : FunSpec({
                 val info = (result as XrplResult.Success<AccountInfo>).value
                 info.previousAffectingTransactionId?.value shouldBe txnId
                 info.previousAffectingTransactionLedgerSequence shouldBe 500u
+            }
+        }
+    }
+
+    test("accountInfo with domain, regularKey, and signerLists maps all fields") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"account_data":{"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"Balance":"200000000","Sequence":10,"OwnerCount":3,"Flags":131072,""" +
+                            """"domain":"6578616D706C652E636F6D",""" +
+                            """"RegularKey":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",""" +
+                            """"signer_lists":[{"SignerQuorum":2}]},""" +
+                            """"ledger_index":5000,"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.accountInfo(GENESIS_ADDRESS)
+                result.shouldBeInstanceOf<XrplResult.Success<AccountInfo>>()
+                val info = (result as XrplResult.Success<AccountInfo>).value
+                info.balance shouldBe XrpDrops(200_000_000)
+                info.sequence shouldBe 10u
+                info.ownerCount shouldBe 3u
+                info.flags shouldBe 131_072u
+                info.domain shouldBe "6578616D706C652E636F6D"
+                info.regularKey shouldBe Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
+                info.signerLists shouldNotBe null
+                info.ledgerIndex?.value shouldBe 5000u
             }
         }
     }
@@ -224,6 +256,46 @@ class AccountMethodsTest : FunSpec({
                 val objects = (result as XrplResult.Success<AccountObjectsResult>).value
                 objects.account shouldBe GENESIS_ADDRESS
                 objects.accountObjects shouldHaveSize 1
+            }
+        }
+    }
+
+    test("accountObjects with Check and Ticket maps to typed objects") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"account_objects":[""" +
+                            """{"LedgerEntryType":"Check","index":"C1A0",""" +
+                            """"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"Destination":"rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",""" +
+                            """"SendMax":"1000000","Sequence":5},""" +
+                            """{"LedgerEntryType":"Ticket","index":"T1B0",""" +
+                            """"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"TicketSequence":42}]""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.accountObjects(GENESIS_ADDRESS)
+                result.shouldBeInstanceOf<XrplResult.Success<AccountObjectsResult>>()
+                val objects = (result as XrplResult.Success<AccountObjectsResult>).value
+                objects.accountObjects shouldHaveSize 2
+
+                val typed = objects.objects
+                typed shouldHaveSize 2
+                typed[0].shouldBeInstanceOf<CheckObject>()
+                val check = typed[0] as CheckObject
+                check.index shouldBe "C1A0"
+                check.account shouldBe GENESIS_ADDRESS
+                check.destination shouldBe Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
+                check.sequence shouldBe 5u
+
+                typed[1].shouldBeInstanceOf<TicketObject>()
+                val ticket = typed[1] as TicketObject
+                ticket.index shouldBe "T1B0"
+                ticket.account shouldBe GENESIS_ADDRESS
+                ticket.ticketSequence shouldBe 42u
             }
         }
     }

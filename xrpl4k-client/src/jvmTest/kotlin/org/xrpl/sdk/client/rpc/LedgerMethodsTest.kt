@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import org.xrpl.sdk.client.TestHelper.clientWithMockEngine
 import org.xrpl.sdk.client.TestHelper.successResponse
 import org.xrpl.sdk.client.model.LedgerClosedResult
+import org.xrpl.sdk.client.model.LedgerEntryResult
 import org.xrpl.sdk.client.model.LedgerResult
 import org.xrpl.sdk.core.result.XrplResult
 import org.xrpl.sdk.core.type.LedgerIndex
@@ -100,6 +101,64 @@ class LedgerMethodsTest : FunSpec({
                 val result = c.ledgerCurrent()
                 result.shouldBeInstanceOf<XrplResult.Success<LedgerIndex>>()
                 (result as XrplResult.Success<LedgerIndex>).value shouldBe LedgerIndex(87_000_001u)
+            }
+        }
+    }
+
+    // ── ledgerEntry ───────────────────────────────────────────────
+
+    test("ledgerEntry returns entry with node and index") {
+        runTest {
+            val entryIndex = "7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4"
+            val ledgerHash = "4BC50C9B0D8515D3EAAE1E74B29A95804346C491EE1A95BF25E4AAB854A6A651"
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"index":"$entryIndex",""" +
+                            """"ledger_index":87000000,""" +
+                            """"ledger_hash":"$ledgerHash",""" +
+                            """"node":{"LedgerEntryType":"AccountRoot",""" +
+                            """"Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",""" +
+                            """"Balance":"100000000"},""" +
+                            """"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.ledgerEntry(accountRoot = "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh")
+                result.shouldBeInstanceOf<XrplResult.Success<LedgerEntryResult>>()
+                val entry = (result as XrplResult.Success<LedgerEntryResult>).value
+                entry.index shouldBe entryIndex
+                entry.ledgerIndex?.value shouldBe 87_000_000u
+                entry.ledgerHash shouldNotBe null
+                entry.ledgerHash!!.value shouldBe ledgerHash
+                entry.node shouldNotBe null
+                entry.nodeBinary shouldBe null
+                entry.validated shouldBe true
+            }
+        }
+    }
+
+    test("ledgerEntry with binary returns nodeBinary string") {
+        runTest {
+            val entryIndex = "7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4"
+            val binaryData = "1100612200000000"
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"index":"$entryIndex",""" +
+                            """"ledger_index":1000,""" +
+                            """"node_binary":"$binaryData",""" +
+                            """"validated":true""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.ledgerEntry(binary = true, accountRoot = "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh")
+                result.shouldBeInstanceOf<XrplResult.Success<LedgerEntryResult>>()
+                val entry = (result as XrplResult.Success<LedgerEntryResult>).value
+                entry.index shouldBe entryIndex
+                entry.nodeBinary shouldBe binaryData
+                entry.node shouldBe null
+                entry.validated shouldBe true
             }
         }
     }

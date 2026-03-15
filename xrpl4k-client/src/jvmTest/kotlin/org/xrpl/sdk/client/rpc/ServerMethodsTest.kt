@@ -9,6 +9,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.test.runTest
 import org.xrpl.sdk.client.TestHelper.clientWithMockEngine
 import org.xrpl.sdk.client.TestHelper.successResponse
+import org.xrpl.sdk.client.model.FeatureResult
 import org.xrpl.sdk.client.model.FeeResult
 import org.xrpl.sdk.client.model.ServerInfo
 import org.xrpl.sdk.core.result.XrplResult
@@ -59,6 +60,33 @@ class ServerMethodsTest : FunSpec({
                 val fee = (result as XrplResult.Success<FeeResult>).value
                 fee.drops.baseFee shouldBe null
                 fee.openLedgerFee shouldBe XrpDrops(0)
+            }
+        }
+    }
+
+    test("fee convenience properties baseFee, medianFee, minimumFee delegate to drops") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"current_ledger_size":"20","current_queue_size":"5",""" +
+                            """"drops":{"base_fee":"10","median_fee":"5000",""" +
+                            """"minimum_fee":"10","open_ledger_fee":"12"},""" +
+                            """"expected_ledger_size":"25","ledger_current_index":200,""" +
+                            """"max_queue_size":"500"""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.fee()
+                result.shouldBeInstanceOf<XrplResult.Success<FeeResult>>()
+                val fee = (result as XrplResult.Success<FeeResult>).value
+                fee.baseFee shouldBe XrpDrops(10)
+                fee.medianFee shouldBe XrpDrops(5_000)
+                fee.minimumFee shouldBe XrpDrops(10)
+                fee.openLedgerFee shouldBe XrpDrops(12)
+                fee.baseFee shouldBe fee.drops.baseFee
+                fee.medianFee shouldBe fee.drops.medianFee
+                fee.minimumFee shouldBe fee.drops.minimumFee
             }
         }
     }
@@ -123,6 +151,54 @@ class ServerMethodsTest : FunSpec({
                 val info = (result as XrplResult.Success<ServerInfo>).value
                 info.buildVersion shouldBe null
                 info.serverState shouldBe null
+            }
+        }
+    }
+
+    // ── feature ─────────────────────────────────────────────────
+
+    test("feature returns FeatureResult with enabled and vetoed fields") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"features":{"42426C4D4F1009EE67B68E0EC14FA5A1B20077B3E3E08E83D55962D6D7D3E613":""" +
+                            """{"enabled":true,"name":"FeeEscalation","supported":true,"vetoed":false}}""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.feature()
+                result.shouldBeInstanceOf<XrplResult.Success<FeatureResult>>()
+                val features = (result as XrplResult.Success<FeatureResult>).value.features
+                features.size shouldBe 1
+                val entry = features.values.first()
+                entry.enabled shouldBe true
+                entry.name shouldBe "FeeEscalation"
+                entry.supported shouldBe true
+                entry.vetoed shouldBe false
+            }
+        }
+    }
+
+    test("feature with vetoed Obsolete string maps vetoed to false") {
+        runTest {
+            val client =
+                clientWithMockEngine(
+                    successResponse(
+                        """"features":{"ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890":""" +
+                            """{"enabled":false,"name":"ObsoleteFeature","supported":false,"vetoed":"Obsolete"}}""",
+                    ),
+                )
+            client.use { c ->
+                val result = c.feature()
+                result.shouldBeInstanceOf<XrplResult.Success<FeatureResult>>()
+                val features = (result as XrplResult.Success<FeatureResult>).value.features
+                features.size shouldBe 1
+                val entry = features.values.first()
+                entry.enabled shouldBe false
+                entry.name shouldBe "ObsoleteFeature"
+                entry.supported shouldBe false
+                entry.vetoed shouldBe false
             }
         }
     }
