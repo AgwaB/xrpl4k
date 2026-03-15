@@ -18,6 +18,8 @@ import org.xrpl.sdk.client.internal.dto.AccountOffersRequest
 import org.xrpl.sdk.client.internal.dto.AccountOffersResponse
 import org.xrpl.sdk.client.internal.dto.AccountTxRequest
 import org.xrpl.sdk.client.internal.dto.AccountTxResponse
+import org.xrpl.sdk.client.internal.dto.DepositAuthorizedRequest
+import org.xrpl.sdk.client.internal.dto.DepositAuthorizedResponse
 import org.xrpl.sdk.client.internal.dto.GatewayBalancesRequest
 import org.xrpl.sdk.client.internal.dto.GatewayBalancesResponse
 import org.xrpl.sdk.client.internal.dto.NorippleCheckRequest
@@ -33,6 +35,7 @@ import org.xrpl.sdk.client.model.AccountOffer
 import org.xrpl.sdk.client.model.AccountOffersResult
 import org.xrpl.sdk.client.model.AccountTxEntry
 import org.xrpl.sdk.client.model.AccountTxResult
+import org.xrpl.sdk.client.model.DepositAuthorizedResult
 import org.xrpl.sdk.client.model.GatewayBalancesResult
 import org.xrpl.sdk.client.model.IssuedCurrencyBalance
 import org.xrpl.sdk.client.model.LedgerSpecifier
@@ -508,6 +511,41 @@ public suspend fun XrplClient.norippleCheck(
         NorippleCheckResult(
             problems = resp.problems,
             transactions = resp.transactions,
+            ledgerIndex = resp.ledgerIndex?.let { LedgerIndex(it.toUInt()) },
+        )
+    }
+}
+
+/**
+ * Checks whether one account is authorized to send payments directly to another.
+ *
+ * @param sourceAccount The sender of a possible payment.
+ * @param destinationAccount The recipient of a possible payment.
+ * @param ledgerSpecifier Which ledger version to use. Defaults to [LedgerSpecifier.Validated].
+ * @return [XrplResult] containing [DepositAuthorizedResult] on success.
+ */
+public suspend fun XrplClient.depositAuthorized(
+    sourceAccount: Address,
+    destinationAccount: Address,
+    ledgerSpecifier: LedgerSpecifier = LedgerSpecifier.Validated,
+): XrplResult<DepositAuthorizedResult> {
+    val (ledgerIndex, ledgerHash) = ledgerSpecifier.toLedgerParams()
+    return executeRpc(
+        method = "deposit_authorized",
+        request =
+            DepositAuthorizedRequest(
+                sourceAccount = sourceAccount.value,
+                destinationAccount = destinationAccount.value,
+                ledgerIndex = ledgerIndex,
+                ledgerHash = ledgerHash,
+            ),
+        requestSerializer = DepositAuthorizedRequest.serializer(),
+        responseDeserializer = DepositAuthorizedResponse.serializer(),
+    ) { resp ->
+        DepositAuthorizedResult(
+            depositAuthorized = resp.depositAuthorized,
+            sourceAccount = Address(resp.sourceAccount),
+            destinationAccount = Address(resp.destinationAccount),
             ledgerIndex = resp.ledgerIndex?.let { LedgerIndex(it.toUInt()) },
         )
     }

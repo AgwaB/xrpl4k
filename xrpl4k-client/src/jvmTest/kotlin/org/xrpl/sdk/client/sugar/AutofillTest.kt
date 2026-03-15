@@ -2,6 +2,7 @@
 
 package org.xrpl.sdk.client.sugar
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -14,6 +15,8 @@ import kotlinx.coroutines.test.runTest
 import org.xrpl.sdk.client.TestHelper
 import org.xrpl.sdk.client.XrplClient
 import org.xrpl.sdk.core.model.amount.XrpAmount
+import org.xrpl.sdk.core.model.transaction.AccountDeleteFields
+import org.xrpl.sdk.core.model.transaction.EscrowFinishFields
 import org.xrpl.sdk.core.model.transaction.PaymentFields
 import org.xrpl.sdk.core.model.transaction.TransactionType
 import org.xrpl.sdk.core.model.transaction.XrplTransaction
@@ -360,4 +363,257 @@ class AutofillTest : FunSpec({
             }
         }
     }
+
+    // ══════════════════════════════════════════════════════════════
+    // Special fee calculation tests
+    // ══════════════════════════════════════════════════════════════
+
+    // ── AccountDelete: uses owner reserve ───────────────────────
+
+    test("autofill AccountDelete uses owner reserve from server_info") {
+        runTest {
+            val engine = specialFeeMockEngine(reserveIncXrp = 2.0)
+            val client = XrplClient { this.engine = engine }
+            val tx =
+                XrplTransaction.Unsigned(
+                    transactionType = TransactionType.AccountDelete,
+                    account = TEST_ACCOUNT,
+                    fields =
+                        AccountDeleteFields(
+                            destination = TEST_DESTINATION,
+                        ),
+                )
+            client.use { c ->
+                val result = c.autofill(tx)
+                result.shouldBeInstanceOf<XrplResult.Success<XrplTransaction.Filled>>()
+                val filled = (result as XrplResult.Success<XrplTransaction.Filled>).value
+
+                // fee = reserve_inc_xrp (2.0 XRP) = 2_000_000 drops
+                filled.fee shouldBe XrpDrops(2_000_000)
+            }
+        }
+    }
+
+    test("autofill AMMCreate uses owner reserve from server_info") {
+        runTest {
+            val engine = specialFeeMockEngine(reserveIncXrp = 2.0)
+            val client = XrplClient { this.engine = engine }
+            val tx =
+                XrplTransaction.Unsigned(
+                    transactionType = TransactionType.AMMCreate,
+                    account = TEST_ACCOUNT,
+                    fields =
+                        org.xrpl.sdk.core.model.transaction.AMMCreateFields(
+                            amount = XrpAmount(XrpDrops(10_000_000)),
+                            amount2 = XrpAmount(XrpDrops(10_000_000)),
+                        ),
+                )
+            client.use { c ->
+                val result = c.autofill(tx)
+                result.shouldBeInstanceOf<XrplResult.Success<XrplTransaction.Filled>>()
+                val filled = (result as XrplResult.Success<XrplTransaction.Filled>).value
+
+                // fee = reserve_inc_xrp (2.0 XRP) = 2_000_000 drops
+                filled.fee shouldBe XrpDrops(2_000_000)
+            }
+        }
+    }
+
+    test("autofill AccountDelete fee is not capped by maxFeeXrp") {
+        runTest {
+            // reserve_inc = 10 XRP = 10_000_000 drops, which exceeds default maxFeeXrp (2.0)
+            val engine = specialFeeMockEngine(reserveIncXrp = 10.0)
+            val client = XrplClient { this.engine = engine }
+            val tx =
+                XrplTransaction.Unsigned(
+                    transactionType = TransactionType.AccountDelete,
+                    account = TEST_ACCOUNT,
+                    fields =
+                        AccountDeleteFields(
+                            destination = TEST_DESTINATION,
+                        ),
+                )
+            client.use { c ->
+                val result = c.autofill(tx)
+                // Should succeed even though fee > maxFeeXrp
+                result.shouldBeInstanceOf<XrplResult.Success<XrplTransaction.Filled>>()
+                val filled = (result as XrplResult.Success<XrplTransaction.Filled>).value
+                filled.fee shouldBe XrpDrops(10_000_000)
+            }
+        }
+    }
+
+    // ── EscrowFinish with fulfillment: scaled fee ──────────────
+
+    test("autofill EscrowFinish with fulfillment scales fee") {
+        runTest {
+            val engine = autofillMockEngine(openLedgerFee = 10)
+            val client = XrplClient { this.engine = engine }
+            // 64-char hex = 32 bytes fulfillment
+            val fulfillmentHex = "A0028000" + "0".repeat(56)
+            val tx =
+                XrplTransaction.Unsigned(
+                    transactionType = TransactionType.EscrowFinish,
+                    account = TEST_ACCOUNT,
+                    fields =
+                        EscrowFinishFields(
+                            owner = TEST_ACCOUNT,
+                            offerSequence = 1u,
+                            condition = "A0258020" + "0".repeat(56),
+                            fulfillment = fulfillmentHex,
+                        ),
+                )
+            client.use { c ->
+                val result = c.autofill(tx)
+                result.shouldBeInstanceOf<XrplResult.Success<XrplTransaction.Filled>>()
+                val filled = (result as XrplResult.Success<XrplTransaction.Filled>).value
+
+                // fulfillment hex length = 64, byte size = 32
+                // scaleFactor = 33 + 32/16 = 33 + 2 = 35
+                // fee = openLedgerFee(10) * 35 = 350
+                filled.fee shouldBe XrpDrops(350)
+            }
+        }
+    }
+
+    test("autofill EscrowFinish without fulfillment uses standard fee") {
+        runTest {
+            val engine = autofillMockEngine(openLedgerFee = 10)
+            val client = XrplClient { this.engine = engine }
+            val tx =
+                XrplTransaction.Unsigned(
+                    transactionType = TransactionType.EscrowFinish,
+                    account = TEST_ACCOUNT,
+                    fields =
+                        EscrowFinishFields(
+                            owner = TEST_ACCOUNT,
+                            offerSequence = 1u,
+                        ),
+                )
+            client.use { c ->
+                val result = c.autofill(tx)
+                result.shouldBeInstanceOf<XrplResult.Success<XrplTransaction.Filled>>()
+                val filled = (result as XrplResult.Success<XrplTransaction.Filled>).value
+
+                // Standard fee: openLedgerFee(10) * feeCushion(1.2) = 12
+                filled.fee shouldBe XrpDrops(12)
+            }
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // X-Address resolution tests
+    // ══════════════════════════════════════════════════════════════
+
+    test("resolveXAddress converts X-Address to classic address") {
+        // X7AcgcsBL6XDcUb289X4mJ8djcdyKaB5hJDWMArnXr61cqZ is the X-Address
+        // for r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59 (no tag, mainnet)
+        val resolved = resolveXAddress("X7AcgcsBL6XDcUb289X4mJ8djcdyKaB5hJDWMArnXr61cqZ")
+        resolved.classicAddress shouldBe Address("r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59")
+        resolved.tag shouldBe null
+    }
+
+    test("resolveXAddress converts X-Address with tag") {
+        // X7AcgcsBL6XDcUb289X4mJ8djcdyKaGZMhc9YTE92ehJ2Fu is the X-Address
+        // for r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59 with tag=1, mainnet
+        val resolved = resolveXAddress("X7AcgcsBL6XDcUb289X4mJ8djcdyKaGZMhc9YTE92ehJ2Fu")
+        resolved.classicAddress shouldBe Address("r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59")
+        resolved.tag shouldBe 1u
+    }
+
+    test("resolveXAddress returns classic address unchanged") {
+        val resolved = resolveXAddress("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh")
+        resolved.classicAddress shouldBe Address("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh")
+        resolved.tag shouldBe null
+    }
+
+    test("resolveXAddress with expectedTag passes when matching") {
+        // Classic address -- tag comes from expectedTag
+        val resolved = resolveXAddress("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh", expectedTag = 42u)
+        resolved.classicAddress shouldBe Address("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh")
+        resolved.tag shouldBe 42u
+    }
+
+    test("resolveXAddress with conflicting X-Address tag and expectedTag throws") {
+        // X7AcgcsBL6XDcUb289X4mJ8djcdyKaGZMhc9YTE92ehJ2Fu has tag=1
+        // Passing expectedTag=999 should conflict.
+        shouldThrow<IllegalArgumentException> {
+            resolveXAddress("X7AcgcsBL6XDcUb289X4mJ8djcdyKaGZMhc9YTE92ehJ2Fu", expectedTag = 999u)
+        }
+    }
+
+    test("resolveXAddress with X-Address tag=null and expectedTag merges") {
+        // X-Address without tag + expectedTag => uses expectedTag
+        val resolved = resolveXAddress("X7AcgcsBL6XDcUb289X4mJ8djcdyKaB5hJDWMArnXr61cqZ", expectedTag = 42u)
+        resolved.classicAddress shouldBe Address("r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59")
+        resolved.tag shouldBe 42u
+    }
 })
+
+// ── Helper: mock engine that also handles server_info ───────────────
+
+/**
+ * Mock engine for special fee tests that also responds to server_info.
+ */
+private fun specialFeeMockEngine(
+    openLedgerFee: Long = 10,
+    accountSequence: UInt = 5u,
+    currentLedgerIndex: UInt = 87_000_000u,
+    reserveIncXrp: Double = 2.0,
+    reserveBaseXrp: Double = 10.0,
+): MockEngine =
+    MockEngine { request ->
+        val body = String(request.body.toByteArray())
+        val response =
+            when {
+                """"method":"fee"""" in body ->
+                    """
+                    {"result":{"status":"success",
+                    "drops":{"base_fee":"10","median_fee":"5000",
+                    "minimum_fee":"10","open_ledger_fee":"$openLedgerFee"},
+                    "current_ledger_size":"42","current_queue_size":"0",
+                    "expected_ledger_size":"100","max_queue_size":"2000",
+                    "ledger_current_index":$currentLedgerIndex}}
+                    """.trimIndent()
+
+                """"method":"account_info"""" in body ->
+                    """
+                    {"result":{"status":"success",
+                    "account_data":{"Account":"${TEST_ACCOUNT.value}",
+                    "Balance":"50000000","Sequence":$accountSequence,
+                    "OwnerCount":0,"Flags":0},"validated":true}}
+                    """.trimIndent()
+
+                """"method":"ledger_current"""" in body ->
+                    """
+                    {"result":{"status":"success",
+                    "ledger_current_index":$currentLedgerIndex}}
+                    """.trimIndent()
+
+                """"method":"server_info"""" in body ->
+                    """
+                    {"result":{"status":"success",
+                    "info":{"build_version":"2.0.0",
+                    "complete_ledgers":"1-100",
+                    "server_state":"full",
+                    "validated_ledger":{
+                      "age":2,
+                      "base_fee_xrp":0.00001,
+                      "hash":"abc",
+                      "reserve_base_xrp":$reserveBaseXrp,
+                      "reserve_inc_xrp":$reserveIncXrp,
+                      "seq":$currentLedgerIndex
+                    }}}}
+                    """.trimIndent()
+
+                else ->
+                    """{"result":{"status":"error",""" +
+                        """"error":"unknownCmd","error_code":-1,""" +
+                        """"error_message":"Unknown method."}}"""
+            }
+        respond(
+            content = ByteReadChannel(response),
+            status = HttpStatusCode.OK,
+            headers = TestHelper.jsonHeaders(),
+        )
+    }

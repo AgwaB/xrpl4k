@@ -62,6 +62,10 @@ public class XrplClient internal constructor(
                 scope = scope,
                 heartbeatInterval = config.webSocketConfig.heartbeatInterval,
                 requestTimeout = config.timeout,
+                autoReconnect = config.webSocketConfig.autoReconnect,
+                maxReconnectAttempts = config.webSocketConfig.maxReconnectAttempts,
+                initialReconnectDelay = config.webSocketConfig.initialReconnectDelay,
+                maxReconnectDelay = config.webSocketConfig.maxReconnectDelay,
             )
         }
 

@@ -24,6 +24,7 @@ import org.xrpl.sdk.core.result.XrplFailure
 import org.xrpl.sdk.core.result.XrplResult
 import kotlin.concurrent.atomics.AtomicInt
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -36,6 +37,7 @@ import kotlin.time.Duration.Companion.seconds
  * - ID counter overflow is tested against the AtomicInt directly.
  * - Close cleanup and idempotency are tested by calling close() in various states.
  * - ConnectionState sealed class is tested for equality and toString.
+ * - Auto-reconnect behavior is tested with configurable backoff parameters.
  */
 class WebSocketTransportTest : FunSpec({
 
@@ -46,6 +48,10 @@ class WebSocketTransportTest : FunSpec({
         engine: MockEngine = MockEngine { respond(ByteReadChannel(""), HttpStatusCode.OK) },
         heartbeat: kotlin.time.Duration = 30.seconds,
         requestTimeout: kotlin.time.Duration = 5.seconds,
+        autoReconnect: Boolean = false,
+        maxReconnectAttempts: Int = Int.MAX_VALUE,
+        initialReconnectDelay: kotlin.time.Duration = 100.milliseconds,
+        maxReconnectDelay: kotlin.time.Duration = 60.seconds,
     ): WebSocketTransport {
         return WebSocketTransport(
             url = "ws://localhost:6006",
@@ -53,6 +59,10 @@ class WebSocketTransportTest : FunSpec({
             scope = scope,
             heartbeatInterval = heartbeat,
             requestTimeout = requestTimeout,
+            autoReconnect = autoReconnect,
+            maxReconnectAttempts = maxReconnectAttempts,
+            initialReconnectDelay = initialReconnectDelay,
+            maxReconnectDelay = maxReconnectDelay,
         )
     }
 
@@ -232,6 +242,29 @@ class WebSocketTransportTest : FunSpec({
         f1.hashCode() shouldBe f2.hashCode()
     }
 
+    // ── ConnectionState.Reconnecting ────────────────────────────────────────────
+
+    test("ConnectionState.Reconnecting holds attempt and cause") {
+        val cause = RuntimeException("dropped")
+        val r = ConnectionState.Reconnecting(attempt = 3, cause = cause)
+
+        r.attempt shouldBe 3
+        r.cause shouldBe cause
+        r.toString() shouldContain "Reconnecting"
+        r.toString() shouldContain "attempt=3"
+    }
+
+    test("ConnectionState.Reconnecting equality is based on attempt and cause") {
+        val cause = RuntimeException("dropped")
+        val r1 = ConnectionState.Reconnecting(1, cause)
+        val r2 = ConnectionState.Reconnecting(1, cause)
+        val r3 = ConnectionState.Reconnecting(2, cause)
+
+        (r1 == r2) shouldBe true
+        (r1 == r3) shouldBe false
+        r1.hashCode() shouldBe r2.hashCode()
+    }
+
     // ── subscriptionEvents flow ─────────────────────────────────────────────────
 
     test("subscriptionEvents is accessible as SharedFlow") {
@@ -396,5 +429,160 @@ class WebSocketTransportTest : FunSpec({
 
             scope.cancel()
         }
+    }
+
+    // ── Auto-reconnect ──────────────────────────────────────────────────────────
+
+    test("auto-reconnect disabled — connect failure is terminal") {
+        runTest {
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+            val engine = MockEngine { throw RuntimeException("Connection refused") }
+            val transport =
+                makeTransport(
+                    scope,
+                    engine = engine,
+                    autoReconnect = false,
+                )
+
+            transport.connect()
+            transport.connectionState.value.shouldBeInstanceOf<ConnectionState.Failed>()
+
+            // Should stay Failed without any reconnect attempts
+            kotlinx.coroutines.delay(200.milliseconds)
+            transport.connectionState.value.shouldBeInstanceOf<ConnectionState.Failed>()
+
+            scope.cancel()
+        }
+    }
+
+    test("auto-reconnect with max attempts exhausted ends in Failed") {
+        runTest {
+            val callCount = AtomicInt(0)
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+            val engine =
+                MockEngine {
+                    callCount.fetchAndAdd(1)
+                    throw RuntimeException("Connection refused")
+                }
+            val transport =
+                makeTransport(
+                    scope,
+                    engine = engine,
+                    autoReconnect = true,
+                    maxReconnectAttempts = 3,
+                    initialReconnectDelay = 10.milliseconds,
+                    maxReconnectDelay = 50.milliseconds,
+                )
+
+            transport.connect()
+
+            // Wait for reconnect attempts to exhaust by observing state flow.
+            // After the initial connect fails, reconnect loop starts. We watch
+            // for state to settle back to Failed (after reconnect gives up).
+            transport.connectionState.test {
+                // Consume any intermediate states (Reconnecting, Connecting, Failed)
+                // until we see a terminal Failed that follows reconnect attempts.
+                val seen = mutableListOf<ConnectionState>()
+                while (true) {
+                    val item = awaitItem()
+                    seen.add(item)
+                    // Once we've seen at least one Reconnecting state and then Failed,
+                    // the reconnect loop is done.
+                    val sawReconnecting = seen.any { it is ConnectionState.Reconnecting }
+                    if (sawReconnecting && item is ConnectionState.Failed) break
+                    // Safety limit
+                    if (seen.size > 20) break
+                }
+
+                // Should have ended in Failed
+                seen.last().shouldBeInstanceOf<ConnectionState.Failed>()
+                // Should have seen at least one Reconnecting state
+                seen.any { it is ConnectionState.Reconnecting } shouldBe true
+
+                cancelAndConsumeRemainingEvents()
+            }
+
+            transport.close()
+            scope.cancel()
+        }
+    }
+
+    test("close() stops auto-reconnect") {
+        runTest {
+            val callCount = AtomicInt(0)
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+            val engine =
+                MockEngine {
+                    callCount.fetchAndAdd(1)
+                    throw RuntimeException("Connection refused")
+                }
+            val transport =
+                makeTransport(
+                    scope,
+                    engine = engine,
+                    autoReconnect = true,
+                    maxReconnectAttempts = 100,
+                    initialReconnectDelay = 50.milliseconds,
+                    maxReconnectDelay = 100.milliseconds,
+                )
+
+            transport.connect()
+            // Give some time for reconnect to start
+            kotlinx.coroutines.delay(100.milliseconds)
+
+            // Close should stop reconnect
+            transport.close()
+
+            val countAfterClose = callCount.load()
+            kotlinx.coroutines.delay(300.milliseconds)
+
+            // No more attempts after close
+            val countLater = callCount.load()
+            (countLater - countAfterClose <= 1) shouldBe true
+
+            scope.cancel()
+        }
+    }
+
+    // ── Subscription tracking ───────────────────────────────────────────────────
+
+    test("trackSubscription and untrackSubscription work correctly") {
+        runTest {
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+            try {
+                val transport = makeTransport(scope)
+                val entry = WebSocketTransport.SubscriptionEntry.Streams(listOf("ledger"))
+
+                transport.trackSubscription(entry)
+                transport.trackSubscription(
+                    WebSocketTransport.SubscriptionEntry.Accounts(listOf("rAddr1")),
+                )
+
+                // Untrack the first one
+                transport.untrackSubscription(entry)
+
+                // No crash — just verifying the API works without errors
+            } finally {
+                scope.cancel()
+            }
+        }
+    }
+
+    test("SubscriptionEntry.Streams equality") {
+        val a = WebSocketTransport.SubscriptionEntry.Streams(listOf("ledger"))
+        val b = WebSocketTransport.SubscriptionEntry.Streams(listOf("ledger"))
+        val c = WebSocketTransport.SubscriptionEntry.Streams(listOf("transactions"))
+
+        (a == b) shouldBe true
+        (a == c) shouldBe false
+    }
+
+    test("SubscriptionEntry.Accounts equality") {
+        val a = WebSocketTransport.SubscriptionEntry.Accounts(listOf("rAddr1"))
+        val b = WebSocketTransport.SubscriptionEntry.Accounts(listOf("rAddr1"))
+        val c = WebSocketTransport.SubscriptionEntry.Accounts(listOf("rAddr2"))
+
+        (a == b) shouldBe true
+        (a == c) shouldBe false
     }
 })

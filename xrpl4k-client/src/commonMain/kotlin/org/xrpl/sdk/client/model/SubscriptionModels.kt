@@ -6,6 +6,62 @@ import org.xrpl.sdk.core.type.LedgerIndex
 import org.xrpl.sdk.core.type.TxHash
 
 /**
+ * A validation event from a WebSocket subscription to the "validations" stream.
+ */
+public class ValidationEvent(
+    public val ledgerHash: String?,
+    public val ledgerIndex: LedgerIndex?,
+    public val signature: String?,
+    public val signingTime: Long?,
+    public val validationPublicKey: String?,
+    public val flags: Long?,
+    public val full: Boolean?,
+    public val rawJson: JsonElement?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ValidationEvent) return false
+        return ledgerHash == other.ledgerHash &&
+            ledgerIndex == other.ledgerIndex &&
+            signature == other.signature &&
+            validationPublicKey == other.validationPublicKey
+    }
+
+    override fun hashCode(): Int {
+        var result = ledgerHash?.hashCode() ?: 0
+        result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
+        result = 31 * result + (signature?.hashCode() ?: 0)
+        result = 31 * result + (validationPublicKey?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "ValidationEvent(" +
+            "ledgerHash=$ledgerHash, " +
+            "ledgerIndex=$ledgerIndex, " +
+            "validationPublicKey=$validationPublicKey" +
+            ")"
+}
+
+/**
+ * A consensus phase event from a WebSocket subscription to the "consensus" stream.
+ */
+public class ConsensusEvent(
+    public val phase: String?,
+    public val rawJson: JsonElement?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ConsensusEvent) return false
+        return phase == other.phase
+    }
+
+    override fun hashCode(): Int = phase?.hashCode() ?: 0
+
+    override fun toString(): String = "ConsensusEvent(phase=$phase)"
+}
+
+/**
  * A ledger close event from a WebSocket subscription.
  */
 public class LedgerEvent(

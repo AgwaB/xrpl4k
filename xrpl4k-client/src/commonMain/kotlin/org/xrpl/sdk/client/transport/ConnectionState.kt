@@ -2,9 +2,6 @@ package org.xrpl.sdk.client.transport
 
 /**
  * Represents the connection state of a WebSocket transport.
- *
- * Phase 3 treats disconnect as terminal — there is no `Reconnecting` state.
- * Auto-reconnect will be added in a future phase alongside auto-resubscribe.
  */
 public sealed class ConnectionState {
     /** Not connected. Initial state. */
@@ -16,7 +13,22 @@ public sealed class ConnectionState {
     /** Connected and ready for communication. */
     public data object Connected : ConnectionState()
 
-    /** Connection failed or was lost. Terminal state in Phase 3. */
+    /** Auto-reconnecting after an unexpected disconnect. */
+    public class Reconnecting(
+        /** The attempt number (1-based). */
+        public val attempt: Int,
+        /** The cause of the disconnect that triggered reconnection. */
+        public val cause: Throwable,
+    ) : ConnectionState() {
+        override fun equals(other: Any?): Boolean =
+            other is Reconnecting && attempt == other.attempt && cause == other.cause
+
+        override fun hashCode(): Int = 31 * attempt + cause.hashCode()
+
+        override fun toString(): String = "ConnectionState.Reconnecting(attempt=$attempt, cause=$cause)"
+    }
+
+    /** Connection failed or was lost. Terminal when auto-reconnect is exhausted or disabled. */
     public class Failed(public val cause: Throwable) : ConnectionState() {
         override fun equals(other: Any?): Boolean = other is Failed && cause == other.cause
 

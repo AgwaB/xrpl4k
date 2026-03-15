@@ -32,8 +32,12 @@ public object AddressCodec {
     /** Account public key prefix (0x23). */
     private val ACCOUNT_PUBLIC_KEY_PREFIX: ByteArray = byteArrayOf(0x23)
 
+    /** Node/validation public key prefix (0x1C / version 28). */
+    private val NODE_PUBLIC_PREFIX: ByteArray = byteArrayOf(0x1C)
+
     private const val SEED_LENGTH = 16
     private const val ACCOUNT_ID_LENGTH = 20
+    private const val NODE_PUBLIC_KEY_LENGTH = 33
 
     /**
      * Encode a 20-byte Account ID to a classic r-address.
@@ -160,5 +164,134 @@ public object AddressCodec {
                 provider,
             )
         return payload
+    }
+
+    /**
+     * Encode a 33-byte node/validation public key to Base58Check format.
+     *
+     * Uses prefix `0x1C` (version 28). Encoded strings start with `'n'`.
+     *
+     * Reference: xrpl.js `encodeNodePublic` in `xrp-codec.ts`
+     */
+    public fun encodeNodePublic(
+        publicKey: ByteArray,
+        provider: CryptoProvider = platformCryptoProvider(),
+    ): String {
+        require(publicKey.size == NODE_PUBLIC_KEY_LENGTH) {
+            "Node public key must be $NODE_PUBLIC_KEY_LENGTH bytes (compressed). Got ${publicKey.size}."
+        }
+        return Base58Check.encode(NODE_PUBLIC_PREFIX, publicKey, provider)
+    }
+
+    /**
+     * Decode a Base58Check-encoded node public key string to 33 raw bytes.
+     *
+     * Reference: xrpl.js `decodeNodePublic` in `xrp-codec.ts`
+     */
+    public fun decodeNodePublic(
+        encoded: String,
+        provider: CryptoProvider = platformCryptoProvider(),
+    ): ByteArray {
+        val (_, payload) =
+            Base58Check.decodeChecked(
+                encoded,
+                listOf(NODE_PUBLIC_PREFIX),
+                expectedPayloadLength = NODE_PUBLIC_KEY_LENGTH,
+                provider,
+            )
+        return payload
+    }
+
+    /**
+     * Derive a classic XRPL address from a node public key.
+     *
+     * The algorithm mirrors xrpl.js `deriveNodeAddress`:
+     * 1. Decode the Base58Check node public key to raw bytes (the "public generator").
+     * 2. Derive an account public key from the public generator using secp256k1 point addition.
+     * 3. Hash with SHA-256 then RIPEMD-160 to produce the Account ID.
+     * 4. Encode as a classic r-address.
+     *
+     * Reference: xrpl.js `ripple-keypairs/src/index.ts` — `deriveNodeAddress`
+     */
+    public fun deriveNodeAddress(
+        nodePublic: String,
+        provider: CryptoProvider = platformCryptoProvider(),
+    ): Address {
+        val generatorBytes = decodeNodePublic(nodePublic, provider)
+        val accountPublicBytes = accountPublicFromPublicGenerator(generatorBytes, provider)
+        val sha256Hash = provider.sha256(accountPublicBytes)
+        val ripemdHash = provider.ripemd160(sha256Hash)
+        val accountId = AccountId.fromBytes(ripemdHash)
+        return encodeAddress(accountId, provider)
+    }
+
+    /**
+     * Derives an account public key from a secp256k1 public generator.
+     *
+     * This mirrors `accountPublicFromPublicGenerator` in xrpl.js:
+     * 1. Compute scalar = deriveScalar(publicGenBytes, discriminator=0)
+     * 2. Compute offset point = G * scalar
+     * 3. Result = publicGenPoint + offsetPoint (compressed)
+     */
+    internal fun accountPublicFromPublicGenerator(
+        publicGenBytes: ByteArray,
+        provider: CryptoProvider,
+    ): ByteArray {
+        val scalar = deriveScalar(publicGenBytes, discriminator = 0, provider)
+        val offsetPublicKey = provider.secp256k1PublicKey(scalar)
+        return provider.secp256k1AddPublicKeys(publicGenBytes, offsetPublicKey)
+    }
+
+    /**
+     * Derives a 32-byte scalar from input bytes with a discriminator, matching
+     * the secp256k1 derivation in xrpl.js.
+     */
+    private val SECP256K1_ORDER =
+        byteArrayOf(
+            0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(),
+            0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(),
+            0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(),
+            0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFE.toByte(),
+            0xBA.toByte(), 0xAE.toByte(), 0xDC.toByte(), 0xE6.toByte(),
+            0xAF.toByte(), 0x48.toByte(), 0xA0.toByte(), 0x3B.toByte(),
+            0xBF.toByte(), 0xD2.toByte(), 0x5E.toByte(), 0x8C.toByte(),
+            0xD0.toByte(), 0x36.toByte(), 0x41.toByte(), 0x41.toByte(),
+        )
+
+    private fun deriveScalar(
+        bytes: ByteArray,
+        discriminator: Int,
+        provider: CryptoProvider,
+    ): ByteArray {
+        for (i in 0..Int.MAX_VALUE) {
+            val extraSize = 4 + 4 // discriminator + counter
+            val input = ByteArray(bytes.size + extraSize)
+            bytes.copyInto(input)
+            var offset = bytes.size
+            input[offset++] = (discriminator ushr 24).toByte()
+            input[offset++] = (discriminator ushr 16).toByte()
+            input[offset++] = (discriminator ushr 8).toByte()
+            input[offset++] = discriminator.toByte()
+            input[offset++] = (i ushr 24).toByte()
+            input[offset++] = (i ushr 16).toByte()
+            input[offset++] = (i ushr 8).toByte()
+            input[offset] = i.toByte()
+
+            val hash = provider.sha512Half(input)
+            if (!hash.all { it == 0.toByte() } && isLessThanOrder(hash)) {
+                return hash
+            }
+        }
+        error("Could not derive valid scalar after 2^31 attempts")
+    }
+
+    private fun isLessThanOrder(a: ByteArray): Boolean {
+        for (i in a.indices) {
+            val ai = a[i].toInt() and 0xFF
+            val bi = SECP256K1_ORDER[i].toInt() and 0xFF
+            if (ai < bi) return true
+            if (ai > bi) return false
+        }
+        return false
     }
 }

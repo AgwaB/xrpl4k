@@ -8,6 +8,8 @@ import org.xrpl.sdk.core.type.PublicKey
 import org.xrpl.sdk.core.util.hexToByteArray
 import org.xrpl.sdk.core.util.toHexString
 import org.xrpl.sdk.crypto.codec.AddressCodec
+import org.xrpl.sdk.crypto.codec.XAddressCodec
+import org.xrpl.sdk.crypto.internal.Rfc1751
 import org.xrpl.sdk.crypto.internal.deriveFromSeed
 import org.xrpl.sdk.crypto.internal.derivePath
 import org.xrpl.sdk.crypto.internal.mnemonicToSeed
@@ -54,6 +56,18 @@ public class Wallet internal constructor(
             KeyAlgorithm.Ed25519 -> provider.ed25519Sign(message, keyPair.privateKeyBytes)
             KeyAlgorithm.Secp256k1 -> provider.secp256k1Sign(message, keyPair.privateKeyBytes)
         }
+
+    /**
+     * Returns the X-Address representation of this wallet's address.
+     *
+     * @param tag Optional destination tag to encode.
+     * @param isTestnet `true` for testnet X-Addresses (prefix `'T'`), `false` for mainnet (`'X'`).
+     * @return The X-Address string.
+     */
+    public fun getXAddress(
+        tag: UInt? = null,
+        isTestnet: Boolean = false,
+    ): String = XAddressCodec.encode(address, tag, isTestnet, provider).value
 
     /**
      * Verify [signature] against [message] using this wallet's public key.
@@ -138,6 +152,20 @@ public class Wallet internal constructor(
         }
 
         /**
+         * Restore a wallet from a secret (seed) string.
+         *
+         * This is an alias for [fromSeed] that matches the xrpl.js `Wallet.fromSecret()` API.
+         *
+         * @param secret The Base58-encoded secret/seed string.
+         * @param provider The crypto provider to use.
+         * @return The restored [Wallet].
+         */
+        public fun fromSecret(
+            secret: String,
+            provider: CryptoProvider = platformCryptoProvider(),
+        ): Wallet = fromSeed(secret, provider)
+
+        /**
          * Restore a wallet from a Base58-encoded seed string.
          *
          * @param seed The Base58-encoded seed string (starts with `"s"` or `"sEd"`).
@@ -218,6 +246,28 @@ public class Wallet internal constructor(
             val address = AddressCodec.encodeAddress(accountId, provider)
 
             return Wallet(address, publicKey, KeyAlgorithm.Secp256k1, keyPair, null, provider)
+        }
+
+        /**
+         * Derive a wallet from an RFC 1751 mnemonic (12 English words).
+         *
+         * This is the mnemonic format used by rippled's `wallet_propose`.
+         * Note: this format is deprecated in xrpl.js but still supported.
+         *
+         * @param mnemonic 12-word RFC 1751 mnemonic (space-separated, case-insensitive).
+         * @param algorithm Key algorithm (default: Secp256k1 to match rippled).
+         * @param provider The crypto provider to use.
+         * @return The derived [Wallet].
+         * @throws IllegalArgumentException if a word is not in the RFC 1751 word list.
+         * @throws IllegalStateException if parity check fails.
+         */
+        public fun fromRfc1751Mnemonic(
+            mnemonic: String,
+            algorithm: KeyAlgorithm = KeyAlgorithm.Secp256k1,
+            provider: CryptoProvider = platformCryptoProvider(),
+        ): Wallet {
+            val entropy = Rfc1751.mnemonicToKey(mnemonic)
+            return fromEntropy(entropy, algorithm, provider)
         }
     }
 }

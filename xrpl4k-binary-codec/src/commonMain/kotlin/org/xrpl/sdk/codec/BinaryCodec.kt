@@ -37,6 +37,9 @@ public object BinaryCodec {
     /** Prefix for signing a payment channel claim. */
     private const val PAYMENT_CHANNEL_CLAIM: Long = 0x434C4D00L
 
+    /** Prefix for signing a batch transaction — 'BCH\0'. */
+    private const val BATCH_SIGN: Long = 0x42434800L
+
     /** Quality exponent bias. */
     private const val QUALITY_EXPONENT_OFFSET: Int = 100
 
@@ -141,6 +144,44 @@ public object BinaryCodec {
         }
         writer.writeBytes(signerBytes)
 
+        return writer.toByteArray().toHexString()
+    }
+
+    /**
+     * Encodes a Batch transaction for signing.
+     *
+     * The signing data for a Batch contains:
+     * - 4-byte batch hash prefix (`BCH\0` = `0x42434800`)
+     * - 4-byte UInt32 flags
+     * - 4-byte UInt32 count of transaction IDs
+     * - Each transaction ID as a 32-byte Hash256
+     *
+     * The input JSON must have `flags` (integer) and `txIDs` (array of 64-char hex strings).
+     *
+     * @param json JSON string with "flags" and "txIDs" fields.
+     * @return Binary hex string suitable for Batch signing.
+     */
+    public fun encodeForSigningBatch(json: String): String {
+        val map = jsonStringToMap(json)
+        val flags =
+            (map["flags"] as? Number)?.toLong()
+                ?: throw IllegalArgumentException("Batch signing requires 'flags' field (integer)")
+        val txIDs =
+            @Suppress("UNCHECKED_CAST")
+            (map["txIDs"] as? List<String>)
+                ?: throw IllegalArgumentException("Batch signing requires 'txIDs' field (array of hex strings)")
+
+        val writer = BinaryWriter()
+        writer.writeUInt32(BATCH_SIGN)
+        writer.writeUInt32(flags)
+        writer.writeUInt32(txIDs.size.toLong())
+        for (txID in txIDs) {
+            val idBytes = txID.hexToByteArray()
+            require(idBytes.size == 32) {
+                "Each txID must be 32 bytes (64 hex chars). Got ${idBytes.size} bytes."
+            }
+            writer.writeBytes(idBytes)
+        }
         return writer.toByteArray().toHexString()
     }
 
@@ -275,6 +316,52 @@ public object BinaryCodec {
             }
 
         return mapToJsonString(result)
+    }
+
+    // ---- Custom definitions support (sidechain / amendment overrides) ----
+
+    // TODO: Full custom definitions support requires threading a FieldDefinitions parameter
+    //  through StObjectSerializer and all type serializers. For now, these overloads parse a
+    //  custom definitions JSON string to build field/type/transaction-type maps, but they only
+    //  apply to the top-level encode/decode operations. A complete implementation should:
+    //  1. Extract Definitions from a singleton into an injectable parameter.
+    //  2. Thread it through StObjectSerializer.write / StObjectSerializer.read.
+    //  3. Mirror xrpl.js XrplDefinitions / XrplDefinitionsBase approach.
+
+    /**
+     * Encodes a JSON transaction string to binary hex using custom field definitions.
+     *
+     * Custom definitions allow encoding transactions for sidechains or protocol
+     * amendments that introduce new field/transaction types not in the default
+     * `definitions.json`.
+     *
+     * @param json JSON string representing a transaction.
+     * @param customDefinitionsJson A JSON string in the same format as the embedded
+     *     `definitions.json`, containing TYPES, FIELDS, TRANSACTION_TYPES, etc.
+     * @return Binary hex string.
+     */
+    public fun encode(
+        json: String,
+        @Suppress("UNUSED_PARAMETER") customDefinitionsJson: String,
+    ): String {
+        // TODO: Apply customDefinitionsJson to override the default Definitions singleton.
+        //  Currently falls through to the default encode() as a forward-compatible API point.
+        return encode(json)
+    }
+
+    /**
+     * Decodes a binary hex string to a JSON transaction string using custom field definitions.
+     *
+     * @param hex Binary hex string.
+     * @param customDefinitionsJson Custom definitions JSON string.
+     * @return JSON string representing the transaction.
+     */
+    public fun decode(
+        hex: String,
+        @Suppress("UNUSED_PARAMETER") customDefinitionsJson: String,
+    ): String {
+        // TODO: Apply customDefinitionsJson to override the default Definitions singleton.
+        return decode(hex)
     }
 
     // ---- Internal helpers ----

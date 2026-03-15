@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import org.xrpl.sdk.core.Network
 import org.xrpl.sdk.core.XrplDsl
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -95,6 +96,18 @@ public class RetryConfig {
 public class WebSocketConfig {
     /** Interval between WebSocket heartbeat pings. Defaults to 30 seconds. */
     public var heartbeatInterval: Duration = 30.seconds
+
+    /** Whether to automatically reconnect when the connection drops unexpectedly. Defaults to true. */
+    public var autoReconnect: Boolean = true
+
+    /** Maximum number of reconnect attempts. Defaults to [Int.MAX_VALUE] (unlimited). */
+    public var maxReconnectAttempts: Int = Int.MAX_VALUE
+
+    /** Initial delay before the first reconnect attempt. Defaults to 100ms. */
+    public var initialReconnectDelay: Duration = 100.milliseconds
+
+    /** Maximum delay between reconnect attempts. Defaults to 60 seconds. */
+    public var maxReconnectDelay: Duration = 60.seconds
 }
 
 /**

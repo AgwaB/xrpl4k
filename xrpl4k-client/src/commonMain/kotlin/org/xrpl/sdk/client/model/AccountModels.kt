@@ -544,6 +544,52 @@ public class GatewayBalancesResult(
             ")"
 }
 
+public class DepositAuthorizedResult(
+    public val depositAuthorized: Boolean,
+    public val sourceAccount: Address,
+    public val destinationAccount: Address,
+    public val ledgerIndex: LedgerIndex?,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DepositAuthorizedResult) return false
+        return depositAuthorized == other.depositAuthorized &&
+            sourceAccount == other.sourceAccount &&
+            destinationAccount == other.destinationAccount &&
+            ledgerIndex == other.ledgerIndex
+    }
+
+    override fun hashCode(): Int {
+        var result = depositAuthorized.hashCode()
+        result = 31 * result + sourceAccount.hashCode()
+        result = 31 * result + destinationAccount.hashCode()
+        result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        "DepositAuthorizedResult(" +
+            "depositAuthorized=$depositAuthorized, " +
+            "sourceAccount=$sourceAccount, " +
+            "destinationAccount=$destinationAccount, " +
+            "ledgerIndex=$ledgerIndex" +
+            ")"
+}
+
+public class ChannelVerifyResult(
+    public val signatureVerified: Boolean,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ChannelVerifyResult) return false
+        return signatureVerified == other.signatureVerified
+    }
+
+    override fun hashCode(): Int = signatureVerified.hashCode()
+
+    override fun toString(): String = "ChannelVerifyResult(signatureVerified=$signatureVerified)"
+}
+
 public class NorippleCheckResult(
     public val problems: List<String>,
     public val transactions: List<JsonElement>?,

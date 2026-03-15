@@ -5,7 +5,6 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.websocket.Frame
-import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -38,15 +37,22 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.time.Duration
 
 /**
- * Persistent WebSocket transport with message routing and proper disconnect handling.
+ * Persistent WebSocket transport with message routing, auto-reconnect,
+ * and auto-resubscribe support.
  *
- * Phase 3 treats disconnect as terminal — there is no auto-reconnect.
- * Reconnect will be added in a future phase alongside auto-resubscribe.
+ * When [autoReconnect] is enabled and the connection drops unexpectedly,
+ * the transport automatically reconnects with exponential backoff and
+ * replays all tracked subscriptions.
  *
  * @param url the WebSocket endpoint URL.
  * @param engine the HTTP client engine.
  * @param scope the coroutine scope for background operations.
  * @param heartbeatInterval interval between heartbeat pings.
+ * @param requestTimeout timeout for individual RPC requests.
+ * @param autoReconnect whether to auto-reconnect on unexpected disconnect.
+ * @param maxReconnectAttempts maximum number of reconnect attempts.
+ * @param initialReconnectDelay initial delay before the first reconnect attempt.
+ * @param maxReconnectDelay maximum delay between reconnect attempts.
  */
 @OptIn(ExperimentalAtomicApi::class)
 internal class WebSocketTransport(
@@ -55,6 +61,10 @@ internal class WebSocketTransport(
     private val scope: CoroutineScope,
     private val heartbeatInterval: Duration,
     private val requestTimeout: Duration,
+    private val autoReconnect: Boolean = true,
+    private val maxReconnectAttempts: Int = Int.MAX_VALUE,
+    private val initialReconnectDelay: Duration = Duration.ZERO,
+    private val maxReconnectDelay: Duration = Duration.ZERO,
 ) : XrplTransport {
     private val client: HttpClient =
         HttpClient(engine) {
@@ -73,7 +83,50 @@ internal class WebSocketTransport(
     private val idCounter = AtomicInt(1)
     private val connectMutex = Mutex()
     private var connectionJob: Job? = null
-    private val sendChannel = Channel<String>(Channel.BUFFERED)
+    private var sendChannel = Channel<String>(Channel.BUFFERED)
+
+    /** Whether close() has been explicitly called. Prevents reconnect after intentional shutdown. */
+    private var closedExplicitly = false
+
+    /** Whether a reconnect loop is currently active. Prevents cascading reconnect spawns. */
+    private var reconnecting = false
+
+    // ── Subscription Registry ───────────────────────────────────────────────────
+
+    /**
+     * Represents an active subscription that should be replayed after reconnect.
+     */
+    internal sealed class SubscriptionEntry {
+        data class Streams(val streams: List<String>) : SubscriptionEntry()
+
+        data class Accounts(val accounts: List<String>) : SubscriptionEntry()
+
+        data class Books(val books: JsonObject) : SubscriptionEntry()
+    }
+
+    private val registryMutex = Mutex()
+    private val subscriptionRegistry = mutableListOf<SubscriptionEntry>()
+
+    /**
+     * Tracks a subscription so it can be replayed after reconnect.
+     * Called internally by the subscription layer.
+     */
+    suspend fun trackSubscription(entry: SubscriptionEntry) {
+        registryMutex.withLock {
+            subscriptionRegistry.add(entry)
+        }
+    }
+
+    /**
+     * Removes a tracked subscription (e.g., when a Flow is cancelled).
+     */
+    suspend fun untrackSubscription(entry: SubscriptionEntry) {
+        registryMutex.withLock {
+            subscriptionRegistry.remove(entry)
+        }
+    }
+
+    // ── Connection ──────────────────────────────────────────────────────────────
 
     /**
      * Establishes the WebSocket connection and starts the message loop.
@@ -86,6 +139,9 @@ internal class WebSocketTransport(
                 // Already connecting — release lock and wait below
             } else {
                 _connectionState.value = ConnectionState.Connecting
+
+                // Create a fresh send channel for the new connection
+                sendChannel = Channel(Channel.BUFFERED)
 
                 connectionJob =
                     scope.launch {
@@ -147,6 +203,15 @@ internal class WebSocketTransport(
                                     )
                             }
                             failAllPendingRequests()
+
+                            // Trigger auto-reconnect if enabled, not explicitly closed,
+                            // and not already inside a reconnect loop.
+                            if (autoReconnect && !closedExplicitly && !reconnecting) {
+                                val failCause =
+                                    (_connectionState.value as? ConnectionState.Failed)?.cause
+                                        ?: IllegalStateException("WebSocket disconnected")
+                                scope.launch { reconnect(failCause) }
+                            }
                         }
                     }
             }
@@ -155,6 +220,117 @@ internal class WebSocketTransport(
         // Wait OUTSIDE the lock so the launched job can update state
         _connectionState.first { it is ConnectionState.Connected || it is ConnectionState.Failed }
     }
+
+    /**
+     * Reconnects with exponential backoff after an unexpected disconnect.
+     *
+     * Transitions through [ConnectionState.Reconnecting] states.
+     * On successful reconnect, replays all tracked subscriptions.
+     */
+    private suspend fun reconnect(cause: Throwable) {
+        reconnecting = true
+        try {
+            var currentDelay = initialReconnectDelay
+            var attempt = 0
+
+            while (attempt < maxReconnectAttempts && !closedExplicitly) {
+                attempt++
+                _connectionState.value = ConnectionState.Reconnecting(attempt, cause)
+
+                delay(currentDelay)
+
+                if (closedExplicitly) break
+
+                try {
+                    connect()
+                } catch (_: Exception) {
+                    // connect() handles its own state transitions — just continue the loop
+                }
+
+                if (_connectionState.value is ConnectionState.Connected) {
+                    // Reconnect succeeded — replay subscriptions
+                    replaySubscriptions()
+                    return
+                }
+
+                // Exponential backoff: double the delay, capped at maxReconnectDelay
+                currentDelay = minDuration(currentDelay * 2, maxReconnectDelay)
+            }
+
+            // Exhausted all attempts — remain in Failed state
+            if (!closedExplicitly) {
+                _connectionState.value =
+                    ConnectionState.Failed(
+                        IllegalStateException(
+                            "Auto-reconnect failed after $attempt attempts",
+                            cause,
+                        ),
+                    )
+            }
+        } finally {
+            reconnecting = false
+        }
+    }
+
+    /**
+     * Replays all tracked subscriptions after a successful reconnect.
+     */
+    private suspend fun replaySubscriptions() {
+        val entries = registryMutex.withLock { subscriptionRegistry.toList() }
+        for (entry in entries) {
+            try {
+                when (entry) {
+                    is SubscriptionEntry.Streams -> {
+                        val requestJson =
+                            buildJsonObject {
+                                put("command", "subscribe")
+                                put(
+                                    "streams",
+                                    kotlinx.serialization.json.JsonArray(
+                                        entry.streams.map { kotlinx.serialization.json.JsonPrimitive(it) },
+                                    ),
+                                )
+                            }
+                        sendRaw(XrplJson.encodeToString(JsonObject.serializer(), requestJson))
+                    }
+                    is SubscriptionEntry.Accounts -> {
+                        val requestJson =
+                            buildJsonObject {
+                                put("command", "subscribe")
+                                put(
+                                    "accounts",
+                                    kotlinx.serialization.json.JsonArray(
+                                        entry.accounts.map { kotlinx.serialization.json.JsonPrimitive(it) },
+                                    ),
+                                )
+                            }
+                        sendRaw(XrplJson.encodeToString(JsonObject.serializer(), requestJson))
+                    }
+                    is SubscriptionEntry.Books -> {
+                        val requestJson =
+                            buildJsonObject {
+                                put("command", "subscribe")
+                                for ((key, value) in entry.books) {
+                                    put(key, value)
+                                }
+                            }
+                        sendRaw(XrplJson.encodeToString(JsonObject.serializer(), requestJson))
+                    }
+                }
+            } catch (_: Exception) {
+                // Best-effort replay — individual failures don't abort the entire replay
+            }
+        }
+    }
+
+    /**
+     * Sends a raw message string through the send channel.
+     */
+    private suspend fun sendRaw(message: String) {
+        sendChannel.send(message)
+    }
+
+    // ── Message Handling ────────────────────────────────────────────────────────
 
     private suspend fun handleTextFrame(text: String) {
         val json =
@@ -198,15 +374,39 @@ internal class WebSocketTransport(
         }
     }
 
+    // ── RPC Requests ────────────────────────────────────────────────────────────
+
     override suspend fun <T> request(
         method: String,
         params: JsonObject,
         deserializer: DeserializationStrategy<T>,
     ): XrplResult<T> {
-        if (_connectionState.value !is ConnectionState.Connected) {
-            return XrplResult.Failure(
-                XrplFailure.NetworkError("WebSocket not connected"),
-            )
+        val state = _connectionState.value
+        if (state !is ConnectionState.Connected) {
+            // If reconnecting, wait for reconnect to complete (up to requestTimeout)
+            if (state is ConnectionState.Reconnecting) {
+                try {
+                    withTimeout(requestTimeout) {
+                        _connectionState.first {
+                            it is ConnectionState.Connected || it is ConnectionState.Failed ||
+                                it is ConnectionState.Disconnected
+                        }
+                    }
+                } catch (_: kotlinx.coroutines.TimeoutCancellationException) {
+                    return XrplResult.Failure(
+                        XrplFailure.NetworkError("WebSocket reconnecting — timed out waiting"),
+                    )
+                }
+                if (_connectionState.value !is ConnectionState.Connected) {
+                    return XrplResult.Failure(
+                        XrplFailure.NetworkError("WebSocket not connected"),
+                    )
+                }
+            } else {
+                return XrplResult.Failure(
+                    XrplFailure.NetworkError("WebSocket not connected"),
+                )
+            }
         }
 
         var id = idCounter.fetchAndAdd(1)
@@ -268,14 +468,17 @@ internal class WebSocketTransport(
         }
     }
 
+    // ── Shutdown ─────────────────────────────────────────────────────────────────
+
     override fun close() {
+        closedExplicitly = true
         val acquiredConnectLock = connectMutex.tryLock()
         try {
             connectionJob?.cancel()
             connectionJob = null
             sendChannel.close()
 
-            // Fail all pending requests so callers don't hang forever (Issue 3).
+            // Fail all pending requests so callers don't hang forever.
             // CompletableDeferred.completeExceptionally is thread-safe; duplicate
             // calls are harmless (only the first wins). After cancelling the
             // connectionJob and closing the sendChannel, no new requests will be
@@ -294,4 +497,14 @@ internal class WebSocketTransport(
             }
         }
     }
+}
+
+/**
+ * Returns the smaller of two Durations without requiring `compareTo` on all KMP targets.
+ */
+private fun minDuration(
+    a: Duration,
+    b: Duration,
+): Duration {
+    return if (a.inWholeMilliseconds <= b.inWholeMilliseconds) a else b
 }

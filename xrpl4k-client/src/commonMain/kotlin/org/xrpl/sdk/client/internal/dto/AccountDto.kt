@@ -231,6 +231,25 @@ internal data class BalanceDto(
     val value: String,
 )
 
+// DepositAuthorized
+@Serializable
+internal data class DepositAuthorizedRequest(
+    @SerialName("source_account") val sourceAccount: String,
+    @SerialName("destination_account") val destinationAccount: String,
+    @SerialName("ledger_index") val ledgerIndex: String? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+)
+
+@Serializable
+internal data class DepositAuthorizedResponse(
+    @SerialName("deposit_authorized") val depositAuthorized: Boolean,
+    @SerialName("source_account") val sourceAccount: String,
+    @SerialName("destination_account") val destinationAccount: String,
+    @SerialName("ledger_index") val ledgerIndex: Long? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+    val validated: Boolean? = null,
+)
+
 // NorippleCheck
 @Serializable
 internal data class NorippleCheckRequest(

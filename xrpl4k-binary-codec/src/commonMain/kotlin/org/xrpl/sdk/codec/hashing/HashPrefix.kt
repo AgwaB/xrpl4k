@@ -38,4 +38,7 @@ public enum class HashPrefix(public val bytes: ByteArray) {
 
     /** Ledger header — 'LWR\0' */
     LEDGER(byteArrayOf(0x4C, 0x57, 0x52, 0x00)),
+
+    /** Batch signing prefix — 'BCH\0' */
+    BATCH(byteArrayOf(0x42, 0x43, 0x48, 0x00)),
 }

@@ -57,6 +57,24 @@ internal data class LedgerEventDto(
 )
 
 @Serializable
+internal data class ValidationEventDto(
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+    @SerialName("ledger_index") val ledgerIndex: Long? = null,
+    val signature: String? = null,
+    @SerialName("signing_time") val signingTime: Long? = null,
+    @SerialName("validation_public_key") val validationPublicKey: String? = null,
+    val flags: Long? = null,
+    val full: Boolean? = null,
+    val type: String? = null,
+)
+
+@Serializable
+internal data class ConsensusEventDto(
+    @SerialName("consensus") val consensus: String? = null,
+    val type: String? = null,
+)
+
+@Serializable
 internal data class TransactionEventDto(
     val transaction: JsonElement? = null,
     val meta: JsonElement? = null,
