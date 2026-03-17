@@ -245,4 +245,49 @@ class AmountSerializerTest : FunSpec({
         val reader = BinaryReader(writer.toByteArray())
         AmountSerializer.read(reader) shouldBe "100000000000000000"
     }
+
+    // ── MPT amounts ────────────────────────────────────────────────────────
+
+    test("MPT positive amount roundtrip") {
+        val writer = BinaryWriter()
+        val mpt =
+            mapOf(
+                "value" to "1000",
+                "mpt_issuance_id" to "000000000000000000000000000000000000000000000001",
+            )
+        AmountSerializer.write(writer, mpt)
+        val reader = BinaryReader(writer.toByteArray())
+
+        @Suppress("UNCHECKED_CAST")
+        val result = AmountSerializer.read(reader) as Map<String, String>
+        result["value"] shouldBe "1000"
+        result["mpt_issuance_id"] shouldBe "000000000000000000000000000000000000000000000001"
+    }
+
+    test("MPT zero amount roundtrip") {
+        val writer = BinaryWriter()
+        val mpt =
+            mapOf(
+                "value" to "0",
+                "mpt_issuance_id" to "000000000000000000000000000000000000000000000001",
+            )
+        AmountSerializer.write(writer, mpt)
+        val reader = BinaryReader(writer.toByteArray())
+
+        @Suppress("UNCHECKED_CAST")
+        val result = AmountSerializer.read(reader) as Map<String, String>
+        result["value"] shouldBe "0"
+    }
+
+    test("MPT rejects negative amount") {
+        shouldThrow<IllegalArgumentException> {
+            val writer = BinaryWriter()
+            val mpt =
+                mapOf(
+                    "value" to "-1",
+                    "mpt_issuance_id" to "000000000000000000000000000000000000000000000001",
+                )
+            AmountSerializer.write(writer, mpt)
+        }.message shouldBe "Negative MPT amounts not allowed: -1"
+    }
 })

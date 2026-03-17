@@ -505,7 +505,10 @@ public fun XrplClient.subscribeToPeerStatus(): Flow<PeerStatusEvent> =
                                 PeerStatusEvent(
                                     action = dto.action,
                                     date = dto.date,
-                                    address = dto.address,
+                                    ledgerHash = dto.ledgerHash,
+                                    ledgerIndex = dto.ledgerIndex,
+                                    ledgerIndexMax = dto.ledgerIndexMax,
+                                    ledgerIndexMin = dto.ledgerIndexMin,
                                 )
                             send(event)
                         } catch (_: Exception) {
@@ -641,12 +644,13 @@ public fun XrplClient.subscribeToProposedTransactions(): Flow<TransactionEvent> 
 public fun XrplClient.subscribeToProposedAccount(address: Address): Flow<AccountEvent> =
     callbackFlow {
         val transport = getWebSocketTransport()
+        val entry = WebSocketTransport.SubscriptionEntry.AccountsProposed(listOf(address.value))
 
         // Subscribe FIRST — server starts sending events (buffered in SharedFlow)
         subscribe(accountsProposed = listOf(address)).getOrThrow()
 
-        // TODO: Track for auto-resubscribe on reconnect once WebSocketTransport
-        //  supports an AccountsProposed SubscriptionEntry variant.
+        // Track for auto-resubscribe on reconnect
+        transport.trackSubscription(entry)
 
         // THEN start collecting — picks up buffered events
         val job =
@@ -677,6 +681,8 @@ public fun XrplClient.subscribeToProposedAccount(address: Address): Flow<Account
 
         awaitClose {
             job.cancel()
+            // Untrack subscription so it's not replayed after reconnect
+            launch { transport.untrackSubscription(entry) }
         }
     }
 

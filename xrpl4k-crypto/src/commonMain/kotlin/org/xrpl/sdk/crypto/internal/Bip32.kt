@@ -84,7 +84,14 @@ internal fun derivePath(
         val hardened = component.endsWith("'")
         val indexStr = if (hardened) component.dropLast(1) else component
         val index = indexStr.toLong() + if (hardened) 0x80000000L else 0L
+        val previous = current
         current = deriveChild(current, index, provider)
+        // Zero fill the previous intermediate key to limit exposure of secret material in memory.
+        // Skip zeroing the masterKey (first iteration) as the caller may still need it.
+        if (previous !== masterKey) {
+            previous.privateKey.fill(0)
+            previous.chainCode.fill(0)
+        }
     }
     return current
 }

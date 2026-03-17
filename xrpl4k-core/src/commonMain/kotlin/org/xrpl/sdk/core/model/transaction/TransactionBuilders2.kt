@@ -148,11 +148,13 @@ public fun nfTokenMint(
     account: Address,
     block: NFTokenMintBuilder.() -> Unit,
 ): XrplTransaction.Unsigned {
-    val fields = NFTokenMintBuilder().apply(block).build()
+    val builder = NFTokenMintBuilder().apply(block)
+    val fields = builder.build()
     return XrplTransaction.Unsigned(
         transactionType = TransactionType.NFTokenMint,
         account = account,
         fields = fields,
+        flags = builder.flags ?: fields.flags,
     )
 }
 
@@ -178,11 +180,13 @@ public fun nfTokenCreateOffer(
     account: Address,
     block: NFTokenCreateOfferBuilder.() -> Unit,
 ): XrplTransaction.Unsigned {
-    val fields = NFTokenCreateOfferBuilder().apply(block).build()
+    val builder = NFTokenCreateOfferBuilder().apply(block)
+    val fields = builder.build()
     return XrplTransaction.Unsigned(
         transactionType = TransactionType.NFTokenCreateOffer,
         account = account,
         fields = fields,
+        flags = builder.flags ?: fields.flags,
     )
 }
 

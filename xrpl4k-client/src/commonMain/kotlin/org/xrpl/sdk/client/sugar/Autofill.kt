@@ -9,6 +9,7 @@ import org.xrpl.sdk.client.rpc.accountInfo
 import org.xrpl.sdk.client.rpc.fee
 import org.xrpl.sdk.client.rpc.ledgerCurrent
 import org.xrpl.sdk.client.rpc.serverInfo
+import org.xrpl.sdk.core.model.transaction.BatchFields
 import org.xrpl.sdk.core.model.transaction.EscrowFinishFields
 import org.xrpl.sdk.core.model.transaction.TransactionFields
 import org.xrpl.sdk.core.model.transaction.TransactionType
@@ -179,12 +180,15 @@ public suspend fun XrplClient.autofill(
                 }
 
                 // Batch: fee = 2 * baseFee + sum of inner tx base fees
-                // Note: Inner fee computation for Batch is deferred since BatchFields
-                // uses raw maps. For now, compute the outer baseFee * 2 as the minimum.
+                // Inner transactions each contribute one base fee to the total.
                 needsBatchFee -> {
                     val netFeeDrops = feeInfo.openLedgerFee.value
                     val cushionedBase = (netFeeDrops * config.feeCushion).roundToLong()
-                    applyMultisig(cushionedBase * 2, multisigSigners, netFeeDrops)
+                    val innerTxCount =
+                        (resolvedTx.fields as? BatchFields)
+                            ?.rawTransactions?.size ?: 0
+                    val batchFee = cushionedBase * 2 + cushionedBase * innerTxCount
+                    applyMultisig(batchFee, multisigSigners, netFeeDrops)
                 }
 
                 // Standard fee: baseFee * feeCushion, with multi-sig multiplier

@@ -13,7 +13,7 @@ public fun payment(block: PaymentBuilder.() -> Unit): XrplTransaction.Unsigned =
 public fun payment(
     account: Address,
     block: PaymentBuilder.() -> Unit,
-): XrplTransaction.Unsigned = PaymentBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = PaymentBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates an OfferCreate [XrplTransaction.Unsigned] using the DSL builder.
@@ -27,7 +27,7 @@ public fun offerCreate(block: OfferCreateBuilder.() -> Unit): XrplTransaction.Un
 public fun offerCreate(
     account: Address,
     block: OfferCreateBuilder.() -> Unit,
-): XrplTransaction.Unsigned = OfferCreateBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = OfferCreateBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates an OfferCancel [XrplTransaction.Unsigned] using the DSL builder.
@@ -41,7 +41,7 @@ public fun offerCancel(block: OfferCancelBuilder.() -> Unit): XrplTransaction.Un
 public fun offerCancel(
     account: Address,
     block: OfferCancelBuilder.() -> Unit,
-): XrplTransaction.Unsigned = OfferCancelBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = OfferCancelBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates a TrustSet [XrplTransaction.Unsigned] using the DSL builder.
@@ -55,7 +55,7 @@ public fun trustSet(block: TrustSetBuilder.() -> Unit): XrplTransaction.Unsigned
 public fun trustSet(
     account: Address,
     block: TrustSetBuilder.() -> Unit,
-): XrplTransaction.Unsigned = TrustSetBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = TrustSetBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates an AccountSet [XrplTransaction.Unsigned] using the DSL builder.
@@ -69,7 +69,7 @@ public fun accountSet(block: AccountSetBuilder.() -> Unit): XrplTransaction.Unsi
 public fun accountSet(
     account: Address,
     block: AccountSetBuilder.() -> Unit,
-): XrplTransaction.Unsigned = AccountSetBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = AccountSetBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates an AccountDelete [XrplTransaction.Unsigned] using the DSL builder.
@@ -89,7 +89,7 @@ public fun setRegularKey(block: SetRegularKeyBuilder.() -> Unit): XrplTransactio
 public fun setRegularKey(
     account: Address,
     block: SetRegularKeyBuilder.() -> Unit,
-): XrplTransaction.Unsigned = SetRegularKeyBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = SetRegularKeyBuilder().apply(block).apply { this.account = account }.build()
 
 /**
  * Creates a SignerListSet [XrplTransaction.Unsigned] using the DSL builder.
@@ -103,4 +103,4 @@ public fun signerListSet(block: SignerListSetBuilder.() -> Unit): XrplTransactio
 public fun signerListSet(
     account: Address,
     block: SignerListSetBuilder.() -> Unit,
-): XrplTransaction.Unsigned = SignerListSetBuilder().apply { this.account = account }.apply(block).build()
+): XrplTransaction.Unsigned = SignerListSetBuilder().apply(block).apply { this.account = account }.build()

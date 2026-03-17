@@ -805,11 +805,14 @@ public final class org/xrpl/sdk/client/model/PaymentChannelObject : org/xrpl/sdk
 }
 
 public final class org/xrpl/sdk/client/model/PeerStatusEvent {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAction ()Ljava/lang/String;
-	public final fun getAddress ()Ljava/lang/String;
-	public final fun getDate ()Ljava/lang/String;
+	public final fun getDate ()Ljava/lang/Long;
+	public final fun getLedgerHash ()Ljava/lang/String;
+	public final fun getLedgerIndex ()Ljava/lang/Long;
+	public final fun getLedgerIndexMax ()Ljava/lang/Long;
+	public final fun getLedgerIndexMin ()Ljava/lang/Long;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

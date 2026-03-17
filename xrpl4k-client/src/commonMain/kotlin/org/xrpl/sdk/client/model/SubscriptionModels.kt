@@ -154,23 +154,29 @@ public class OrderBookEvent(
  */
 public class PeerStatusEvent(
     public val action: String?,
-    public val date: String?,
-    public val address: String?,
+    public val date: Long?,
+    public val ledgerHash: String?,
+    public val ledgerIndex: Long?,
+    public val ledgerIndexMax: Long?,
+    public val ledgerIndexMin: Long?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is PeerStatusEvent) return false
-        return action == other.action && date == other.date && address == other.address
+        return action == other.action && date == other.date && ledgerHash == other.ledgerHash &&
+            ledgerIndex == other.ledgerIndex
     }
 
     override fun hashCode(): Int {
         var result = action?.hashCode() ?: 0
         result = 31 * result + (date?.hashCode() ?: 0)
-        result = 31 * result + (address?.hashCode() ?: 0)
+        result = 31 * result + (ledgerHash?.hashCode() ?: 0)
+        result = 31 * result + (ledgerIndex?.hashCode() ?: 0)
         return result
     }
 
-    override fun toString(): String = "PeerStatusEvent(action=$action, address=$address)"
+    override fun toString(): String =
+        "PeerStatusEvent(action=$action, ledgerHash=$ledgerHash, ledgerIndex=$ledgerIndex)"
 }
 
 /**

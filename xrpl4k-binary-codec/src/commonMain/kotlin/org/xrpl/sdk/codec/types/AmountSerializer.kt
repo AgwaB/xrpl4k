@@ -225,11 +225,11 @@ internal object AmountSerializer : TypeSerializer<Any> {
                 ?: throw IllegalArgumentException("MPT amount requires 'mpt_issuance_id' field")
 
         val amount = valueStr.toLong()
-        val isPositive = amount >= 0L
-        val absAmount = if (isPositive) amount else -amount
+        require(amount >= 0) { "Negative MPT amounts not allowed: $amount" }
+        val absAmount = amount
 
-        // Flags byte: 0x60 | (positive ? 0x40 : 0x00)
-        val flagsByte = MPT_TYPE_INDICATOR or (if (isPositive) MPT_POSITIVE_FLAG else 0x00)
+        // Flags byte: type indicator (0x60) with positive flag set when amount >= 0
+        val flagsByte = MPT_TYPE_INDICATOR or MPT_POSITIVE_FLAG
         writer.writeUInt8(flagsByte)
 
         // 8-byte absolute amount

@@ -81,6 +81,9 @@ public object SecretNumbers {
                 "Invalid checksum for group $i: '$group'."
             }
             val value = group.substring(0, 5).toInt()
+            require(value in 0..65535) {
+                "Secret number value $value for group $i is out of range (0..65535)."
+            }
             entropy[i * 2] = (value shr 8).toByte()
             entropy[i * 2 + 1] = (value and 0xFF).toByte()
         }
@@ -105,7 +108,11 @@ public object SecretNumbers {
     ): Wallet {
         val groups = parseSecretString(secretNumbers)
         val entropy = secretToEntropy(groups)
-        return Wallet.fromEntropy(entropy, algorithm, provider)
+        return try {
+            Wallet.fromEntropy(entropy, algorithm, provider)
+        } finally {
+            entropy.fill(0)
+        }
     }
 
     /**
@@ -122,7 +129,11 @@ public object SecretNumbers {
         provider: CryptoProvider = platformCryptoProvider(),
     ): Wallet {
         val entropy = secretToEntropy(secretNumbers)
-        return Wallet.fromEntropy(entropy, algorithm, provider)
+        return try {
+            Wallet.fromEntropy(entropy, algorithm, provider)
+        } finally {
+            entropy.fill(0)
+        }
     }
 }
 

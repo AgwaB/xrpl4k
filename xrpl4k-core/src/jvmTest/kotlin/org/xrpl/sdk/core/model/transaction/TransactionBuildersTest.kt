@@ -39,7 +39,7 @@ class TransactionBuildersTest : FunSpec({
             fields.amount shouldBe xrpAmount
         }
 
-        test("account parameter can be overridden in block") {
+        test("account parameter wins over block assignment") {
             val other = Address("rN7n3473SaZBCG4dFL83w7p1W9cgZB6ZBR")
             val tx =
                 payment(sender) {
@@ -47,7 +47,7 @@ class TransactionBuildersTest : FunSpec({
                     destination = receiver
                     amount = xrpAmount
                 }
-            tx.account shouldBe other
+            tx.account shouldBe sender
         }
     }
 
@@ -487,6 +487,43 @@ class TransactionBuildersTest : FunSpec({
         }
     }
 
+    // ── NFTokenMint: flags propagation to Unsigned ────────────────────────────
+
+    context("nfTokenMint flags propagation") {
+        test("flags from fields propagate to Unsigned") {
+            val tx =
+                nfTokenMint(sender) {
+                    nfTokenTaxon = 0u
+                    flags = TransactionFlags.NFTokenMint.tfTransferable
+                }
+            tx.flags shouldBe TransactionFlags.NFTokenMint.tfTransferable
+        }
+
+        test("null flags results in null on Unsigned") {
+            val tx =
+                nfTokenMint(sender) {
+                    nfTokenTaxon = 0u
+                }
+            tx.flags shouldBe null
+        }
+    }
+
+    // ── NFTokenCreateOffer: flags propagation to Unsigned ───────────────────
+
+    context("nfTokenCreateOffer flags propagation") {
+        val tokenId = "000B013A95F14B0044F78A264E41713C64B5F89242540EE208C3098E00000D65"
+
+        test("flags from fields propagate to Unsigned") {
+            val tx =
+                nfTokenCreateOffer(sender) {
+                    nfTokenId = tokenId
+                    amount = xrpAmount
+                    flags = TransactionFlags.NFTokenCreateOffer.tfSellNFToken
+                }
+            tx.flags shouldBe TransactionFlags.NFTokenCreateOffer.tfSellNFToken
+        }
+    }
+
     // ── NFTokenBurn ──────────────────────────────────────────────────────────
 
     context("nfTokenBurn builder") {
@@ -715,6 +752,67 @@ class TransactionBuildersTest : FunSpec({
             tx.account shouldBe sender
             val fields = tx.fields as SetRegularKeyFields
             fields.regularKey shouldBe receiver
+        }
+    }
+
+    // ── Account parameter wins over block assignment (all overloads) ─────────
+
+    context("account parameter wins over block assignment") {
+        val other = Address("rN7n3473SaZBCG4dFL83w7p1W9cgZB6ZBR")
+
+        test("offerCreate") {
+            val tx =
+                offerCreate(sender) {
+                    account = other
+                    takerGets = 10.xrp
+                    takerPays = usdAmount
+                }
+            tx.account shouldBe sender
+        }
+
+        test("trustSet") {
+            val tx =
+                trustSet(sender) {
+                    account = other
+                    limitAmount = usdAmount
+                }
+            tx.account shouldBe sender
+        }
+
+        test("accountSet") {
+            val tx =
+                accountSet(sender) {
+                    account = other
+                }
+            tx.account shouldBe sender
+        }
+
+        test("signerListSet") {
+            val tx =
+                signerListSet(sender) {
+                    account = other
+                    signerQuorum = 0u
+                    signerEntries = emptyList()
+                }
+            tx.account shouldBe sender
+        }
+
+        test("setRegularKey") {
+            val tx =
+                setRegularKey(sender) {
+                    account = other
+                    regularKey = receiver
+                }
+            tx.account shouldBe sender
+        }
+
+        test("offerCancel") {
+            val tx =
+                offerCancel(sender) {
+                    account = other
+                    offerSequence = 1u
+                }
+            tx.account shouldBe sender
         }
     }
 

@@ -91,8 +91,11 @@ internal data class TransactionEventDto(
 @Serializable
 internal data class PeerStatusEventDto(
     val action: String? = null,
-    val date: String? = null,
-    val address: String? = null,
+    val date: Long? = null,
+    @SerialName("ledger_hash") val ledgerHash: String? = null,
+    @SerialName("ledger_index") val ledgerIndex: Long? = null,
+    @SerialName("ledger_index_max") val ledgerIndexMax: Long? = null,
+    @SerialName("ledger_index_min") val ledgerIndexMin: Long? = null,
     val type: String? = null,
 )
 

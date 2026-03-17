@@ -1075,6 +1075,41 @@ class TransactionValidatorTest : FunSpec({
         }
     }
 
+    // ── Ticket-based transaction with sequence=0 ─────────────────────────────
+
+    context("Filled transaction with ticketSequence") {
+        test("sequence=0 is valid when ticketSequence is set") {
+            val tx =
+                XrplTransaction.Filled.create(
+                    transactionType = TransactionType.Payment,
+                    account = sender,
+                    fields = PaymentFields(destination = receiver, amount = oneXrp),
+                    fee = standardFee,
+                    sequence = 0u,
+                    lastLedgerSequence = standardLls,
+                    ticketSequence = 42u,
+                )
+            val result = tx.validate()
+            result shouldBe ValidationResult.Valid
+        }
+
+        test("sequence=0 is invalid when ticketSequence is null") {
+            val tx =
+                XrplTransaction.Filled.create(
+                    transactionType = TransactionType.Payment,
+                    account = sender,
+                    fields = PaymentFields(destination = receiver, amount = oneXrp),
+                    fee = standardFee,
+                    sequence = 0u,
+                    lastLedgerSequence = standardLls,
+                    ticketSequence = null,
+                )
+            val result = tx.validate()
+            result.shouldBeInstanceOf<ValidationResult.Invalid>()
+            result.errors shouldContain "Sequence must be greater than 0."
+        }
+    }
+
     // ── Extension functions ──────────────────────────────────────────────────
 
     context("Extension functions") {

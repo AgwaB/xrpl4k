@@ -111,7 +111,7 @@ public object TransactionValidator {
         if (tx.fee > maxFee) {
             errors += "Fee ${tx.fee.value} drops exceeds maximum allowed ${maxFee.value} drops."
         }
-        if (tx.sequence == 0u) {
+        if (tx.sequence == 0u && tx.ticketSequence == null) {
             errors += "Sequence must be greater than 0."
         }
         if (tx.lastLedgerSequence == 0u) {

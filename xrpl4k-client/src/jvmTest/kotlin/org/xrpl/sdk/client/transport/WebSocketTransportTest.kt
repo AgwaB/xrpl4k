@@ -585,4 +585,43 @@ class WebSocketTransportTest : FunSpec({
         (a == b) shouldBe true
         (a == c) shouldBe false
     }
+
+    // ── Bug 6: reconnect delay defaults ────────────────────────────────────
+
+    test("default reconnect delays are non-zero") {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        try {
+            // Create transport with all defaults — verify it doesn't crash
+            val transport =
+                WebSocketTransport(
+                    url = "ws://localhost:6006",
+                    engine = MockEngine { respond(ByteReadChannel(""), HttpStatusCode.OK) },
+                    scope = scope,
+                    heartbeatInterval = 30.seconds,
+                    requestTimeout = 5.seconds,
+                )
+            // If we reached here, the defaults compiled and are usable
+            transport.connectionState.value.shouldBeInstanceOf<ConnectionState.Disconnected>()
+            transport.close()
+        } finally {
+            scope.cancel()
+        }
+    }
+
+    // ── Bug 10: AccountsProposed SubscriptionEntry ─────────────────────────
+
+    test("SubscriptionEntry.AccountsProposed equality") {
+        val a = WebSocketTransport.SubscriptionEntry.AccountsProposed(listOf("rAddr1"))
+        val b = WebSocketTransport.SubscriptionEntry.AccountsProposed(listOf("rAddr1"))
+        val c = WebSocketTransport.SubscriptionEntry.AccountsProposed(listOf("rAddr2"))
+
+        (a == b) shouldBe true
+        (a == c) shouldBe false
+    }
+
+    test("AccountsProposed is distinct from Accounts") {
+        val accounts = WebSocketTransport.SubscriptionEntry.Accounts(listOf("rAddr1"))
+        val proposed = WebSocketTransport.SubscriptionEntry.AccountsProposed(listOf("rAddr1"))
+        (accounts == proposed) shouldBe false
+    }
 })

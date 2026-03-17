@@ -35,6 +35,8 @@ import org.xrpl.sdk.core.result.XrplResult
 import kotlin.concurrent.atomics.AtomicInt
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Persistent WebSocket transport with message routing, auto-reconnect,
@@ -63,8 +65,8 @@ internal class WebSocketTransport(
     private val requestTimeout: Duration,
     private val autoReconnect: Boolean = true,
     private val maxReconnectAttempts: Int = Int.MAX_VALUE,
-    private val initialReconnectDelay: Duration = Duration.ZERO,
-    private val maxReconnectDelay: Duration = Duration.ZERO,
+    private val initialReconnectDelay: Duration = 100.milliseconds,
+    private val maxReconnectDelay: Duration = 60.seconds,
 ) : XrplTransport {
     private val client: HttpClient =
         HttpClient(engine) {
@@ -85,10 +87,18 @@ internal class WebSocketTransport(
     private var connectionJob: Job? = null
     private var sendChannel = Channel<String>(Channel.BUFFERED)
 
-    /** Whether close() has been explicitly called. Prevents reconnect after intentional shutdown. */
+    /**
+     * Whether close() has been explicitly called. Prevents reconnect after intentional shutdown.
+     * Accessed from multiple coroutines — visibility ensured by coroutine dispatcher
+     * (all access happens within the same CoroutineScope or under connectMutex).
+     */
     private var closedExplicitly = false
 
-    /** Whether a reconnect loop is currently active. Prevents cascading reconnect spawns. */
+    /**
+     * Whether a reconnect loop is currently active. Prevents cascading reconnect spawns.
+     * Accessed from the connection job's finally block and the reconnect coroutine,
+     * both dispatched on the same scope.
+     */
     private var reconnecting = false
 
     // ── Subscription Registry ───────────────────────────────────────────────────
@@ -100,6 +110,8 @@ internal class WebSocketTransport(
         data class Streams(val streams: List<String>) : SubscriptionEntry()
 
         data class Accounts(val accounts: List<String>) : SubscriptionEntry()
+
+        data class AccountsProposed(val accounts: List<String>) : SubscriptionEntry()
 
         data class Books(val books: JsonObject) : SubscriptionEntry()
     }
@@ -299,6 +311,19 @@ internal class WebSocketTransport(
                                 put("command", "subscribe")
                                 put(
                                     "accounts",
+                                    kotlinx.serialization.json.JsonArray(
+                                        entry.accounts.map { kotlinx.serialization.json.JsonPrimitive(it) },
+                                    ),
+                                )
+                            }
+                        sendRaw(XrplJson.encodeToString(JsonObject.serializer(), requestJson))
+                    }
+                    is SubscriptionEntry.AccountsProposed -> {
+                        val requestJson =
+                            buildJsonObject {
+                                put("command", "subscribe")
+                                put(
+                                    "accounts_proposed",
                                     kotlinx.serialization.json.JsonArray(
                                         entry.accounts.map { kotlinx.serialization.json.JsonPrimitive(it) },
                                     ),
