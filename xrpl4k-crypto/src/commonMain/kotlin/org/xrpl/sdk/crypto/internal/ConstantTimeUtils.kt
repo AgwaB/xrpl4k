@@ -9,12 +9,13 @@ internal fun constantTimeEquals(
     b: ByteArray,
 ): Boolean {
     // XOR the sizes — if they differ, `result` will be non-zero.
-    // We still iterate over the shorter array to avoid index-out-of-bounds
-    // while keeping the timing roughly constant for same-sized inputs.
+    // Always iterate maxLen to ensure constant timing regardless of input lengths.
     var result = a.size xor b.size
-    val minLen = minOf(a.size, b.size)
-    for (i in 0 until minLen) {
-        result = result or (a[i].toInt() xor b[i].toInt())
+    val maxLen = maxOf(a.size, b.size)
+    for (i in 0 until maxLen) {
+        val ai = if (i < a.size) a[i].toInt() else 0
+        val bi = if (i < b.size) b[i].toInt() else 0
+        result = result or (ai xor bi)
     }
     return result == 0
 }

@@ -13,6 +13,8 @@ import org.xrpl.sdk.core.result.getOrNull
 import org.xrpl.sdk.core.type.LedgerIndex
 import org.xrpl.sdk.crypto.Wallet
 
+private const val POLL_INTERVAL_MS = 4000L
+
 /**
  * Full transaction lifecycle: autofill -> sign -> submit -> poll for validation.
  *
@@ -101,6 +103,19 @@ public suspend fun XrplClient.submitAndWait(
                 return XrplResult.Failure(
                     XrplFailure.ValidationError(
                         "Transaction expired: ledger ${txInfo.ledgerIndex.value} > LastLedgerSequence $lastLedgerSeq",
+                    ),
+                )
+            }
+        }
+
+        // If tx not found at all, check if we've passed lastLedgerSequence
+        if (txInfo == null) {
+            val currentLedger = getLedgerIndex().getOrNull()
+            if (currentLedger != null && currentLedger.value > lastLedgerSeq) {
+                return XrplResult.Failure(
+                    XrplFailure.NetworkError(
+                        "Transaction not found and lastLedgerSequence " +
+                            "$lastLedgerSeq exceeded (current: ${currentLedger.value})",
                     ),
                 )
             }

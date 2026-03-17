@@ -59,6 +59,6 @@ private fun calculateDelay(
 ): Long {
     val baseDelay = config.initialDelay.inWholeMilliseconds * 2.0.pow(attempt).toLong()
     val cappedDelay = min(baseDelay, config.maxDelay.inWholeMilliseconds)
-    val jitter = (Random.nextDouble() * 0.25 * cappedDelay).toLong()
-    return cappedDelay + jitter
+    val jitteredDelay = (cappedDelay * (0.75 + Random.nextDouble() * 0.25)).toLong()
+    return jitteredDelay
 }

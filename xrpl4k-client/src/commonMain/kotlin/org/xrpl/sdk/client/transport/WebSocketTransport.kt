@@ -509,8 +509,9 @@ internal class WebSocketTransport(
             // connectionJob and closing the sendChannel, no new requests will be
             // enqueued, so iterating without the pendingMutex is safe here.
             val error = XrplException(XrplFailure.NetworkError("WebSocket closed"))
-            pendingRequests.values.forEach { it.completeExceptionally(error) }
+            val snapshot = pendingRequests.values.toList()
             pendingRequests.clear()
+            snapshot.forEach { it.completeExceptionally(error) }
 
             client.close()
             if (_connectionState.value !is ConnectionState.Failed) {

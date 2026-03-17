@@ -183,12 +183,13 @@ public suspend fun XrplClient.autofill(
                 // Inner transactions each contribute one base fee to the total.
                 needsBatchFee -> {
                     val netFeeDrops = feeInfo.openLedgerFee.value
-                    val cushionedBase = (netFeeDrops * config.feeCushion).roundToLong()
                     val innerTxCount =
                         (resolvedTx.fields as? BatchFields)
                             ?.rawTransactions?.size ?: 0
-                    val batchFee = cushionedBase * 2 + cushionedBase * innerTxCount
-                    applyMultisig(batchFee, multisigSigners, netFeeDrops)
+                    // Use raw fee for batch calculation, then apply cushion once at the end
+                    val batchFee = netFeeDrops * 2 + netFeeDrops * innerTxCount
+                    val cushionedBatchFee = (batchFee * config.feeCushion).roundToLong()
+                    applyMultisig(cushionedBatchFee, multisigSigners, netFeeDrops)
                 }
 
                 // Standard fee: baseFee * feeCushion, with multi-sig multiplier

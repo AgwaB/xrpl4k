@@ -49,4 +49,19 @@ class ConstantTimeUtilsTest : FunSpec({
     test("empty vs non-empty returns false") {
         constantTimeEquals(byteArrayOf(), byteArrayOf(1)) shouldBe false
     }
+
+    test("different lengths with differing trailing bytes returns false") {
+        // The shorter array would match if only minLen bytes were compared.
+        // The longer array has a trailing non-zero byte that must be caught.
+        val a = byteArrayOf(1, 2, 3)
+        val b = byteArrayOf(1, 2, 3, 0, 99)
+        constantTimeEquals(a, b) shouldBe false
+    }
+
+    test("different lengths with all-zero trailing bytes still returns false") {
+        // Even though the extra bytes are zero, lengths differ so result is false.
+        val a = byteArrayOf(1, 2, 3)
+        val b = byteArrayOf(1, 2, 3, 0, 0)
+        constantTimeEquals(a, b) shouldBe false
+    }
 })

@@ -290,4 +290,26 @@ class AmountSerializerTest : FunSpec({
             AmountSerializer.write(writer, mpt)
         }.message shouldBe "Negative MPT amounts not allowed: -1"
     }
+
+    // ---- Bug 6 regression: readXrpAmount must clear both bits 63 and 62 ----
+
+    test("XRP readXrpAmount clears bit 63 (not-XRP bit) correctly") {
+        // Manually construct bytes where bit 63 is set but bit 62 is also set (positive XRP).
+        // The encoded form for 1 drop is 0x4000000000000001 (bit 62 set, bit 63 clear).
+        // After read, drops should be 1, not a huge number.
+        val writer = BinaryWriter()
+        AmountSerializer.write(writer, "1")
+        val reader = BinaryReader(writer.toByteArray())
+        AmountSerializer.read(reader) shouldBe "1"
+    }
+
+    test("XRP roundtrip max drops clears bit 62 correctly") {
+        // MAX_XRP_DROPS = 100_000_000_000_000_000 (10^17)
+        // Encoded: value | 0x4000000000000000
+        // readXrpAmount must mask off bit 62 to recover the original value.
+        val writer = BinaryWriter()
+        AmountSerializer.write(writer, "100000000000000000")
+        val reader = BinaryReader(writer.toByteArray())
+        AmountSerializer.read(reader) shouldBe "100000000000000000"
+    }
 })

@@ -115,7 +115,7 @@ internal object AmountSerializer : TypeSerializer<Any> {
     }
 
     private fun readXrpAmount(encoded: Long): String {
-        val drops = encoded and XRP_POSITIVE_BIT.inv()
+        val drops = encoded and 0x3FFF_FFFF_FFFF_FFFFL
         return drops.toString()
     }
 

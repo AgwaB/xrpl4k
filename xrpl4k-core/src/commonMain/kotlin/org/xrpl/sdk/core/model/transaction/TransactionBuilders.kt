@@ -9,6 +9,10 @@ public fun payment(block: PaymentBuilder.() -> Unit): XrplTransaction.Unsigned =
 
 /**
  * Creates a Payment [XrplTransaction.Unsigned] using the DSL builder with [account] as a function parameter.
+ *
+ * **Note:** The [account] parameter is applied *after* the [block], so it always takes precedence
+ * over any `account` set inside the builder DSL. This is consistent across all builder overloads
+ * that accept an `account` parameter.
  */
 public fun payment(
     account: Address,

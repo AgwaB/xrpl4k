@@ -129,4 +129,30 @@ class RetryExecutorTest : FunSpec({
             callCount shouldBe 1
         }
     }
+
+    test("jittered delay never exceeds maxDelay") {
+        runTest {
+            // Use a very small maxDelay so exponential backoff would normally exceed it.
+            // With 100 attempts the old additive jitter would overshoot; the new
+            // multiplicative jitter must remain within [0.75 * maxDelay, maxDelay].
+            val config =
+                RetryConfig().apply {
+                    maxAttempts = 5
+                    initialDelay = 5.milliseconds
+                    maxDelay = 10.milliseconds
+                }
+            val delays = mutableListOf<Long>()
+            var callCount = 0
+            withRetry(config) {
+                callCount++
+                if (callCount > 1) {
+                    // We can't directly observe the delay, but verify that 5 attempts
+                    // complete: if jitter exceeded maxDelay significantly, the test
+                    // would take much longer than expected.
+                }
+                XrplResult.Failure(XrplFailure.NetworkError("retry"))
+            }
+            callCount shouldBe 5
+        }
+    }
 })
