@@ -171,12 +171,28 @@ class TransactionUtilsTest : FunSpec({
                                         put("LedgerEntryType", "RippleState")
                                         put(
                                             "PreviousFields",
-                                            buildJsonObject { put("Balance", "10.0") },
+                                            buildJsonObject {
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", "10.0")
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
+                                            },
                                         )
                                         put(
                                             "FinalFields",
                                             buildJsonObject {
-                                                put("Balance", "20.0")
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", "20.0")
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
                                                 put(
                                                     "LowLimit",
                                                     buildJsonObject {

@@ -129,8 +129,13 @@ public fun parseBalanceChanges(metadata: JsonObject): Map<Address, List<BalanceC
                 val finalFields = nodeContent["FinalFields"]?.jsonObject ?: continue
                 val previousFields = nodeContent["PreviousFields"]?.jsonObject ?: continue
 
-                val previousBalanceStr = previousFields["Balance"]?.jsonPrimitive?.content ?: continue
-                val finalBalanceStr = finalFields["Balance"]?.jsonPrimitive?.content ?: continue
+                // RippleState Balance is an IOU object: {"value":"...","currency":"...","issuer":"..."}
+                val previousBalanceStr =
+                    (previousFields["Balance"] as? JsonObject)
+                        ?.get("value")?.jsonPrimitive?.content ?: continue
+                val finalBalanceStr =
+                    (finalFields["Balance"] as? JsonObject)
+                        ?.get("value")?.jsonPrimitive?.content ?: continue
 
                 val delta = subtractDecimalStrings(finalBalanceStr, previousBalanceStr) ?: continue
 
