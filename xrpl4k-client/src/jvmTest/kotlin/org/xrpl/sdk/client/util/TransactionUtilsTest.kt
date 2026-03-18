@@ -284,6 +284,165 @@ class TransactionUtilsTest : FunSpec({
         parseBalanceChanges(metadata).shouldBeEmpty()
     }
 
+    test("parseBalanceChanges: large IOU amounts exceeding Long.MAX_VALUE are handled correctly") {
+        val lowAccount = "rGCkuB7PBr5tNy68tPEABEtcdno4hE6Y7f"
+        val highAccount = "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"
+        // These values exceed Long.MAX_VALUE (~9.2e18)
+        val previousValue = "99999999999999999.5"
+        val finalValue = "100000000000000000.5"
+        val expectedDelta = "1" // 100000000000000000.5 - 99999999999999999.5 = 1
+        val metadata =
+            buildJsonObject {
+                put(
+                    "AffectedNodes",
+                    buildJsonArray {
+                        add(
+                            buildJsonObject {
+                                put(
+                                    "ModifiedNode",
+                                    buildJsonObject {
+                                        put("LedgerEntryType", "RippleState")
+                                        put(
+                                            "PreviousFields",
+                                            buildJsonObject {
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", previousValue)
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
+                                            },
+                                        )
+                                        put(
+                                            "FinalFields",
+                                            buildJsonObject {
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", finalValue)
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
+                                                put(
+                                                    "LowLimit",
+                                                    buildJsonObject {
+                                                        put("issuer", lowAccount)
+                                                        put("currency", "USD")
+                                                        put("value", "0")
+                                                    },
+                                                )
+                                                put(
+                                                    "HighLimit",
+                                                    buildJsonObject {
+                                                        put("issuer", highAccount)
+                                                        put("currency", "USD")
+                                                        put("value", "0")
+                                                    },
+                                                )
+                                            },
+                                        )
+                                    },
+                                )
+                            },
+                        )
+                    },
+                )
+            }
+
+        val changes = parseBalanceChanges(metadata)
+
+        changes shouldHaveSize 2
+        val lowChanges = changes[Address(lowAccount)]
+        lowChanges.shouldNotBeNull()
+        lowChanges.size shouldBe 1
+        lowChanges[0].currency shouldBe "USD"
+        lowChanges[0].value shouldBe expectedDelta
+
+        val highChanges = changes[Address(highAccount)]
+        highChanges.shouldNotBeNull()
+        highChanges.size shouldBe 1
+        highChanges[0].value shouldBe "-$expectedDelta"
+    }
+
+    test("parseBalanceChanges: negative IOU balance change with large values") {
+        val lowAccount = "rGCkuB7PBr5tNy68tPEABEtcdno4hE6Y7f"
+        val highAccount = "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"
+        // Negative RippleState balances (low account owes high account)
+        val previousValue = "-50000000000000000.123"
+        val finalValue = "-50000000000000001.123"
+        val expectedDelta = "-1" // final - previous
+        val metadata =
+            buildJsonObject {
+                put(
+                    "AffectedNodes",
+                    buildJsonArray {
+                        add(
+                            buildJsonObject {
+                                put(
+                                    "ModifiedNode",
+                                    buildJsonObject {
+                                        put("LedgerEntryType", "RippleState")
+                                        put(
+                                            "PreviousFields",
+                                            buildJsonObject {
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", previousValue)
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
+                                            },
+                                        )
+                                        put(
+                                            "FinalFields",
+                                            buildJsonObject {
+                                                put(
+                                                    "Balance",
+                                                    buildJsonObject {
+                                                        put("value", finalValue)
+                                                        put("currency", "USD")
+                                                        put("issuer", "rrrrrrrrrrrrrrrrrrrrBZbvji")
+                                                    },
+                                                )
+                                                put(
+                                                    "LowLimit",
+                                                    buildJsonObject {
+                                                        put("issuer", lowAccount)
+                                                        put("currency", "USD")
+                                                        put("value", "0")
+                                                    },
+                                                )
+                                                put(
+                                                    "HighLimit",
+                                                    buildJsonObject {
+                                                        put("issuer", highAccount)
+                                                        put("currency", "USD")
+                                                        put("value", "0")
+                                                    },
+                                                )
+                                            },
+                                        )
+                                    },
+                                )
+                            },
+                        )
+                    },
+                )
+            }
+
+        val changes = parseBalanceChanges(metadata)
+
+        changes shouldHaveSize 2
+        val lowChanges = changes[Address(lowAccount)]
+        lowChanges.shouldNotBeNull()
+        lowChanges[0].value shouldBe expectedDelta
+    }
+
     // ── getNFTokenID ──────────────────────────────────────────────────────────
 
     test("getNFTokenID: empty AffectedNodes returns null") {

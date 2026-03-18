@@ -290,7 +290,9 @@ public fun verifyTransaction(
 
 /**
  * Subtracts decimal string [b] from [a], returning the result as a decimal string.
- * Avoids floating-point to preserve full precision for XRPL IOU amounts (up to 16 significant digits).
+ * Uses pure string-based arithmetic to preserve full precision for XRPL IOU amounts
+ * (up to 15 significant digits with exponents up to e80), avoiding both Long overflow
+ * and floating-point precision loss.
  *
  * @return The difference as a decimal string, or `null` if either input cannot be parsed.
  */
@@ -298,29 +300,147 @@ private fun subtractDecimalStrings(
     a: String,
     b: String,
 ): String? {
-    val aParts = a.split('.')
-    val bParts = b.split('.')
+    // Parse sign and absolute value
+    val aNeg = a.startsWith('-')
+    val bNeg = b.startsWith('-')
+    val aAbs = if (aNeg) a.substring(1) else a
+    val bAbs = if (bNeg) b.substring(1) else b
+
+    // Validate: digits and at most one dot
+    fun isValidDecimal(s: String): Boolean =
+        s.isNotEmpty() && s.all { it.isDigit() || it == '.' } && s.count { it == '.' } <= 1
+    if (!isValidDecimal(aAbs) || !isValidDecimal(bAbs)) return null
+
+    // Split into integer and fractional parts, align fractional lengths
+    val aParts = aAbs.split('.')
+    val bParts = bAbs.split('.')
     val aFrac = aParts.getOrElse(1) { "" }
     val bFrac = bParts.getOrElse(1) { "" }
     val maxFrac = maxOf(aFrac.length, bFrac.length)
 
-    val aScaled = (aParts[0] + aFrac.padEnd(maxFrac, '0')).toLongOrNull() ?: return null
-    val bScaled = (bParts[0] + bFrac.padEnd(maxFrac, '0')).toLongOrNull() ?: return null
-    val diff = aScaled - bScaled
+    // Build scaled integer strings (no decimal point)
+    val aScaled = aParts[0] + aFrac.padEnd(maxFrac, '0')
+    val bScaled = bParts[0] + bFrac.padEnd(maxFrac, '0')
 
-    if (maxFrac == 0) return diff.toString()
+    // a - b = aSign*aScaled - bSign*bScaled
+    // Convert to: if signs same => subtract magnitudes; if different => add magnitudes
+    val aPositive = !aNeg
+    val bPositive = !bNeg
 
-    val sign = if (diff < 0) "-" else ""
-    val abs = if (diff < 0) -diff else diff
-    val scale = pow10(maxFrac)
-    val intPart = abs / scale
-    val fracPart = abs % scale
+    // We compute a - b, so the effective operation is aSign*|a| + (-bSign)*|b|
+    // Effective: aPositive * aScaled - bPositive * bScaled
+    val resultScaled: String
+    val resultNeg: Boolean
 
-    return if (fracPart == 0L) {
-        "$sign$intPart"
+    if (aPositive && bPositive) {
+        // a - b
+        val cmp = compareNumericStrings(aScaled, bScaled)
+        when {
+            cmp == 0 -> {
+                resultScaled = "0"
+                resultNeg = false
+            }
+            cmp > 0 -> {
+                resultScaled = subtractBigUnsigned(aScaled, bScaled)
+                resultNeg = false
+            }
+            else -> {
+                resultScaled = subtractBigUnsigned(bScaled, aScaled)
+                resultNeg = true
+            }
+        }
+    } else if (!aPositive && !bPositive) {
+        // (-|a|) - (-|b|) = |b| - |a|
+        val cmp = compareNumericStrings(bScaled, aScaled)
+        when {
+            cmp == 0 -> {
+                resultScaled = "0"
+                resultNeg = false
+            }
+            cmp > 0 -> {
+                resultScaled = subtractBigUnsigned(bScaled, aScaled)
+                resultNeg = false
+            }
+            else -> {
+                resultScaled = subtractBigUnsigned(aScaled, bScaled)
+                resultNeg = true
+            }
+        }
+    } else if (aPositive) {
+        // |a| - (-|b|) = |a| + |b|
+        resultScaled = addBigUnsigned(aScaled, bScaled)
+        resultNeg = false
     } else {
-        "$sign$intPart.${fracPart.toString().padStart(maxFrac, '0').trimEnd('0')}"
+        // (-|a|) - |b| = -(|a| + |b|)
+        resultScaled = addBigUnsigned(aScaled, bScaled)
+        resultNeg = resultScaled != "0"
     }
+
+    // Re-insert decimal point
+    val result =
+        if (maxFrac == 0) {
+            resultScaled.trimStart('0').ifEmpty { "0" }
+        } else {
+            val padded = resultScaled.padStart(maxFrac + 1, '0')
+            val intPart = padded.substring(0, padded.length - maxFrac).trimStart('0').ifEmpty { "0" }
+            val fracPart = padded.substring(padded.length - maxFrac).trimEnd('0')
+            if (fracPart.isEmpty()) intPart else "$intPart.$fracPart"
+        }
+
+    return if (resultNeg && result != "0") "-$result" else result
+}
+
+/** Compares two non-negative integer strings by numeric value. */
+private fun compareNumericStrings(
+    a: String,
+    b: String,
+): Int {
+    val aT = a.trimStart('0').ifEmpty { "0" }
+    val bT = b.trimStart('0').ifEmpty { "0" }
+    if (aT.length != bT.length) return aT.length.compareTo(bT.length)
+    return aT.compareTo(bT)
+}
+
+/** Adds two non-negative integer strings. */
+private fun addBigUnsigned(
+    a: String,
+    b: String,
+): String {
+    val maxLen = maxOf(a.length, b.length)
+    val aP = a.padStart(maxLen, '0')
+    val bP = b.padStart(maxLen, '0')
+    val result = CharArray(maxLen + 1)
+    var carry = 0
+    for (i in maxLen - 1 downTo 0) {
+        val sum = (aP[i] - '0') + (bP[i] - '0') + carry
+        result[i + 1] = '0' + (sum % 10)
+        carry = sum / 10
+    }
+    result[0] = '0' + carry
+    return result.concatToString().trimStart('0').ifEmpty { "0" }
+}
+
+/** Subtracts two non-negative integer strings; caller guarantees a >= b. */
+private fun subtractBigUnsigned(
+    a: String,
+    b: String,
+): String {
+    val maxLen = maxOf(a.length, b.length)
+    val aP = a.padStart(maxLen, '0')
+    val bP = b.padStart(maxLen, '0')
+    val result = CharArray(maxLen)
+    var borrow = 0
+    for (i in maxLen - 1 downTo 0) {
+        var diff = (aP[i] - '0') - (bP[i] - '0') - borrow
+        if (diff < 0) {
+            diff += 10
+            borrow = 1
+        } else {
+            borrow = 0
+        }
+        result[i] = '0' + diff
+    }
+    return result.concatToString().trimStart('0').ifEmpty { "0" }
 }
 
 private fun negateDecimalString(s: String): String =
@@ -329,9 +449,3 @@ private fun negateDecimalString(s: String): String =
         s == "0" -> s
         else -> "-$s"
     }
-
-private fun pow10(n: Int): Long {
-    var result = 1L
-    repeat(n) { result *= 10 }
-    return result
-}
